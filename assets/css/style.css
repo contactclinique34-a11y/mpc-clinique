@@ -564,6 +564,15 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
 .breadcrumb a { color: var(--green-accent); }
 .breadcrumb span { color: rgba(255,255,255,.3); }
 
+/* ============ TÉMOIGNAGE AVANT/APRÈS ============ */
+.temoignage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-7); align-items: center; }
+.temoignage-img { border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-lg); }
+.temoignage-img img { width: 100%; height: 500px; object-fit: cover; display: block; }
+@media (max-width: 768px) {
+  .temoignage-grid { grid-template-columns: 1fr; gap: var(--sp-4); }
+  .temoignage-img img { height: 320px; }
+}
+
 /* ============ GALLERY ============ */
 #gallery { background: var(--light-bg); }
 .gallery-intro { text-align: center; margin-bottom: var(--sp-6); }
