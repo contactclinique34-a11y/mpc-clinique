@@ -651,7 +651,7 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
   .nav-links { display: none; }
   .hamburger { display: flex; }
   #hero { min-height: 100svh; }
-  .hero-video { object-fit: cover; object-position: center center; height: 100%; }
+  .hero-video { object-fit: contain; object-position: center center; }
   .hero-inner { padding: var(--sp-5) 0; }
   .hero-inner h1 { font-size: 34px; }
   .hero-inner > p { font-size: var(--size-base); }
@@ -681,7 +681,6 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
 @media (max-width: 480px) {
   :root { --size-2xl: 27px; }
   #hero { min-height: 85svh; }
-  .hero-video { object-position: 60% center; }
   .hero-inner h1 { font-size: 26px; }
   .hero-chips { gap: 8px; }
   .hero-chip { font-size: 12px; padding: 6px 12px; }
