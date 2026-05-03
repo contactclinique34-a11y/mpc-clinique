@@ -351,13 +351,14 @@ button { cursor: pointer; font-family: var(--font); }
 
 /* ============ DÉFINITION ============ */
 #definition { background: var(--cream); }
+.definition-inner { display: grid; grid-template-columns: 1.8fr 1fr; gap: var(--sp-6); align-items: start; }
 .definition-text-block { margin-bottom: var(--sp-6); }
 .definition-text-block h2 { font-size: var(--size-2xl); font-weight: 800; color: var(--dark-bg); margin-bottom: var(--sp-3); line-height: 1.15; }
 .definition-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); margin-bottom: var(--sp-2); }
 .definition-cols p { color: var(--text-mid); line-height: 1.85; }
 .definition-cols p strong { color: var(--text-dark); }
 .definition-text h2 { font-size: var(--size-2xl); font-weight: 800; color: var(--dark-bg); margin-bottom: var(--sp-3); line-height: 1.15; }
-.definition-text p { margin-bottom: var(--sp-2); color: var(--text-mid); line-height: 1.85; }
+.definition-text p { margin-bottom: var(--sp-2); color: var(--text-mid); line-height: 1.85; font-size: var(--size-md); }
 .definition-text p strong { color: var(--text-dark); }
 .definition-video { border-radius: 20px; overflow: hidden; background: var(--dark-bg); box-shadow: var(--shadow-lg); }
 .definition-video--full { max-width: 100%; }
