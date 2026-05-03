@@ -126,11 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (videoThumb) {
     videoThumb.addEventListener('click', () => {
       const videoId = videoThumb.dataset.videoId;
-      const wrapper = videoThumb.closest('.definition-video');
-      wrapper.innerHTML = `<iframe
+      videoThumb.innerHTML = `<iframe
         src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0"
         allow="autoplay; fullscreen" allowfullscreen
-        style="width:100%;height:400px;display:block;border:none;border-radius:20px;"></iframe>`;
+        style="width:100%;height:460px;display:block;border:none;"></iframe>`;
     });
   }
 
