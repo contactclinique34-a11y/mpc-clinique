@@ -392,13 +392,14 @@ button { cursor: pointer; font-family: var(--font); }
 .visagisme-text p { color: rgba(255,255,255,.78); margin-bottom: var(--sp-3); line-height: 1.8; }
 
 /* ============ PATCH TEST ============ */
-#patch-test { background: var(--light-bg); text-align: center; }
-.patch-inner { max-width: 700px; margin: 0 auto; }
-.patch-stat { font-size: 110px; font-weight: 800; color: var(--green-primary); line-height: 1; letter-spacing: -.04em; margin-bottom: var(--sp-2); opacity: .15; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; pointer-events: none; }
-.patch-content { position: relative; z-index: 1; }
+#patch-test { background: var(--light-bg); }
+.patch-layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-7); align-items: center; }
+.patch-content { text-align: left; }
 .patch-big { font-size: 96px; font-weight: 800; color: var(--green-primary); line-height: 1; letter-spacing: -.04em; margin-bottom: var(--sp-2); }
 #patch-test h2 { font-size: var(--size-xl); font-weight: 700; color: var(--dark-bg); margin-bottom: var(--sp-3); line-height: 1.3; }
-#patch-test p { color: var(--text-mid); margin: 0 auto var(--sp-5); max-width: 620px; line-height: 1.85; }
+#patch-test p { color: var(--text-mid); margin-bottom: var(--sp-5); line-height: 1.85; }
+.patch-img { border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-lg); }
+.patch-img img { width: 100%; height: 480px; object-fit: cover; display: block; }
 
 /* ============ TRAITEMENTS ============ */
 #traitements { background: var(--dark-bg); }
@@ -707,6 +708,8 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
   .temoignage-img img { height: 280px; }
 
   /* Patch test */
+  .patch-layout { grid-template-columns: 1fr; }
+  .patch-img img { height: 300px; }
   .patch-big { font-size: 64px; }
 
   /* Contact CTA */
