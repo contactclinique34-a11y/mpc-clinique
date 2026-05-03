@@ -650,9 +650,30 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
   :root { --sp-8: 64px; --sp-7: 48px; --size-2xl: 32px; }
   .nav-links { display: none; }
   .hamburger { display: flex; }
-  #hero { min-height: 100svh; }
-  .hero-video { object-fit: contain; object-position: center center; }
-  .hero-inner { padding: var(--sp-5) 0; }
+  #hero {
+    flex-direction: column;
+    min-height: unset;
+    align-items: stretch;
+    padding-top: 76px;
+  }
+  .hero-video {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  #hero::before, #hero::after { display: none; }
+  #hero .container {
+    background: var(--green-primary);
+    padding-top: var(--sp-4);
+    padding-bottom: var(--sp-5);
+  }
+  .hero-inner { padding: 0; max-width: 100%; }
+  .hero-inner h1 { font-size: 28px; }
+  .hero-inner > p { font-size: var(--size-base); margin-bottom: var(--sp-3); }
   .hero-inner h1 { font-size: 34px; }
   .hero-inner > p { font-size: var(--size-base); }
   .section-pad { padding: var(--sp-7) 0; }
