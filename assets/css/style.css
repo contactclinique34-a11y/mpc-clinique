@@ -665,6 +665,9 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
 @media (max-width: 768px) {
   :root { --sp-8: 56px; --sp-7: 44px; --size-2xl: 30px; }
 
+  /* Empêche les mots longs de déborder */
+  h1, h2, h3, h4, p, a, span, li { overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
+
   /* Header */
   .nav-links { display: none; }
   .hamburger { display: flex; }
