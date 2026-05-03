@@ -666,7 +666,10 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
   :root { --sp-8: 56px; --sp-7: 44px; --size-2xl: 30px; }
 
   /* Empêche les mots longs de déborder */
-  h1, h2, h3, h4, p, a, span, li { overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
+  p, a, span, li { overflow-wrap: break-word; word-break: break-word; }
+  /* Titres : pas de coupure automatique, juste réduction de taille */
+  h1, h2, h3, h4 { overflow-wrap: break-word; hyphens: none; }
+  .definition-text h2 { font-size: 22px; line-height: 1.3; }
 
   /* Header */
   .nav-links { display: none; }
