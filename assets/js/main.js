@@ -9,50 +9,55 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileNav = document.getElementById('mobileNav');
   if (hamburger && mobileNav) {
     hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
       mobileNav.classList.toggle('open');
     });
     mobileNav.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => mobileNav.classList.remove('open'));
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
     });
   }
 
   /* ---- Header scroll effect ---- */
   const header = document.getElementById('header');
   if (header) {
-    window.addEventListener('scroll', () => {
-      header.style.boxShadow = window.scrollY > 20
-        ? '0 2px 20px rgba(0,0,0,.15)'
-        : '0 2px 12px rgba(0,0,0,.08)';
-    });
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 
   /* ---- Compteurs animés ---- */
   const counters = document.querySelectorAll('.count-up');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const target = +el.dataset.target;
-      const suffix = el.dataset.suffix || '';
-      const duration = 1400;
-      const step = target / (duration / 16);
-      let current = 0;
-      const update = () => {
-        current = Math.min(current + step, target);
-        el.textContent = current >= 1000000
-          ? (current / 1000000).toFixed(1) + 'M'
-          : Math.floor(current).toLocaleString('fr-FR');
-        if (current < target) requestAnimationFrame(update);
-        else el.textContent = target >= 1000000
-          ? (target / 1000000).toFixed(1) + 'M'
-          : target.toLocaleString('fr-FR');
-        el.textContent += suffix;
-      };
-      requestAnimationFrame(update);
-      observer.unobserve(el);
-    });
-  }, { threshold: 0.4 });
-  counters.forEach(c => observer.observe(c));
+  if (counters.length) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = +el.dataset.target;
+        const suffix = el.dataset.suffix || '';
+        const duration = 1400;
+        const step = target / (duration / 16);
+        let current = 0;
+        const update = () => {
+          current = Math.min(current + step, target);
+          el.textContent = current >= 1000000
+            ? (current / 1000000).toFixed(1) + 'M'
+            : Math.floor(current).toLocaleString('fr-FR');
+          if (current < target) requestAnimationFrame(update);
+          else {
+            el.textContent = target >= 1000000
+              ? (target / 1000000).toFixed(1) + 'M'
+              : target.toLocaleString('fr-FR');
+            el.textContent += suffix;
+          }
+        };
+        requestAnimationFrame(update);
+        observer.unobserve(el);
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(c => observer.observe(c));
+  }
 
   /* ---- FAQ accordion ---- */
   document.querySelectorAll('.faq-question').forEach(btn => {
@@ -71,36 +76,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = track.querySelectorAll('.testimonial-card');
     let perView = window.innerWidth <= 768 ? 1 : window.innerWidth <= 900 ? 2 : 3;
     let current = 0;
-    const maxSlide = Math.ceil(cards.length / perView) - 1;
+    let maxSlide = Math.ceil(cards.length / perView) - 1;
 
-    // Create dots
-    if (dotsContainer) {
+    const buildDots = () => {
+      if (!dotsContainer) return;
+      dotsContainer.innerHTML = '';
+      maxSlide = Math.ceil(cards.length / perView) - 1;
       for (let i = 0; i <= maxSlide; i++) {
         const dot = document.createElement('button');
         dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', `Slide ${i + 1}`);
         dot.addEventListener('click', () => goTo(i));
         dotsContainer.appendChild(dot);
       }
-    }
+    };
 
-    function goTo(index) {
+    const goTo = (index) => {
       current = Math.max(0, Math.min(index, maxSlide));
-      const cardW = cards[0].offsetWidth + 24; // gap = 24px
+      const cardW = cards[0].offsetWidth + 24;
       track.style.transform = `translateX(-${current * cardW * perView}px)`;
       dotsContainer && dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
         d.classList.toggle('active', i === current);
       });
-    }
+    };
 
-    document.getElementById('prevBtn') && document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-    document.getElementById('nextBtn') && document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    buildDots();
 
+    document.getElementById('prevBtn')?.addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn')?.addEventListener('click', () => goTo(current + 1));
+
+    let resizeTimer;
     window.addEventListener('resize', () => {
-      const newPer = window.innerWidth <= 768 ? 1 : window.innerWidth <= 900 ? 2 : 3;
-      if (newPer !== perView) { perView = newPer; goTo(0); }
-    });
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const newPer = window.innerWidth <= 768 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+        if (newPer !== perView) { perView = newPer; buildDots(); goTo(0); }
+      }, 150);
+    }, { passive: true });
 
-    // Auto-play
     let autoPlay = setInterval(() => goTo(current < maxSlide ? current + 1 : 0), 5000);
     track.addEventListener('mouseenter', () => clearInterval(autoPlay));
     track.addEventListener('mouseleave', () => {
@@ -114,13 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
     videoThumb.addEventListener('click', () => {
       const videoId = videoThumb.dataset.videoId;
       const wrapper = videoThumb.closest('.definition-video');
-      wrapper.innerHTML = `
-        <iframe
-          src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0"
-          allow="autoplay; fullscreen"
-          allowfullscreen
-          style="width:100%;height:380px;display:block;border:none;border-radius:16px;"
-        ></iframe>`;
+      wrapper.innerHTML = `<iframe
+        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0"
+        allow="autoplay; fullscreen" allowfullscreen
+        style="width:100%;height:400px;display:block;border:none;border-radius:20px;"></iframe>`;
     });
   }
 
@@ -131,8 +141,38 @@ document.addEventListener('DOMContentLoaded', () => {
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1 });
     fadeEls.forEach(el => fadeObs.observe(el));
+  }
+
+  /* ---- Before/After slider ---- */
+  const slider = document.getElementById('baSlider');
+  if (slider) {
+    const before = document.getElementById('baBefore');
+    const handle = document.getElementById('baHandle');
+    let dragging = false;
+
+    const setPosition = (x) => {
+      const rect = slider.getBoundingClientRect();
+      let pct = Math.min(Math.max((x - rect.left) / rect.width, 0.02), 0.98);
+      before.style.width = (pct * 100) + '%';
+      handle.style.left = (pct * 100) + '%';
+    };
+
+    slider.addEventListener('mousedown', e => {
+      e.preventDefault();
+      dragging = true;
+      document.body.style.userSelect = 'none';
+      setPosition(e.clientX);
+    });
+    slider.addEventListener('touchstart', e => {
+      dragging = true;
+      setPosition(e.touches[0].clientX);
+    }, { passive: true });
+    window.addEventListener('mousemove', e => { if (dragging) setPosition(e.clientX); });
+    window.addEventListener('touchmove', e => { if (dragging) setPosition(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('mouseup', () => { dragging = false; document.body.style.userSelect = ''; });
+    window.addEventListener('touchend', () => dragging = false);
   }
 
   /* ---- Contact form validation ---- */

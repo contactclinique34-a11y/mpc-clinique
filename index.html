@@ -40,10 +40,13 @@
 
 <!-- ========== HERO ========== -->
 <section id="hero">
+  <video autoplay muted loop playsinline class="hero-video">
+    <source src="assets/videos/hero-bg.mp4" type="video/mp4">
+  </video>
   <div class="container">
     <div class="hero-inner">
-      <span class="tag">Experts diplômés — Montpellier</span>
-      <h1>MicroPigmentation Capillaire à Montpellier</h1>
+      <span class="hero-eyebrow">Experts diplômés — Montpellier</span>
+      <h1>MicroPigmentation<br><em>Capillaire</em> à Montpellier</h1>
       <p>
         <strong>Solution sur mesure</strong> qui s'adresse aux <strong>hommes</strong> et aux <strong>femmes</strong>
         pour une confiance et une assurance retrouvée. Techniques de <strong>densification capillaire</strong>,
@@ -79,6 +82,10 @@
       </div>
     </div>
   </div>
+  <div class="hero-scroll">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Découvrir
+  </div>
 </section>
 
 <!-- ========== STATS ========== -->
@@ -89,12 +96,10 @@
         <div class="stat-number"><span class="count-up" data-target="5" data-suffix="+">5+</span></div>
         <div class="stat-label">Années de résultats visibles</div>
       </div>
-      <div class="stat-divider"></div>
       <div class="stat-item">
         <div class="stat-number"><span class="count-up" data-target="8500000">8,5M</span></div>
         <div class="stat-label">Personnes souffrent de perte de cheveux en France</div>
       </div>
-      <div class="stat-divider"></div>
       <div class="stat-item">
         <div class="stat-number"><span class="count-up" data-target="3" data-suffix="+">3+</span></div>
         <div class="stat-label">Séances suffisent pour un résultat visible</div>
@@ -104,7 +109,7 @@
 </section>
 
 <!-- ========== CONFIANCE ========== -->
-<section id="confiance" class="section-pad">
+<section id="confiance" class="section-pad fade-in">
   <div class="container">
     <div class="confiance-grid">
       <div class="confiance-text">
@@ -122,63 +127,84 @@
         </p>
         <a href="contact.html" class="btn btn-dark">Commencer maintenant</a>
       </div>
-      <div class="confiance-img">
-        <img src="assets/images/ZvUf0UgXSD6Ahrn423Iic2B.png" alt="Résultat micropigmentation capillaire" loading="lazy"/>
+      <div class="before-after-slider" id="baSlider">
+        <div class="ba-after">
+          <img src="assets/images/apres.jpg" alt="Après micropigmentation"/>
+        </div>
+        <div class="ba-before" id="baBefore">
+          <img src="assets/images/avant.jpg" alt="Avant micropigmentation"/>
+        </div>
+        <div class="ba-handle" id="baHandle">
+          <div class="ba-handle-line"></div>
+          <div class="ba-handle-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l-6-6 6-6M15 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="ba-handle-line"></div>
+        </div>
+        <span class="ba-label ba-label--left">Avant</span>
+        <span class="ba-label ba-label--right">Après</span>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ========== AVANTAGES ========== -->
-<section id="avantages" class="section-pad">
+<section id="avantages" class="section-pad fade-in">
   <div class="container">
-    <div class="avantages-header">
-      <span class="tag" style="color:rgba(255,255,255,.6);letter-spacing:.12em;">Pourquoi nous choisir</span>
-      <h2>Les avantages de la tricopigmentation</h2>
-      <p>Une technique révolutionnaire qui offre des résultats bluffants, naturels et durables.</p>
+    <div class="section-header">
+      <span class="tag tag--light">Pourquoi nous choisir</span>
+      <h2 class="section-heading--light" style="color:#fff;font-size:var(--size-2xl);font-weight:800;">Les avantages de la tricopigmentation</h2>
+      <p class="section-sub--light" style="color:rgba(255,255,255,.68);max-width:540px;margin:0 auto;">Une technique révolutionnaire qui offre des résultats bluffants, naturels et durables.</p>
     </div>
     <div class="avantages-grid">
-      <div class="avantage-card">
+      <div class="avantage-card" data-num="01">
         <div class="avantage-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3>Résultat naturel garanti</h3>
         <p>Nos experts imitent parfaitement les follicules pour un rendu bluffant ultra réaliste.</p>
       </div>
-      <div class="avantage-card">
+      <div class="avantage-card" data-num="02">
         <div class="avantage-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3>Procédure rapide</h3>
         <p>Résultat visible en 3 à 4 séances seulement, espacées de 10 à 20 jours.</p>
       </div>
-      <div class="avantage-card">
+      <div class="avantage-card" data-num="03">
         <div class="avantage-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3>Sans cicatrices</h3>
         <p>Technique non invasive, sans chirurgie ni effets secondaires durables.</p>
       </div>
-      <div class="avantage-card">
+      <div class="avantage-card" data-num="04">
         <div class="avantage-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3>Effet durable</h3>
         <p>Le résultat tient 4 à 6 ans avec un entretien minimal. Plus besoin de rituels quotidiens.</p>
       </div>
-      <div class="avantage-card">
+      <div class="avantage-card" data-num="05">
         <div class="avantage-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3>Convient à tous</h3>
         <p>De l'alopécie légère à totale, pelades, cicatrices de greffe — homme ou femme.</p>
       </div>
+      <div class="avantage-card" data-num="06">
+        <div class="avantage-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Tarif transparent</h3>
+        <p>Devis personnalisé dès la consultation gratuite. Séances supplémentaires offertes si nécessaire.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ========== DÉFINITION / VIDÉO ========== -->
-<section id="definition" class="section-pad">
+<section id="definition" class="section-pad fade-in">
   <div class="container">
     <div class="definition-inner">
       <div class="definition-text">
@@ -201,7 +227,7 @@
           rapide, sans douleur et offre un rendu ultra réaliste — comme <strong>une coupe fraîchement rasée</strong>,
           parfaitement nette — ou en densification, un <strong>effet de matière pour une chevelure plus fournie</strong>.
         </p>
-        <a href="contact.html" class="btn btn-dark" style="margin-top:12px;">Consultation gratuite</a>
+        <a href="contact.html" class="btn btn-dark" style="margin-top:8px;">Consultation gratuite</a>
       </div>
       <div class="definition-video">
         <div class="video-thumbnail" data-video-id="U-nve7SckyA">
@@ -216,59 +242,65 @@
 </section>
 
 <!-- ========== VISAGISME ========== -->
-<section id="visagisme" class="section-pad">
+<section id="visagisme" class="section-pad fade-in">
   <div class="container">
     <div class="visagisme-inner">
       <div class="visagisme-img">
         <img src="assets/images/newhair.webp" alt="Approche visagisme MPC Clinique" loading="lazy"/>
       </div>
       <div class="visagisme-text">
-        <span class="tag" style="color:rgba(255,255,255,.6);">Approche personnalisée</span>
+        <span class="tag tag--light">Approche personnalisée</span>
         <h2>Visagisme diplômé d'état</h2>
         <p>
-          Grâce à une approche de <strong>visagisme</strong> diplômée d'état, nos experts MPC Clinique
-          vous guideront afin d'avoir un <strong>effet ultra naturel</strong> en fonction des asymétries
+          Grâce à une approche de <strong style="color:#fff;">visagisme</strong> diplômée d'état, nos experts MPC Clinique
+          vous guideront afin d'avoir un <strong style="color:#fff;">effet ultra naturel</strong> en fonction des asymétries
           naturelles du visage et de son expression.
         </p>
         <p>
-          Chaque traitement est entièrement <strong>personnalisé</strong> : nous adaptons la ligne frontale,
+          Chaque traitement est entièrement <strong style="color:#fff;">personnalisé</strong> : nous adaptons la ligne frontale,
           la densité et les teintes à votre morphologie, votre carnation et vos envies pour un résultat
           qui vous ressemble parfaitement.
         </p>
-        <a href="avant-apres.html" class="btn btn-outline" style="margin-top:12px;">Voir les résultats</a>
+        <a href="avant-apres.html" class="btn btn-outline" style="margin-top:8px;">Voir les résultats</a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ========== PATCH TEST ========== -->
-<section id="patch-test" class="section-pad">
+<section id="patch-test" class="section-pad fade-in">
   <div class="container">
-    <div class="patch-number">90%</div>
-    <h2>Des patients rassurés par le patch test</h2>
-    <p>
-      Le <strong>patch test</strong> est un moment important lors du <strong>premier rendez-vous</strong>.
-      Il permet au praticien de choisir différentes teintes adéquates en fonction de votre carnation et
-      d'évaluer votre cuir chevelu. C'est aussi l'occasion d'être <strong>rassuré</strong> sur les sensations
-      et de répondre à vos éventuelles craintes. Cette pré-séance est fortement préconisée.
-      Le tarif de cette <strong>pré-séance (80 €)</strong> sera ensuite déduit du traitement complet.
-    </p>
-    <a href="contact.html" class="btn btn-dark">Prendre rendez-vous</a>
+    <div class="patch-inner">
+      <div class="patch-content">
+        <div class="patch-big">90%</div>
+        <h2>Des patients rassurés par le patch test</h2>
+        <p>
+          Le <strong>patch test</strong> est un moment important lors du <strong>premier rendez-vous</strong>.
+          Il permet au praticien de choisir différentes teintes adéquates en fonction de votre carnation et
+          d'évaluer votre cuir chevelu. C'est aussi l'occasion d'être <strong>rassuré</strong> sur les sensations
+          et de répondre à vos éventuelles craintes. Cette pré-séance est fortement préconisée.
+          Le tarif de cette <strong>pré-séance (80 €)</strong> sera ensuite déduit du traitement complet.
+        </p>
+        <a href="contact.html" class="btn btn-dark">Prendre rendez-vous</a>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ========== TRAITEMENTS ========== -->
-<section id="traitements" class="section-pad">
+<section id="traitements" class="section-pad fade-in">
   <div class="container">
-    <div class="traitements-header">
-      <span class="tag" style="color:rgba(255,255,255,.6);">Nos prestations</span>
-      <h2>Applications et traitements</h2>
-      <p>Nous couvrons l'ensemble des situations de perte de cheveux avec une solution sur mesure.</p>
+    <div class="section-header">
+      <span class="tag tag--light">Nos prestations</span>
+      <h2 style="color:#fff;font-size:var(--size-2xl);font-weight:800;margin-bottom:var(--sp-2);">Applications et traitements</h2>
+      <p style="color:rgba(255,255,255,.65);max-width:540px;margin:0 auto;">Nous couvrons l'ensemble des situations de perte de cheveux avec une solution sur mesure.</p>
     </div>
     <div class="traitements-grid">
 
       <div class="traitement-card">
-        <img src="assets/images/hair.webp" alt="Cheveux clairsemés femme et homme" loading="lazy"/>
+        <div class="traitement-card-img">
+          <img src="assets/images/hair.webp" alt="Cheveux clairsemés femme et homme" loading="lazy"/>
+        </div>
         <div class="traitement-card-body">
           <h3>Cheveux clairsemés Femme et Homme</h3>
           <p>Crée l'apparence de cheveux plus volumineux et sans manque de densité.</p>
@@ -276,7 +308,9 @@
       </div>
 
       <div class="traitement-card">
-        <img src="assets/images/girlhair.webp" alt="Raie médiane et implantation" loading="lazy"/>
+        <div class="traitement-card-img">
+          <img src="assets/images/girlhair.webp" alt="Raie médiane et implantation" loading="lazy"/>
+        </div>
         <div class="traitement-card-body">
           <h3>Raie médiane et implantation</h3>
           <p>Restaure une ligne de cheveux naturelle et plus jeune.</p>
@@ -284,7 +318,9 @@
       </div>
 
       <div class="traitement-card">
-        <img src="assets/images/womenhair.webp" alt="Pelade" loading="lazy"/>
+        <div class="traitement-card-img">
+          <img src="assets/images/womenhair.webp" alt="Pelade" loading="lazy"/>
+        </div>
         <div class="traitement-card-body">
           <h3>Pelade</h3>
           <p>Camoufle la perte de cheveux partielle ou complète due à des affections telles que l'alopécia areata.</p>
@@ -292,7 +328,9 @@
       </div>
 
       <div class="traitement-card">
-        <img src="assets/images/hairs.webp" alt="Cicatrices de greffe et du cuir chevelu" loading="lazy"/>
+        <div class="traitement-card-img">
+          <img src="assets/images/hairs.webp" alt="Cicatrices de greffe et du cuir chevelu" loading="lazy"/>
+        </div>
         <div class="traitement-card-body">
           <h3>Cicatrices de greffe et du cuir chevelu</h3>
           <p>Dissimule les cicatrices FUT/FUE en mélangeant la micropigmentation avec les cheveux environnants.</p>
@@ -300,7 +338,9 @@
       </div>
 
       <div class="traitement-card">
-        <img src="assets/images/girl.webp" alt="Cheveux très fins" loading="lazy"/>
+        <div class="traitement-card-img">
+          <img src="assets/images/girl.webp" alt="Cheveux très fins" loading="lazy"/>
+        </div>
         <div class="traitement-card-body">
           <h3>Cheveux très fins</h3>
           <p>Ajoute de la densité et réduit le contraste entre le cuir chevelu et les cheveux.</p>
@@ -308,7 +348,9 @@
       </div>
 
       <div class="traitement-card">
-        <img src="assets/images/bald2.webp" alt="Perte importante, calvitie" loading="lazy"/>
+        <div class="traitement-card-img">
+          <img src="assets/images/bald2.webp" alt="Perte importante, calvitie" loading="lazy"/>
+        </div>
         <div class="traitement-card-body">
           <h3>Perte importante, calvitie</h3>
           <p>Recrée efficacement un effet coupe de cheveux très courte pour un look soigné.</p>
@@ -320,12 +362,12 @@
 </section>
 
 <!-- ========== TÉMOIGNAGES ========== -->
-<section id="temoignages" class="section-pad">
+<section id="temoignages" class="section-pad fade-in">
   <div class="container">
-    <div class="temoignages-header">
+    <div class="section-header">
       <span class="tag">Avis clients</span>
-      <h2>Ce que disent nos patients</h2>
-      <p>Des résultats qui parlent d'eux-mêmes, validés par nos patients satisfaits.</p>
+      <h2 style="color:var(--dark-bg);font-size:var(--size-2xl);font-weight:800;margin-bottom:var(--sp-2);">Ce que disent nos patients</h2>
+      <p style="color:var(--text-mid);max-width:520px;margin:0 auto;">Des résultats qui parlent d'eux-mêmes, validés par nos patients satisfaits.</p>
     </div>
     <div class="testimonial-carousel">
       <div class="testimonial-track">
@@ -405,12 +447,12 @@
 </section>
 
 <!-- ========== FAQ ========== -->
-<section id="faq" class="section-pad">
+<section id="faq" class="section-pad fade-in">
   <div class="container">
-    <div class="faq-header">
-      <span class="tag" style="color:rgba(255,255,255,.6);">Questions fréquentes</span>
-      <h2>Tout ce que vous devez savoir</h2>
-      <p>Retrouvez les réponses aux questions les plus posées sur la micropigmentation capillaire.</p>
+    <div class="section-header">
+      <span class="tag tag--light">Questions fréquentes</span>
+      <h2 style="color:#fff;font-size:var(--size-2xl);font-weight:800;margin-bottom:var(--sp-2);">Tout ce que vous devez savoir</h2>
+      <p style="color:rgba(255,255,255,.65);max-width:520px;margin:0 auto;">Retrouvez les réponses aux questions les plus posées sur la micropigmentation capillaire.</p>
     </div>
     <div class="faq-list">
 
@@ -574,63 +616,69 @@
   </div>
 </section>
 
-<!-- ========== BLOG APERÇU ========== -->
-<section id="blog-apercu" style="background:#FAFAFA;padding:100px 0;">
+<!-- ========== BLOG ========== -->
+<section id="blog-apercu" class="section-pad fade-in">
   <div class="container">
-    <div style="text-align:center;margin-bottom:56px;">
+    <div class="blog-header">
       <span class="tag">Notre blog</span>
-      <h2 style="font-size:40px;font-weight:700;color:var(--dark-bg);margin-bottom:14px;">Conseils & informations</h2>
-      <p style="color:var(--text-dark);max-width:540px;margin:0 auto;">Des articles rédigés par nos experts pour tout savoir sur la micropigmentation capillaire.</p>
+      <h2>Conseils & informations</h2>
+      <p>Des articles rédigés par nos experts pour tout savoir sur la micropigmentation capillaire.</p>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;">
+    <div class="blog-grid">
 
-      <a href="blog/micropigmentation-vs-greffe.html" style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.07);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s;text-decoration:none;color:inherit;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 10px 30px rgba(0,0,0,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.07)'">
-        <div style="overflow:hidden;"><img src="assets/images/bald2.webp" alt="Micropigmentation vs greffe" style="width:100%;height:200px;object-fit:cover;transition:transform .4s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform=''"/></div>
-        <div style="padding:22px;flex:1;display:flex;flex-direction:column;">
-          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green-accent);margin-bottom:10px;">Comparatif</span>
-          <h3 style="font-size:16px;font-weight:700;color:var(--dark-bg);margin-bottom:10px;line-height:1.4;">Micropigmentation vs greffe de cheveux : quelle solution choisir ?</h3>
-          <p style="font-size:13px;color:#777;flex:1;margin-bottom:16px;">Comparatif complet pour vous aider à faire le bon choix selon votre situation et votre budget.</p>
-          <span style="font-size:14px;font-weight:700;color:var(--green-accent);display:flex;align-items:center;gap:6px;">Lire l'article →</span>
+      <a href="blog/micropigmentation-vs-greffe.html" class="blog-card">
+        <div class="blog-card-img">
+          <img src="assets/images/bald2.webp" alt="Micropigmentation vs greffe" loading="lazy"/>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category">Comparatif</span>
+          <h3>Micropigmentation vs greffe de cheveux : quelle solution choisir ?</h3>
+          <p class="blog-excerpt">Comparatif complet pour vous aider à faire le bon choix selon votre situation et votre budget.</p>
+          <span class="blog-link">Lire l'article →</span>
         </div>
       </a>
 
-      <a href="blog/preparer-premiere-seance.html" style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.07);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s;text-decoration:none;color:inherit;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 10px 30px rgba(0,0,0,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.07)'">
-        <div style="overflow:hidden;"><img src="assets/images/men-head.webp" alt="Préparer sa première séance" style="width:100%;height:200px;object-fit:cover;transition:transform .4s;"/></div>
-        <div style="padding:22px;flex:1;display:flex;flex-direction:column;">
-          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green-accent);margin-bottom:10px;">Conseils</span>
-          <h3 style="font-size:16px;font-weight:700;color:var(--dark-bg);margin-bottom:10px;line-height:1.4;">Comment bien se préparer à sa première séance ?</h3>
-          <p style="font-size:13px;color:#777;flex:1;margin-bottom:16px;">Quelques gestes simples avant votre rendez-vous pour optimiser votre résultat final.</p>
-          <span style="font-size:14px;font-weight:700;color:var(--green-accent);display:flex;align-items:center;gap:6px;">Lire l'article →</span>
+      <a href="blog/preparer-premiere-seance.html" class="blog-card">
+        <div class="blog-card-img">
+          <img src="assets/images/men-head.webp" alt="Préparer sa première séance" loading="lazy"/>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category">Conseils</span>
+          <h3>Comment bien se préparer à sa première séance ?</h3>
+          <p class="blog-excerpt">Quelques gestes simples avant votre rendez-vous pour optimiser votre résultat final.</p>
+          <span class="blog-link">Lire l'article →</span>
         </div>
       </a>
 
-      <a href="blog/resultats-combien-de-temps.html" style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.07);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s;text-decoration:none;color:inherit;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 10px 30px rgba(0,0,0,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.07)'">
-        <div style="overflow:hidden;"><img src="assets/images/coolagemen.webp" alt="Durée résultats" style="width:100%;height:200px;object-fit:cover;transition:transform .4s;"/></div>
-        <div style="padding:22px;flex:1;display:flex;flex-direction:column;">
-          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green-accent);margin-bottom:10px;">FAQ</span>
-          <h3 style="font-size:16px;font-weight:700;color:var(--dark-bg);margin-bottom:10px;line-height:1.4;">Combien de temps durent les résultats ?</h3>
-          <p style="font-size:13px;color:#777;flex:1;margin-bottom:16px;">La micropigmentation est-elle permanente ? Tout ce qu'il faut savoir sur la durée de vie.</p>
-          <span style="font-size:14px;font-weight:700;color:var(--green-accent);display:flex;align-items:center;gap:6px;">Lire l'article →</span>
+      <a href="blog/resultats-combien-de-temps.html" class="blog-card">
+        <div class="blog-card-img">
+          <img src="assets/images/coolagemen.webp" alt="Durée résultats" loading="lazy"/>
+        </div>
+        <div class="blog-card-body">
+          <span class="blog-category">FAQ</span>
+          <h3>Combien de temps durent les résultats ?</h3>
+          <p class="blog-excerpt">La micropigmentation est-elle permanente ? Tout ce qu'il faut savoir sur la durée de vie.</p>
+          <span class="blog-link">Lire l'article →</span>
         </div>
       </a>
 
     </div>
-    <div style="text-align:center;margin-top:44px;">
+    <div class="blog-footer">
       <a href="blog.html" class="btn btn-dark">Voir tous les articles</a>
     </div>
   </div>
 </section>
 
 <!-- ========== CONTACT CTA ========== -->
-<section id="contact-cta" class="section-pad">
+<section id="contact-cta" class="section-pad fade-in">
   <div class="container">
     <div class="contact-cta-inner">
-      <span class="tag" style="color:rgba(255,255,255,.6);">Prendre rendez-vous</span>
+      <span class="tag tag--light">Prendre rendez-vous</span>
       <h2>Prêt à retrouver confiance en vous ?</h2>
       <p>Contactez-nous dès maintenant pour une consultation gratuite et un devis personnalisé. Partagez vos photos via WhatsApp ou notre formulaire de contact.</p>
       <div class="contact-cta-btns">
         <a href="https://wa.me/33756885257" target="_blank" rel="noopener" class="btn btn-whatsapp">
-          <img src="assets/images/whatsapp.webp" alt="WhatsApp" style="width:22px;"/>
+          <img src="assets/images/whatsapp.webp" alt="WhatsApp" style="width:20px;"/>
           WhatsApp
         </a>
         <a href="contact.html" class="btn btn-outline">Notre formulaire de contact</a>
@@ -698,8 +746,8 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px;">
-      <span style="color:rgba(255,255,255,.4);">© 2025 MPC Clinique. Tous droits réservés.</span>
+    <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <span>© 2025 MPC Clinique. Tous droits réservés.</span>
       <div class="footer-bottom-links">
         <a href="mentions-legales.html">Mentions légales</a>
         <a href="politique-confidentialite.html">Confidentialité</a>
