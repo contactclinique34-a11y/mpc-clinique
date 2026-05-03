@@ -703,6 +703,8 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
   :root { --size-2xl: 27px; }
   #hero { min-height: 85svh; }
   .hero-inner h1 { font-size: 26px; }
+  .hero-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .hero-btns .btn { justify-content: center; padding: 12px 10px; font-size: 11px; }
   .hero-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .hero-chip { font-size: 12px; padding: 7px 12px; justify-content: center; }
   .avantages-grid { grid-template-columns: 1fr; }
