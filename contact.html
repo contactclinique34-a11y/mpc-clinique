@@ -132,6 +132,7 @@
             <label for="traitement">Type de traitement souhaité</label>
             <select id="traitement" name="traitement">
               <option value="">-- Sélectionnez un traitement --</option>
+              <option value="patch-test">Patch test (pré-séance 80€)</option>
               <option value="densification">Densification capillaire</option>
               <option value="crane-rase">Effet crâne rasé</option>
               <option value="ligne-frontale">Abaissement ligne frontale</option>
@@ -238,5 +239,13 @@
 </a>
 
 <script src="assets/js/main.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const traitement = params.get('traitement');
+  if (traitement) {
+    const select = document.getElementById('traitement');
+    if (select) select.value = traitement;
+  }
+</script>
 </body>
 </html>
