@@ -680,7 +680,14 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
 
   /* Hero : vidéo 16/9 + texte dessous */
   #hero { flex-direction: column; min-height: unset; align-items: stretch; padding-top: 76px; }
-  .hero-video { position: relative !important; inset: auto !important; width: 100% !important; height: auto !important; aspect-ratio: 16/9; object-fit: cover; flex-shrink: 0; }
+  .hero-video {
+    position: static !important;
+    top: unset !important; left: unset !important;
+    right: unset !important; bottom: unset !important;
+    width: 100% !important; height: auto !important;
+    aspect-ratio: 16/9; object-fit: cover;
+    z-index: auto !important; flex-shrink: 0;
+  }
   #hero::before, #hero::after { display: none; }
   #hero .container { background: var(--green-primary); padding-top: var(--sp-4); padding-bottom: var(--sp-5); }
   .hero-inner { padding: 0; max-width: 100%; }

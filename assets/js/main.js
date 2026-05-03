@@ -144,6 +144,24 @@ document.addEventListener('DOMContentLoaded', () => {
     fadeEls.forEach(el => fadeObs.observe(el));
   }
 
+  /* ---- Autoplay vidéos sur mobile ---- */
+  document.querySelectorAll('video[autoplay]').forEach(video => {
+    video.muted = true;
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+    const tryPlay = () => {
+      const p = video.play();
+      if (p !== undefined) p.catch(() => {});
+    };
+    tryPlay();
+    if (video.paused) {
+      const obs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) { tryPlay(); obs.disconnect(); }
+      }, { threshold: 0.1 });
+      obs.observe(video);
+    }
+  });
+
   /* ---- Before/After slider ---- */
   const slider = document.getElementById('baSlider');
   if (slider) {
