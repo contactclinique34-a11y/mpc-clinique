@@ -75,13 +75,13 @@
 
     /* ── VIDEO ── */
     .video-section { background: #0D0D0D; padding: 48px 24px; }
-    .video-wrap { max-width: 360px; margin: 0 auto; border-radius: 24px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.6); }
-    .video-wrap video { width: 100%; display: block; aspect-ratio: 9/16; object-fit: cover; }
-    .video-label { text-align: center; color: rgba(255,255,255,.5); font-size: 13px; margin-top: 16px; letter-spacing: .04em; }
-
-
-
-
+    .video-trio { display: flex; gap: 16px; max-width: 900px; margin: 0 auto; align-items: stretch; }
+    .video-trio-side { flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+    .video-trio-side img { width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 20px; box-shadow: 0 16px 48px rgba(0,0,0,.5); }
+    .trio-badge { text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 7px 0; border-radius: 8px; }
+    .trio-badge.avant { background: rgba(255,255,255,.1); color: rgba(255,255,255,.6); }
+    .trio-badge.apres { background: var(--green); color: #fff; }
+    .video-trio-center { flex: 1.1; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 
 
     /* ── FORM FLOTTANT (ancre) ── */
@@ -360,6 +360,10 @@
       .objections-grid { grid-template-columns: 1fr; }
       .offer-box { flex-direction: column; text-align: center; }
     }
+    @media (max-width: 600px) {
+      .video-trio { flex-direction: column; max-width: 320px; }
+      .video-trio-side img { aspect-ratio: 4/3; }
+    }
     @media (max-width: 480px) {
       .results-grid { grid-template-columns: 1fr; }
       .opt-grid { grid-template-columns: 1fr; }
@@ -396,11 +400,23 @@
 </section>
 
 <!-- VIDÉO -->
-<div class="video-section"><div class="video-wrap">
-  <video autoplay muted loop playsinline poster="assets/images/poster.webp">
-    <source src="assets/videos/landing.mp4" type="video/mp4"/>
-  </video>
-  </div><p class="video-label">Résultat réel — Patient MPC Clinique Montpellier</p>
+<div class="video-section">
+  <div class="video-trio">
+    <div class="video-trio-side">
+      <div class="trio-badge avant">Avant</div>
+      <img src="assets/images/lp-avant.jpg" alt="Avant micropigmentation capillaire"/>
+    </div>
+    <div class="video-trio-center">
+      <div class="trio-badge apres" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);">Résultat en vidéo</div>
+      <video autoplay muted loop playsinline style="width:100%;border-radius:20px;box-shadow:0 16px 48px rgba(0,0,0,.5);aspect-ratio:9/16;object-fit:cover;">
+        <source src="assets/videos/landing.mp4" type="video/mp4"/>
+      </video>
+    </div>
+    <div class="video-trio-side">
+      <div class="trio-badge apres">Après ✓</div>
+      <img src="assets/images/lp-apres.jpg" alt="Après micropigmentation capillaire"/>
+    </div>
+  </div>
 </div>
 
 <!-- AVANT/APRÈS -->
