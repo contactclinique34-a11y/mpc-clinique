@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Consultation gratuite — MPC Clinique Montpellier</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link rel="icon" href="assets/images/cropped-favicon-32x32-1-32x32.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #009A3A;
+      --dark: #0D0D0D;
+      --gray: #F5F5F5;
+      --border: #E0E0E0;
+      --text: #333;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .lp-header {
+      text-align: center;
+      padding: 24px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .lp-header img { height: 44px; }
+
+    /* HERO */
+    .lp-hero {
+      background: var(--dark);
+      color: #fff;
+      text-align: center;
+      padding: 48px 20px 40px;
+    }
+    .lp-hero h1 {
+      font-size: clamp(26px, 5vw, 40px);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .lp-hero h1 span { color: var(--green); }
+    .lp-hero p {
+      font-size: 17px;
+      color: rgba(255,255,255,.75);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+    .trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .trust-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .trust-badge strong {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--green);
+    }
+    .trust-badge span {
+      font-size: 12px;
+      color: rgba(255,255,255,.6);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    /* FORM WRAPPER */
+    .lp-form-wrap {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+    }
+    .progress-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #999;
+      transition: all .3s;
+    }
+    .progress-dot.active {
+      border-color: var(--green);
+      background: var(--green);
+      color: #fff;
+    }
+    .progress-dot.done {
+      border-color: var(--green);
+      background: var(--green);
+      color: #fff;
+    }
+    .progress-label {
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .progress-label.active { color: var(--green); }
+    .progress-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      margin-bottom: 18px;
+      transition: background .3s;
+    }
+    .progress-line.done { background: var(--green); }
+
+    /* STEPS */
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .step-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .step-subtitle {
+      font-size: 15px;
+      color: #666;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    /* OPTIONS (radio style) */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .option-card {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 14px;
+      cursor: pointer;
+      transition: all .2s;
+      text-align: center;
+      user-select: none;
+    }
+    .option-card:hover { border-color: var(--green); background: #f0fff6; }
+    .option-card.selected { border-color: var(--green); background: #f0fff6; }
+    .option-card input { display: none; }
+    .option-emoji { font-size: 28px; margin-bottom: 8px; }
+    .option-label { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .option-desc { font-size: 12px; color: #888; margin-top: 4px; }
+
+    /* SINGLE COL OPTIONS */
+    .options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .option-row {
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      user-select: none;
+    }
+    .option-row:hover { border-color: var(--green); background: #f0fff6; }
+    .option-row.selected { border-color: var(--green); background: #f0fff6; }
+    .option-row input { display: none; }
+    .option-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .option-row.selected .option-check {
+      border-color: var(--green);
+      background: var(--green);
+    }
+    .option-row.selected .option-check::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+    }
+    .option-row-text strong { display: block; font-size: 15px; font-weight: 700; color: var(--dark); }
+    .option-row-text span { font-size: 13px; color: #888; }
+
+    /* INPUTS */
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 16px;
+      color: var(--dark);
+      outline: none;
+      transition: border-color .2s;
+      font-family: inherit;
+    }
+    .form-group input:focus { border-color: var(--green); }
+    .form-group input.error { border-color: #e74c3c; }
+    .form-group .hint {
+      font-size: 12px;
+      color: #999;
+      margin-top: 6px;
+    }
+
+    /* BUTTONS */
+    .btn-next {
+      width: 100%;
+      padding: 17px;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: inherit;
+    }
+    .btn-next:hover { background: #007a2e; transform: translateY(-1px); }
+    .btn-next:active { transform: translateY(0); }
+
+    .btn-back {
+      background: none;
+      border: none;
+      color: #999;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+    }
+    .btn-back:hover { color: var(--dark); }
+
+    /* REASSURANCE */
+    .reassurance {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #888;
+      margin-top: 16px;
+      justify-content: center;
+    }
+    .reassurance svg { width: 16px; height: 16px; color: var(--green); flex-shrink: 0; }
+
+    /* SUCCESS */
+    #stepSuccess {
+      text-align: center;
+      padding: 20px 0;
+    }
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      background: #f0fff6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .success-icon svg { width: 36px; height: 36px; color: var(--green); }
+    #stepSuccess h2 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+    #stepSuccess p {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .btn-whatsapp-big {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 18px;
+      background: #25D366;
+      color: #fff;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .btn-whatsapp-big:hover { background: #1da851; }
+    .btn-whatsapp-big img { width: 26px; }
+
+    /* FOOTER */
+    .lp-footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #bbb;
+      border-top: 1px solid var(--border);
+    }
+    .lp-footer a { color: #bbb; }
+
+    @media (max-width: 480px) {
+      .options-grid { grid-template-columns: 1fr; }
+      .trust-badges { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="lp-header">
+  <img src="assets/images/logo.png" alt="MPC Clinique"/>
+</header>
+
+<div class="lp-hero">
+  <h1>Retrouvez une image<br/><span>qui vous ressemble.</span></h1>
+  <p>Micropigmentation capillaire à Montpellier. Sans chirurgie, sans cicatrice. Résultat visible dès la 1ère séance.</p>
+  <div class="trust-badges">
+    <div class="trust-badge">
+      <strong>+500</strong>
+      <span>patients traités</span>
+    </div>
+    <div class="trust-badge">
+      <strong>4,9★</strong>
+      <span>note Google</span>
+    </div>
+    <div class="trust-badge">
+      <strong>100%</strong>
+      <span>consultation gratuite</span>
+    </div>
+  </div>
+</div>
+
+<div class="lp-form-wrap">
+
+  <!-- PROGRESS -->
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-step">
+      <div class="progress-dot active" id="dot1">1</div>
+      <div class="progress-label active" id="label1">Votre projet</div>
+    </div>
+    <div class="progress-line" id="line1"></div>
+    <div class="progress-step">
+      <div class="progress-dot" id="dot2">2</div>
+      <div class="progress-label" id="label2">Votre situation</div>
+    </div>
+    <div class="progress-line" id="line2"></div>
+    <div class="progress-step">
+      <div class="progress-dot" id="dot3">3</div>
+      <div class="progress-label" id="label3">Vos coordonnées</div>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 1 — Projet -->
+  <div class="step active" id="step1">
+    <div class="step-title">Quel est votre projet ?</div>
+    <div class="step-subtitle">Sélectionnez la situation qui vous correspond le mieux.</div>
+
+    <div class="options-grid">
+      <label class="option-card" data-value="crane-rase">
+        <input type="radio" name="projet" value="crane-rase"/>
+        <div class="option-emoji">🔵</div>
+        <div class="option-label">Effet crâne rasé</div>
+        <div class="option-desc">Calvitie totale ou avancée</div>
+      </label>
+      <label class="option-card" data-value="densification">
+        <input type="radio" name="projet" value="densification"/>
+        <div class="option-emoji">💆</div>
+        <div class="option-label">Densification</div>
+        <div class="option-desc">Cheveux clairsemés, zone dégarnie</div>
+      </label>
+      <label class="option-card" data-value="femme">
+        <input type="radio" name="projet" value="femme"/>
+        <div class="option-emoji">👩</div>
+        <div class="option-label">Femme / Alopécie</div>
+        <div class="option-desc">Pelade, cheveux fins, ligne frontale</div>
+      </label>
+      <label class="option-card" data-value="cicatrice">
+        <input type="radio" name="projet" value="cicatrice"/>
+        <div class="option-emoji">🔹</div>
+        <div class="option-label">Cicatrice de greffe</div>
+        <div class="option-desc">FUT, FUE, zone donneuse</div>
+      </label>
+    </div>
+
+    <button class="btn-next" onclick="nextStep(1)">
+      Continuer
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="reassurance">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Vos informations restent confidentielles
+    </div>
+  </div>
+
+  <!-- ÉTAPE 2 — Situation -->
+  <div class="step" id="step2">
+    <div class="step-title">Quelques questions rapides</div>
+    <div class="step-subtitle">Pour personnaliser votre consultation gratuite.</div>
+
+    <div class="options-list">
+      <div style="font-size:14px;font-weight:700;color:var(--dark);margin-bottom:8px;">Quand souhaitez-vous commencer ?</div>
+      <label class="option-row" data-group="timing" data-value="urgent">
+        <input type="radio" name="timing" value="urgent"/>
+        <div class="option-check"></div>
+        <div class="option-row-text">
+          <strong>Le plus tôt possible</strong>
+          <span>Je suis prêt(e) à me lancer</span>
+        </div>
+      </label>
+      <label class="option-row" data-group="timing" data-value="1-3mois">
+        <input type="radio" name="timing" value="1-3mois"/>
+        <div class="option-check"></div>
+        <div class="option-row-text">
+          <strong>Dans 1 à 3 mois</strong>
+          <span>Je me renseigne activement</span>
+        </div>
+      </label>
+      <label class="option-row" data-group="timing" data-value="reflexion">
+        <input type="radio" name="timing" value="reflexion"/>
+        <div class="option-check"></div>
+        <div class="option-row-text">
+          <strong>Encore en réflexion</strong>
+          <span>Je veux d'abord en savoir plus</span>
+        </div>
+      </label>
+    </div>
+
+    <div class="options-list" style="margin-top:8px;">
+      <div style="font-size:14px;font-weight:700;color:var(--dark);margin-bottom:8px;">Avez-vous déjà consulté un praticien ?</div>
+      <label class="option-row" data-group="consulte" data-value="non">
+        <input type="radio" name="consulte" value="non"/>
+        <div class="option-check"></div>
+        <div class="option-row-text">
+          <strong>Non, c'est ma première démarche</strong>
+        </div>
+      </label>
+      <label class="option-row" data-group="consulte" data-value="oui">
+        <input type="radio" name="consulte" value="oui"/>
+        <div class="option-check"></div>
+        <div class="option-row-text">
+          <strong>Oui, j'ai déjà eu une consultation</strong>
+        </div>
+      </label>
+    </div>
+
+    <button class="btn-next" onclick="nextStep(2)">
+      Continuer
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="btn-back" onclick="prevStep(2)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"><path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Retour
+    </button>
+  </div>
+
+  <!-- ÉTAPE 3 — Coordonnées -->
+  <div class="step" id="step3">
+    <div class="step-title">Vos coordonnées</div>
+    <div class="step-subtitle">Un expert MPC Clinique vous contacte sous 24h pour votre consultation gratuite.</div>
+
+    <div class="form-group">
+      <label for="prenom">Prénom *</label>
+      <input type="text" id="prenom" placeholder="Votre prénom" autocomplete="given-name"/>
+    </div>
+    <div class="form-group">
+      <label for="tel">Téléphone *</label>
+      <input type="tel" id="tel" placeholder="06 XX XX XX XX" autocomplete="tel"/>
+      <div class="hint">Nous vous appellerons pour fixer votre rendez-vous gratuit</div>
+    </div>
+    <div class="form-group">
+      <label for="mail">Email *</label>
+      <input type="email" id="mail" placeholder="votre@email.com" autocomplete="email"/>
+    </div>
+
+    <button class="btn-next" onclick="submitForm()">
+      Je veux ma consultation gratuite 🎯
+    </button>
+    <div class="reassurance" style="margin-top:12px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Sans engagement — Réponse sous 24h
+    </div>
+    <button class="btn-back" onclick="prevStep(3)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"><path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Retour
+    </button>
+  </div>
+
+  <!-- SUCCÈS -->
+  <div class="step" id="stepSuccess">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h2>Demande envoyée ! 🎉</h2>
+    <p>Merci <strong id="successPrenom"></strong> ! Nous avons bien reçu votre demande et vous contacterons sous 24h.<br/><br/>En attendant, vous pouvez aussi nous contacter directement sur WhatsApp pour une réponse immédiate.</p>
+    <a id="whatsappLink" href="#" class="btn-whatsapp-big" target="_blank">
+      <img src="assets/images/whatsapp.webp" alt="WhatsApp"/>
+      Écrire sur WhatsApp maintenant
+    </a>
+  </div>
+
+</div>
+
+<footer class="lp-footer">
+  <p>© 2025 MPC Clinique — <a href="mentions-legales.html">Mentions légales</a> — <a href="politique-confidentialite.html">Confidentialité</a></p>
+</footer>
+
+<script>
+  let formData = { projet: '', timing: '', consulte: '', prenom: '', tel: '', email: '' };
+
+  // Option cards click
+  document.querySelectorAll('.option-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      card.querySelector('input').checked = true;
+      formData.projet = card.dataset.value;
+    });
+  });
+
+  // Option rows click
+  document.querySelectorAll('.option-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const group = row.dataset.group;
+      document.querySelectorAll(`.option-row[data-group="${group}"]`).forEach(r => r.classList.remove('selected'));
+      row.classList.add('selected');
+      row.querySelector('input').checked = true;
+      formData[group] = row.dataset.value;
+    });
+  });
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    const target = n === 'success' ? document.getElementById('stepSuccess') : document.getElementById('step' + n);
+    target.classList.add('active');
+    updateProgress(n);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress(n) {
+    [1, 2, 3].forEach(i => {
+      const dot = document.getElementById('dot' + i);
+      const label = document.getElementById('label' + i);
+      dot.classList.remove('active', 'done');
+      label.classList.remove('active');
+      if (n === 'success' || i < n) { dot.classList.add('done'); dot.innerHTML = '✓'; }
+      else if (i === n) { dot.classList.add('active'); dot.innerHTML = i; label.classList.add('active'); }
+      else { dot.innerHTML = i; }
+    });
+    if (document.getElementById('line1')) {
+      document.getElementById('line1').classList.toggle('done', n > 1 || n === 'success');
+      document.getElementById('line2').classList.toggle('done', n > 2 || n === 'success');
+    }
+    if (n === 'success') document.getElementById('progressBar').style.display = 'none';
+  }
+
+  function nextStep(current) {
+    if (current === 1) {
+      if (!formData.projet) {
+        alert('Veuillez sélectionner votre projet.');
+        return;
+      }
+      showStep(2);
+    } else if (current === 2) {
+      if (!formData.timing || !formData.consulte) {
+        alert('Veuillez répondre aux deux questions.');
+        return;
+      }
+      showStep(3);
+    }
+  }
+
+  function prevStep(current) {
+    showStep(current - 1);
+  }
+
+  function submitForm() {
+    const prenom = document.getElementById('prenom').value.trim();
+    const tel = document.getElementById('tel').value.trim();
+    const mail = document.getElementById('mail').value.trim();
+
+    let valid = true;
+    [document.getElementById('prenom'), document.getElementById('tel'), document.getElementById('mail')].forEach(f => {
+      if (!f.value.trim()) { f.classList.add('error'); valid = false; }
+      else f.classList.remove('error');
+    });
+
+    if (!valid) { alert('Veuillez remplir tous les champs.'); return; }
+
+    const projets = {
+      'crane-rase': 'Effet crâne rasé',
+      'densification': 'Densification',
+      'femme': 'Femme / Alopécie',
+      'cicatrice': 'Cicatrice de greffe'
+    };
+    const timings = {
+      'urgent': 'Le plus tôt possible',
+      '1-3mois': 'Dans 1 à 3 mois',
+      'reflexion': 'Encore en réflexion'
+    };
+    const consultes = { 'non': 'Non', 'oui': 'Oui' };
+
+    const msg = `Nouveau lead MPC Clinique 🎯\n\n👤 *${prenom}*\n📞 ${tel}\n📧 ${mail}\n\n✅ Projet : ${projets[formData.projet] || formData.projet}\n⏰ Timing : ${timings[formData.timing] || formData.timing}\n💬 Déjà consulté : ${consultes[formData.consulte] || formData.consulte}`;
+
+    const waUrl = 'https://wa.me/33756885257?text=' + encodeURIComponent(msg);
+
+    document.getElementById('successPrenom').textContent = prenom;
+    document.getElementById('whatsappLink').href = waUrl;
+
+    showStep('success');
+
+    // Auto-open WhatsApp after 2s
+    setTimeout(() => { window.open(waUrl, '_blank'); }, 2000);
+  }
+</script>
+</body>
+</html>
