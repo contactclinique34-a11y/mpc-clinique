@@ -57,10 +57,13 @@
 }
 .article-cover {
   width: 100%;
-  height: 420px;
+  height: auto;
+  max-height: 560px;
   object-fit: cover;
+  object-position: center;
   border-radius: 14px;
   margin-bottom: 40px;
+  display: block;
 }
 .article-intro {
   font-size: 18px;
@@ -204,6 +207,6 @@
 }
 @media (max-width: 768px) {
   .article-hero h1 { font-size: 28px; }
-  .article-cover { height: 240px; }
+  .article-cover { max-height: 280px; }
   .article-cta { padding: 26px 24px; }
 }
