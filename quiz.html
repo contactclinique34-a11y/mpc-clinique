@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz Équipe — Salon de Coiffure</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:   #C4846B;
+      --rose-l: #f5ddd5;
+      --sand:   #E8D5C4;
+      --dark:   #1c1510;
+      --card:   #261e18;
+      --green:  #4caf50;
+      --orange: #ff9800;
+      --red:    #e53935;
+      --text:   rgba(255,255,255,0.85);
+      --muted:  rgba(255,255,255,0.4);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ─── HEADER ─── */
+    .hdr {
+      width: 100%;
+      background: #110d09;
+      border-bottom: 1.5px solid rgba(196,132,107,0.3);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .hdr-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Playfair Display', serif;
+      color: #fff; font-size: 1rem; letter-spacing: 0.04em;
+    }
+    .hdr-logo span { color: var(--rose); }
+    .hdr-badge {
+      background: var(--rose);
+      color: #fff; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 11px; border-radius: 20px;
+    }
+
+    /* ─── START ─── */
+    #screen-start {
+      width: 100%; min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 60px 24px; text-align: center;
+      background: radial-gradient(ellipse at 50% 0%, #2c1e16 0%, #1c1510 60%);
+    }
+    .start-icon {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose), #a0604a);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem; margin: 0 auto 28px;
+      box-shadow: 0 0 50px rgba(196,132,107,.3);
+    }
+    #screen-start h1 {
+      font-family: 'Playfair Display', serif;
+      color: #fff; font-size: clamp(1.9rem, 5vw, 2.8rem);
+      line-height: 1.2; margin-bottom: 14px;
+    }
+    #screen-start h1 em { font-style: normal; color: var(--rose); }
+    #screen-start p {
+      color: var(--muted); font-size: 1rem; max-width: 420px;
+      margin: 0 auto 38px; line-height: 1.65;
+    }
+    .chips {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      justify-content: center; margin-bottom: 44px;
+    }
+    .chip {
+      background: rgba(196,132,107,.12);
+      border: 1px solid rgba(196,132,107,.35);
+      color: var(--rose); border-radius: 30px;
+      padding: 7px 16px; font-size: 0.82rem; font-weight: 600;
+    }
+    .btn-start {
+      background: linear-gradient(135deg, var(--rose), #a0604a);
+      color: #fff; border: none; border-radius: 50px;
+      padding: 17px 52px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; letter-spacing: 0.04em;
+      box-shadow: 0 8px 30px rgba(196,132,107,.4);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn-start:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(196,132,107,.5); }
+
+    /* ─── QUIZ ─── */
+    #screen-quiz { display: none; width: 100%; min-height: 100vh; padding-bottom: 60px; }
+    .prog-bar-wrap { background: rgba(255,255,255,.07); height: 5px; width: 100%; position: sticky; top: 58px; z-index: 90; }
+    .prog-bar { height: 100%; background: linear-gradient(90deg, var(--rose), #e8c4a0); transition: width .5s cubic-bezier(.4,0,.2,1); }
+    .prog-label { text-align: center; color: var(--muted); font-size: 0.78rem; padding: 10px 0 0; letter-spacing: .06em; }
+
+    .q-wrap {
+      max-width: 700px; margin: 0 auto;
+      padding: 32px 20px 20px;
+      animation: slideIn .32s ease;
+    }
+    @keyframes slideIn { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: none; } }
+
+    .q-num { font-size: .73rem; font-weight: 700; letter-spacing: .12em; color: var(--rose); text-transform: uppercase; margin-bottom: 8px; }
+    .q-text { font-family: 'Playfair Display', serif; color: #fff; font-size: clamp(1.15rem,3.5vw,1.55rem); line-height: 1.4; margin-bottom: 8px; }
+    .q-hint { color: var(--muted); font-size: .8rem; margin-bottom: 24px; }
+
+    .options { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-bottom: 24px; }
+    @media(max-width:560px){ .options { grid-template-columns: 1fr; } }
+
+    .opt {
+      display: flex; align-items: flex-start; gap: 13px;
+      background: rgba(255,255,255,.04);
+      border: 1.5px solid rgba(255,255,255,.09);
+      border-radius: 13px; padding: 15px 16px;
+      cursor: pointer; transition: border-color .14s, background .14s, transform .1s;
+      user-select: none;
+    }
+    .opt:hover { border-color: var(--rose); background: rgba(196,132,107,.1); }
+    .opt input { display: none; }
+    .opt-box {
+      width: 21px; height: 21px; min-width: 21px;
+      border-radius: 5px; border: 2px solid rgba(255,255,255,.22);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .13s, border-color .13s;
+    }
+    .opt-box svg { display: none; }
+    .opt input:checked ~ .opt-box { background: var(--rose); border-color: var(--rose); }
+    .opt input:checked ~ .opt-box svg { display: block; }
+    .opt input:checked ~ .opt-txt { color: var(--rose); font-weight: 600; }
+    .opt.selected { border-color: var(--rose); background: rgba(196,132,107,.1); transform: scale(1.012); }
+    .opt-txt { color: rgba(255,255,255,.78); font-size: .93rem; line-height: 1.4; }
+    .opt-fi { margin-left: auto; font-size: 1rem; padding-top: 1px; }
+
+    /* Feedback */
+    .opt.fb-ok   { border-color: var(--green)  !important; background: rgba(76,175,80,.12)  !important; }
+    .opt.fb-bad  { border-color: var(--red)    !important; background: rgba(229,57,53,.1)   !important; }
+    .opt.fb-miss { border-color: var(--orange) !important; background: rgba(255,152,0,.1)   !important; }
+
+    .result-msg {
+      display: none; border-radius: 11px; padding: 15px 18px;
+      font-size: .92rem; font-weight: 500; line-height: 1.5; margin-bottom: 18px;
+    }
+    .result-msg.correct { display:block; background: rgba(76,175,80,.14); border:1px solid rgba(76,175,80,.38); color:#81c784; }
+    .result-msg.partial  { display:block; background: rgba(255,152,0,.11); border:1px solid rgba(255,152,0,.32); color:#ffb74d; }
+    .result-msg.wrong    { display:block; background: rgba(229,57,53,.1);  border:1px solid rgba(229,57,53,.28); color:#ef9a9a; }
+    .result-msg .expl    { margin-top:7px; font-size:.85rem; opacity:.82; }
+
+    .btn-validate {
+      width:100%; background: linear-gradient(135deg, var(--rose), #a0604a);
+      color:#fff; border:none; border-radius:50px; padding:15px;
+      font-size:.97rem; font-weight:700; cursor:pointer; letter-spacing:.04em;
+      transition: opacity .14s; margin-bottom: 11px;
+    }
+    .btn-validate:disabled { opacity:.3; cursor:not-allowed; }
+    .btn-next {
+      width:100%; background:transparent; color:var(--rose);
+      border:1.5px solid var(--rose); border-radius:50px; padding:13px;
+      font-size:.92rem; font-weight:600; cursor:pointer; letter-spacing:.04em;
+      transition: background .14s, color .14s; display:none;
+    }
+    .btn-next:hover { background:var(--rose); color:#fff; }
+
+    /* ─── RESULT ─── */
+    #screen-result {
+      display:none; width:100%; min-height:100vh;
+      background: radial-gradient(ellipse at 50% 0%, #2c1e16 0%, #1c1510 60%);
+      padding:60px 24px; text-align:center;
+      flex-direction:column; align-items:center; justify-content:center;
+    }
+    .trophy { font-size:3.8rem; margin-bottom:20px; }
+    .score-circle {
+      width:150px; height:150px; border-radius:50%;
+      border:4px solid var(--rose);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      margin:0 auto 28px;
+      background: rgba(196,132,107,.08);
+      box-shadow: 0 0 50px rgba(196,132,107,.2);
+    }
+    .score-n { font-family:'Playfair Display',serif; font-size:2.8rem; color:#fff; line-height:1; }
+    .score-t { color:var(--rose); font-size:.95rem; margin-top:3px; }
+    #screen-result h2 { font-family:'Playfair Display',serif; color:#fff; font-size:clamp(1.4rem,4vw,2rem); margin-bottom:10px; }
+    .result-sub { color:var(--muted); font-size:.97rem; max-width:380px; margin:0 auto 36px; line-height:1.6; }
+    .score-bar-wrap { max-width:380px; margin:0 auto 34px; }
+    .score-bar-lbs { display:flex; justify-content:space-between; color:var(--muted); font-size:.76rem; margin-bottom:5px; }
+    .score-bar-bg { background:rgba(255,255,255,.08); border-radius:8px; height:9px; overflow:hidden; }
+    .score-bar-v { height:100%; border-radius:8px; background:linear-gradient(90deg,var(--rose),#e8c4a0); transition:width 1s cubic-bezier(.4,0,.2,1); }
+    .btn-restart {
+      background: linear-gradient(135deg, var(--rose), #a0604a);
+      color:#fff; border:none; border-radius:50px; padding:15px 42px;
+      font-size:.97rem; font-weight:700; cursor:pointer; letter-spacing:.04em;
+      box-shadow: 0 8px 28px rgba(196,132,107,.35); transition:transform .14s;
+    }
+    .btn-restart:hover { transform: translateY(-2px); }
+    .summary { max-width:580px; margin:40px auto 0; text-align:left; }
+    .summary h3 { color:var(--muted); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; margin-bottom:12px; }
+    .s-item {
+      background: rgba(255,255,255,.04); border-radius:9px;
+      padding:12px 15px; margin-bottom:7px;
+      display:flex; align-items:flex-start; gap:10px;
+      border-left:3px solid transparent;
+    }
+    .s-item.ok   { border-left-color: var(--green); }
+    .s-item.part { border-left-color: var(--orange); }
+    .s-item.bad  { border-left-color: var(--red); }
+    .s-q { color:rgba(255,255,255,.68); font-size:.86rem; line-height:1.4; }
+    .s-ic { font-size:1rem; margin-top:1px; }
+  </style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo">✂️ &nbsp;Salon — <span>Quiz Équipe</span></div>
+  <span class="hdr-badge">Réunion</span>
+</header>
+
+<!-- ===== START ===== -->
+<section id="screen-start">
+  <div class="start-icon">✂️</div>
+  <h1>Quiz <em>Équipe</em><br/>Salon de coiffure</h1>
+  <p>Problèmes du quotidien, idées de services, gestion client… Voyons ce que vous pensez vraiment !</p>
+  <div class="chips">
+    <span class="chip">10 questions</span>
+    <span class="chip">Plusieurs réponses possibles</span>
+    <span class="chip">Pas de mauvaise idée</span>
+  </div>
+  <button class="btn-start" onclick="startQuiz()">C'est parti →</button>
+</section>
+
+<!-- ===== QUIZ ===== -->
+<section id="screen-quiz">
+  <div class="prog-bar-wrap">
+    <div class="prog-bar" id="progBar" style="width:0%"></div>
+  </div>
+  <p class="prog-label" id="progLabel">Question 1 / 10</p>
+  <div class="q-wrap" id="qWrap"></div>
+</section>
+
+<!-- ===== RESULT ===== -->
+<section id="screen-result">
+  <div class="trophy" id="trophy">🏆</div>
+  <div class="score-circle">
+    <span class="score-n" id="scoreN">0</span>
+    <span class="score-t" id="scoreT">/ 10 pts</span>
+  </div>
+  <h2 id="resTitle">Bien joué !</h2>
+  <p class="result-sub" id="resSub"></p>
+  <div class="score-bar-wrap">
+    <div class="score-bar-lbs"><span>0</span><span id="barMax">10 pts</span></div>
+    <div class="score-bar-bg"><div class="score-bar-v" id="barVal" style="width:0%"></div></div>
+  </div>
+  <button class="btn-restart" onclick="restartQuiz()">Rejouer →</button>
+  <div class="summary" id="summary"></div>
+</section>
+
+<script>
+const Q = [
+  {
+    q: "Un client repart mécontent de sa couleur. Que faites-vous en priorité ?",
+    hint: "Plusieurs bonnes pratiques",
+    options: [
+      "On l'écoute sans interrompre et on valide son ressenti",
+      "On lui explique que le résultat est normal",
+      "On lui propose un rendez-vous de correction sans frais",
+      "On documente la plainte pour ne pas répéter l'erreur",
+      "On lui offre un bon de réduction pour sa prochaine visite"
+    ],
+    correct: [0, 2, 3],
+    explication: "Écouter activement, proposer une correction gratuite et apprendre de l'incident sont les trois réflexes essentiels. Offrir un bon sans régler le problème ne suffit pas, et justifier le résultat ferme le dialogue."
+  },
+  {
+    q: "Quels services innovants permettraient de se démarquer de la concurrence en 2025/2026 ?",
+    hint: "Plusieurs réponses possibles",
+    options: [
+      "Consultation capillaire personnalisée (bilan cuir chevelu)",
+      "Abonnement mensuel coupe + soin",
+      "Service à domicile ou en entreprise",
+      "Programme fidélité avec récompenses",
+      "Vente de produits capillaires de niche"
+    ],
+    correct: [0, 1, 2, 3, 4],
+    explication: "Toutes ces idées sont des leviers réels de différenciation. La consultation capillaire ajoute une dimension conseil premium. L'abonnement fidélise et prédit le CA. Le service à domicile ouvre un nouveau marché. Chacun mérite d'être testé !"
+  },
+  {
+    q: "Le planning est creux un mardi après-midi. Quelles solutions peut-on activer rapidement ?",
+    hint: "Plusieurs réponses",
+    options: [
+      "Envoyer un SMS/message aux clients en liste d'attente",
+      "Poster une promotion flash sur Instagram Stories",
+      "Proposer un tarif réduit 'heure creuse' aux habitués",
+      "Utiliser ce temps pour faire une formation rapide entre collègues",
+      "Attendre que les clients appellent d'eux-mêmes"
+    ],
+    correct: [0, 1, 2, 3],
+    explication: "Les créneaux vides sont une opportunité : relancer des clients en attente, animer les réseaux, proposer un tarif heure creuse ou se former. L'attente passive est la seule mauvaise réponse."
+  },
+  {
+    q: "Quelles sont les causes les plus fréquentes de la chute de cheveux chez les femmes ?",
+    hint: "Plusieurs réponses",
+    options: [
+      "Carence en fer (anémie)",
+      "Stress chronique ou choc émotionnel",
+      "Changements hormonaux (grossesse, ménopause)",
+      "Utilisation quotidienne de brushing",
+      "Alimentation pauvre en protéines"
+    ],
+    correct: [0, 1, 2, 4],
+    explication: "Carences (fer, protéines), stress et hormones sont les grandes causes de chute féminine. Le brushing quotidien peut fragiliser la fibre capillaire, mais n'est pas une cause directe de chute significative."
+  },
+  {
+    q: "Une cliente demande une décoloration sur des cheveux très abîmés et poreux. Que faites-vous ?",
+    hint: "Bonnes pratiques",
+    options: [
+      "On refuse catégoriquement sans explication",
+      "On réalise un diagnostic fibre avant tout",
+      "On propose un protocole de soin en amont sur plusieurs semaines",
+      "On adapte la technique (balayage, mèches) pour limiter l'agression",
+      "On réalise un test mèche pour évaluer la résistance"
+    ],
+    correct: [1, 2, 3, 4],
+    explication: "Le diagnostic fibre, le soin préparatoire, la technique adaptée et le test mèche sont les bonnes pratiques professionnelles. Refuser sans proposer d'alternative fait perdre la cliente et manque l'occasion de la fidéliser autrement."
+  },
+  {
+    q: "Comment améliorer concrètement l'expérience client en salon ?",
+    hint: "Plusieurs idées valables",
+    options: [
+      "Offrir une boisson à l'arrivée (café, eau infusée...)",
+      "Expliquer chaque étape de la prestation au client",
+      "Avoir une musique d'ambiance adaptée à la clientèle",
+      "Envoyer un message de suivi après la visite",
+      "Proposer un magazine et ne plus jamais parler"
+    ],
+    correct: [0, 1, 2, 3],
+    explication: "L'expérience client se construit par tous les sens et avant/après la visite. La boisson, la communication, l'ambiance sonore et le suivi post-visite créent de la fidélité. L'isolation totale (magazine sans échange) est une erreur."
+  },
+  {
+    q: "Quelles tendances capillaires sont en vogue en ce moment ?",
+    hint: "Sélectionnez ce qui correspond à l'air du temps",
+    options: [
+      "Le 'Bixie cut' (entre bob et pixie)",
+      "La permanente classique années 80",
+      "Les colorations naturelles et 'lived-in'",
+      "Le soin Olaplex et soins régénérants haute gamme",
+      "Les coupes ultra-structurées façon bowl cut"
+    ],
+    correct: [0, 2, 3],
+    explication: "Le bixie, les colorations naturelles lived-in et les soins haute gamme (Olaplex, K18...) dominent les tendances 2025/2026. La permanente revient doucement mais pas encore dans le top. Le bowl cut reste très niche."
+  },
+  {
+    q: "Pour fidéliser un nouveau client après sa première visite, quelles actions sont efficaces ?",
+    hint: "Plusieurs réponses correctes",
+    options: [
+      "Lui envoyer un message de remerciement personnalisé",
+      "Lui proposer de prendre son prochain rendez-vous avant de partir",
+      "Lui offrir un petit avantage dès la deuxième visite",
+      "Le tagguer sur les réseaux si il accepte une photo",
+      "Ne rien faire, un bon travail parle de lui-même"
+    ],
+    correct: [0, 1, 2, 3],
+    explication: "La fidélisation se joue dans les 48h après la visite. Remerciement, rendez-vous pré-réservé, avantage fidélité et présence sur les réseaux sont des leviers prouvés. Compter uniquement sur la qualité du travail suffit rarement dans un marché concurrentiel."
+  },
+  {
+    q: "Quels sont les freins les plus courants qui empêchent une équipe de coiffeurs de bien travailler ensemble ?",
+    hint: "Soyez honnêtes !",
+    options: [
+      "Le manque de communication sur les plannings et les règles",
+      "La concurrence interne entre coiffeurs sur les mêmes clients",
+      "Des différences de niveau technique non valorisées",
+      "L'absence de temps dédié aux réunions d'équipe",
+      "Des horaires mal répartis"
+    ],
+    correct: [0, 1, 2, 3, 4],
+    explication: "Tous ces freins sont réels et identifiés dans la grande majorité des salons. Les reconnaître ouvertement est déjà la première étape pour les résoudre en équipe."
+  },
+  {
+    q: "Si vous pouviez lancer UN nouveau service dans le salon demain, lequel choisiriez-vous ?",
+    hint: "C'est votre moment — plusieurs choix valables",
+    options: [
+      "Un soin cuir chevelu signature (massage + ampouле)",
+      "Un service 'coupe express 30 min' pour les actifs pressés",
+      "Des ateliers apprenez à coiffer vos enfants",
+      "Un coffret cadeau personnalisé (carte + produit)",
+      "Une offre 'duo' (deux amies ensemble, tarif spécial)"
+    ],
+    correct: [0, 1, 2, 3, 4],
+    explication: "Toutes ces idées sont viables ! L'important est de choisir en équipe le service qui correspond le mieux à votre clientèle actuelle et à vos envies. Cette question est un point de départ pour la discussion !"
+  }
+];
+
+let cur = 0, score = 0, results = [], validated = false;
+
+function startQuiz() {
+  document.getElementById('screen-start').style.display = 'none';
+  document.getElementById('screen-quiz').style.display = 'block';
+  load();
+}
+
+function load() {
+  validated = false;
+  const q = Q[cur], total = Q.length;
+  document.getElementById('progBar').style.width = (cur / total * 100) + '%';
+  document.getElementById('progLabel').textContent = `Question ${cur + 1} / ${total}`;
+
+  const opts = q.options.map((o, i) => `
+    <label class="opt" id="opt-${i}" onclick="toggle(this)">
+      <input type="checkbox" value="${i}" id="cb-${i}"/>
+      <span class="opt-box">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="opt-txt">${o}</span>
+      <span class="opt-fi" id="fi-${i}"></span>
+    </label>`).join('');
+
+  const isLast = cur === total - 1;
+  document.getElementById('qWrap').innerHTML = `
+    <p class="q-num">Question ${cur + 1} · ${q.hint}</p>
+    <p class="q-text">${q.q}</p>
+    <div class="options">${opts}</div>
+    <div class="result-msg" id="rmsg"></div>
+    <button class="btn-validate" id="btnV" onclick="validate()" disabled>Valider ma réponse</button>
+    <button class="btn-next" id="btnN" onclick="next()">${isLast ? 'Voir le résultat →' : 'Question suivante →'}</button>`;
+}
+
+function toggle(label) {
+  if (validated) return;
+  const cb = label.querySelector('input');
+  cb.checked = !cb.checked;
+  label.classList.toggle('selected', cb.checked);
+  document.getElementById('btnV').disabled = !document.querySelector('input:checked');
+}
+
+function validate() {
+  if (validated) return;
+  validated = true;
+  const q = Q[cur];
+  const checked = [...document.querySelectorAll('input:checked')].map(c => +c.value);
+  const corr = new Set(q.correct), chk = new Set(checked);
+
+  let pts = 0, status = 'wrong';
+  if (arrEq(checked.sort(), [...q.correct].sort())) { pts = 1; status = 'correct'; }
+  else if (checked.some(c => corr.has(c)) && !q.correct.every(c => !chk.has(c))) { pts = 0.5; status = 'partial'; }
+
+  score += pts;
+  results.push({ q: q.q, status });
+
+  q.options.forEach((_, i) => {
+    const lbl = document.getElementById(`opt-${i}`);
+    const fi  = document.getElementById(`fi-${i}`);
+    if (corr.has(i) && chk.has(i))  { lbl.classList.add('fb-ok');   fi.textContent = '✓'; }
+    else if (!corr.has(i) && chk.has(i)) { lbl.classList.add('fb-bad');  fi.textContent = '✗'; }
+    else if (corr.has(i) && !chk.has(i)) { lbl.classList.add('fb-miss'); fi.textContent = '!'; }
+  });
+
+  const msg = document.getElementById('rmsg');
+  if (status === 'correct')      { msg.className='result-msg correct'; msg.innerHTML=`✅ Parfait !<div class="expl">${q.explication}</div>`; }
+  else if (status === 'partial') { msg.className='result-msg partial'; msg.innerHTML=`⚠️ Partiellement correct (0,5 pt)<div class="expl">${q.explication}</div>`; }
+  else                           { msg.className='result-msg wrong';   msg.innerHTML=`💡 À discuter en équipe !<div class="expl">${q.explication}</div>`; }
+
+  document.getElementById('btnV').style.display = 'none';
+  document.getElementById('btnN').style.display = 'block';
+}
+
+function next() {
+  cur++;
+  if (cur >= Q.length) showResult();
+  else { load(); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+
+function showResult() {
+  document.getElementById('screen-quiz').style.display = 'none';
+  const rs = document.getElementById('screen-result');
+  rs.style.display = 'flex';
+  const max = Q.length, pct = (score / max) * 100;
+
+  document.getElementById('scoreN').textContent = Number.isInteger(score) ? score : score.toFixed(1);
+  document.getElementById('scoreT').textContent = `/ ${max} pts`;
+  document.getElementById('barMax').textContent = `${max} pts`;
+  setTimeout(() => document.getElementById('barVal').style.width = pct + '%', 200);
+
+  let title, sub, trophy;
+  if (pct >= 90)      { title='Expert de l\'équipe 🔥'; sub='Vous maîtrisez autant la technique que la gestion client. Impressionnant !'; trophy='🏆'; }
+  else if (pct >= 70) { title='Très bonne vision !';     sub='De bons réflexes et des idées solides pour faire grandir le salon.'; trophy='🥈'; }
+  else if (pct >= 50) { title='Bonne base d\'équipe';    sub='Quelques points à approfondir ensemble — c\'est le but de la réunion !'; trophy='💪'; }
+  else                { title='Beaucoup à explorer !';   sub='C\'est normal, c\'est justement pour ça qu\'on se retrouve. À vous d\'en parler !'; trophy='🌱'; }
+
+  document.getElementById('trophy').textContent = trophy;
+  document.getElementById('resTitle').textContent = title;
+  document.getElementById('resSub').textContent = sub;
+
+  document.getElementById('summary').innerHTML = '<h3>Récapitulatif</h3>' +
+    results.map((r, i) => {
+      const cls  = r.status==='correct' ? 'ok' : r.status==='partial' ? 'part' : 'bad';
+      const icon = r.status==='correct' ? '✅' : r.status==='partial' ? '⚠️' : '💡';
+      return `<div class="s-item ${cls}"><span class="s-ic">${icon}</span><span class="s-q">Q${i+1}. ${r.q}</span></div>`;
+    }).join('');
+}
+
+function restartQuiz() {
+  cur = 0; score = 0; results = [];
+  document.getElementById('screen-result').style.display = 'none';
+  document.getElementById('screen-quiz').style.display = 'block';
+  document.getElementById('progBar').style.width = '0%';
+  document.getElementById('barVal').style.width = '0%';
+  load();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function arrEq(a, b) { return a.length===b.length && a.every((v,i)=>v===b[i]); }
+</script>
+</body>
+</html>
