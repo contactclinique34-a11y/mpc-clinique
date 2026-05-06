@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎂 Anniversaire Alexandre 🏎️</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --neon: #00F5A0;
+      --yellow: #FFE600;
+      --pink: #FF2D78;
+      --dark: #0A0A0F;
+      --card: #13131A;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* CONFETTI canvas */
+    #confetti-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 60px 24px 40px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,245,160,.15) 0%, transparent 70%);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,245,160,.1);
+      border: 1px solid rgba(0,245,160,.3);
+      color: var(--neon);
+      padding: 6px 18px; border-radius: 40px;
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(64px, 15vw, 130px);
+      line-height: .9;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+    .hero h1 .name {
+      display: block;
+      background: linear-gradient(135deg, var(--neon) 0%, #00C8FF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero h1 .age {
+      display: block;
+      color: var(--yellow);
+      text-shadow: 0 0 40px rgba(255,230,0,.5);
+      font-size: clamp(80px, 20vw, 160px);
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 3vw, 22px);
+      color: rgba(255,255,255,.6);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+    .hero-sub strong { color: #fff; }
+
+    .hero-date {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px; padding: 16px 28px;
+      font-size: 18px; font-weight: 800;
+    }
+    .hero-date span { color: var(--neon); }
+
+    /* COUNTDOWN */
+    .countdown-section {
+      position: relative; z-index: 1;
+      text-align: center; padding: 40px 24px;
+    }
+    .countdown-label {
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: rgba(255,255,255,.4); margin-bottom: 16px;
+    }
+    .countdown-grid {
+      display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+    }
+    .countdown-box {
+      background: var(--card);
+      border: 1px solid rgba(0,245,160,.2);
+      border-radius: 16px; padding: 20px 24px; min-width: 80px;
+    }
+    .countdown-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px; line-height: 1;
+      color: var(--neon);
+    }
+    .countdown-unit {
+      font-size: 11px; color: rgba(255,255,255,.4);
+      text-transform: uppercase; letter-spacing: .08em;
+      margin-top: 4px;
+    }
+
+    /* PROGRAMME */
+    .section { position: relative; z-index: 1; padding: 60px 24px; }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 6vw, 56px);
+      text-align: center; margin-bottom: 40px;
+      letter-spacing: 2px;
+    }
+    .section-title span { color: var(--neon); }
+
+    .programme-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 20px; max-width: 860px; margin: 0 auto;
+    }
+
+    .prog-card {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 36px 28px;
+      border: 1px solid rgba(255,255,255,.08);
+      position: relative; overflow: hidden;
+      transition: transform .3s, border-color .3s;
+    }
+    .prog-card:hover { transform: translateY(-6px); }
+    .prog-card.karting { border-color: rgba(255,230,0,.3); }
+    .prog-card.gateau { border-color: rgba(255,45,120,.3); }
+
+    .prog-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .karting::before { background: linear-gradient(90deg, var(--yellow), #FF6B00); }
+    .gateau::before { background: linear-gradient(90deg, var(--pink), #FF8C00); }
+
+    .prog-glow {
+      position: absolute; top: -40px; right: -40px;
+      width: 120px; height: 120px; border-radius: 50%;
+      opacity: .15; filter: blur(40px);
+    }
+    .karting .prog-glow { background: var(--yellow); }
+    .gateau .prog-glow { background: var(--pink); }
+
+    .prog-time {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.08);
+      border-radius: 8px; padding: 5px 12px;
+      font-size: 13px; font-weight: 700;
+      color: rgba(255,255,255,.6);
+      margin-bottom: 20px;
+    }
+    .prog-emoji { font-size: 52px; margin-bottom: 16px; display: block; }
+    .prog-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px; letter-spacing: 1px; margin-bottom: 10px;
+    }
+    .karting h3 { color: var(--yellow); }
+    .gateau h3 { color: var(--pink); }
+    .prog-card p {
+      font-size: 15px; color: rgba(255,255,255,.6);
+      line-height: 1.7;
+    }
+
+    /* INFOS */
+    .infos-section {
+      position: relative; z-index: 1;
+      background: linear-gradient(135deg, rgba(0,245,160,.05) 0%, rgba(0,200,255,.05) 100%);
+      border-top: 1px solid rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      padding: 60px 24px;
+    }
+    .infos-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 20px; max-width: 860px; margin: 0 auto;
+    }
+    .info-card {
+      text-align: center; padding: 28px 20px;
+      background: rgba(255,255,255,.04);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .info-icon { font-size: 36px; margin-bottom: 12px; display: block; }
+    .info-label { font-size: 12px; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+    .info-value { font-size: 17px; font-weight: 800; }
+
+    /* RSVP */
+    .rsvp-section {
+      position: relative; z-index: 1;
+      text-align: center; padding: 60px 24px 80px;
+    }
+    .rsvp-section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 6vw, 56px);
+      margin-bottom: 16px; letter-spacing: 2px;
+    }
+    .rsvp-section p {
+      font-size: 17px; color: rgba(255,255,255,.6);
+      margin-bottom: 32px;
+    }
+    .btn-rsvp {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: linear-gradient(135deg, var(--neon) 0%, #00C8FF 100%);
+      color: #000; padding: 18px 40px;
+      border-radius: 100px; font-size: 18px; font-weight: 900;
+      text-decoration: none; transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 0 40px rgba(0,245,160,.3);
+    }
+    .btn-rsvp:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 60px rgba(0,245,160,.5);
+    }
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #25D366; color: #fff;
+      padding: 16px 32px; border-radius: 100px;
+      font-size: 16px; font-weight: 800;
+      text-decoration: none; margin-top: 16px;
+      transition: transform .2s;
+    }
+    .btn-wa:hover { transform: scale(1.05); }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center; padding: 24px;
+      font-size: 14px; color: rgba(255,255,255,.2);
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .programme-grid { grid-template-columns: 1fr; }
+      .infos-grid { grid-template-columns: 1fr; }
+      .hero h1 .age { font-size: 100px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">🎉 Save the date !</div>
+  <h1>
+    <span class="name">Alexandre</span>
+    <span class="age">14</span>
+  </h1>
+  <p class="hero-sub">Une journée de <strong>folie</strong> pour fêter ça comme il se doit 🔥</p>
+  <div class="hero-date">
+    📅 <span>Samedi</span> — <strong>à confirmer</strong>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<div class="countdown-section">
+  <div class="countdown-label">⏱ Compte à rebours</div>
+  <div class="countdown-grid">
+    <div class="countdown-box">
+      <div class="countdown-num" id="cd-days">--</div>
+      <div class="countdown-unit">Jours</div>
+    </div>
+    <div class="countdown-box">
+      <div class="countdown-num" id="cd-hours">--</div>
+      <div class="countdown-unit">Heures</div>
+    </div>
+    <div class="countdown-box">
+      <div class="countdown-num" id="cd-min">--</div>
+      <div class="countdown-unit">Minutes</div>
+    </div>
+    <div class="countdown-box">
+      <div class="countdown-num" id="cd-sec">--</div>
+      <div class="countdown-unit">Secondes</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRAMME -->
+<section class="section">
+  <h2 class="section-title">Le <span>Programme</span> 🏁</h2>
+  <div class="programme-grid">
+
+    <div class="prog-card karting">
+      <div class="prog-glow"></div>
+      <div class="prog-time">🌅 Matin — 10h00</div>
+      <span class="prog-emoji">🏎️</span>
+      <h3>Karting</h3>
+      <p>Moteurs en route ! On se retrouve sur le circuit pour une session de karting. Qui sera le plus rapide ? Le champion remporte la fierté éternelle 🏆</p>
+    </div>
+
+    <div class="prog-card gateau">
+      <div class="prog-glow"></div>
+      <div class="prog-time">🌇 Après-midi — 15h00</div>
+      <span class="prog-emoji">🎂</span>
+      <h3>Le Gâteau</h3>
+      <p>Retour à la maison pour souffler les bougies, ouvrir les cadeaux et manger le gâteau ! Ambiance détente, musique et bonne humeur garanties 🎁</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- INFOS -->
+<section class="infos-section">
+  <h2 class="section-title" style="margin-bottom:36px;">Les <span>Infos</span> 📍</h2>
+  <div class="infos-grid">
+    <div class="info-card">
+      <span class="info-icon">📅</span>
+      <div class="info-label">Date</div>
+      <div class="info-value">À confirmer</div>
+    </div>
+    <div class="info-card">
+      <span class="info-icon">⏰</span>
+      <div class="info-label">RDV karting</div>
+      <div class="info-value">10h00</div>
+    </div>
+    <div class="info-card">
+      <span class="info-icon">📍</span>
+      <div class="info-label">Lieu</div>
+      <div class="info-value">À confirmer</div>
+    </div>
+  </div>
+</section>
+
+<!-- RSVP -->
+<section class="rsvp-section">
+  <h2>Tu viens ? <span style="color:var(--neon)">RSVP</span> 🙌</h2>
+  <p>Confirme ta présence avant le <strong style="color:#fff;">vendredi soir</strong> !</p>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+    <a href="sms:+33600000000?body=Salut%20Alexandre%20!%20Je%20serai%20là%20pour%20ton%20anniv%20%F0%9F%8E%89" class="btn-rsvp">
+      ✅ Je serai là !
+    </a>
+    <a href="https://wa.me/33600000000?text=Salut%20Alexandre%20!%20Je%20confirme%20ma%20présence%20pour%20ton%20anniversaire%20%F0%9F%8E%89" target="_blank" class="btn-wa">
+      💬 Répondre sur WhatsApp
+    </a>
+  </div>
+</section>
+
+<footer>
+  🏎️ Made with ❤️ pour Alexandre · 14 ans déjà !
+</footer>
+
+<script>
+  // === CONFETTI ===
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
+  const colors = ['#00F5A0','#FFE600','#FF2D78','#00C8FF','#FF6B00','#fff'];
+  const pieces = Array.from({length: 80}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height - canvas.height,
+    r: Math.random() * 6 + 3,
+    d: Math.random() * 80 + 20,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    tilt: Math.random() * 10 - 10,
+    tiltAngle: 0,
+    tiltSpeed: Math.random() * 0.1 + 0.05,
+    speed: Math.random() * 2 + 0.5
+  }));
+
+  function drawConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      p.tiltAngle += p.tiltSpeed;
+      p.y += p.speed;
+      p.tilt = Math.sin(p.tiltAngle) * 12;
+      if (p.y > canvas.height + 20) {
+        p.y = -10;
+        p.x = Math.random() * canvas.width;
+      }
+      ctx.beginPath();
+      ctx.lineWidth = p.r;
+      ctx.strokeStyle = p.color;
+      ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+      ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+      ctx.stroke();
+    });
+    requestAnimationFrame(drawConfetti);
+  }
+  drawConfetti();
+
+  // === COUNTDOWN ===
+  // Modifie cette date avec la vraie date de l'anniversaire
+  const birthday = new Date('2025-06-14T10:00:00');
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = birthday - now;
+    if (diff <= 0) {
+      document.getElementById('cd-days').textContent = '0';
+      document.getElementById('cd-hours').textContent = '0';
+      document.getElementById('cd-min').textContent = '0';
+      document.getElementById('cd-sec').textContent = '0';
+      return;
+    }
+    const days = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const min = Math.floor((diff % 3600000) / 60000);
+    const sec = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent = String(days).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cd-min').textContent = String(min).padStart(2,'0');
+    document.getElementById('cd-sec').textContent = String(sec).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
