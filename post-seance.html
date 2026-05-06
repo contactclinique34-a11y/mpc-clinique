@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soins post-séance — MPC Clinique</title>
+  <meta name="description" content="Tout ce qu'il faut savoir pour prendre soin de votre cuir chevelu après votre séance de micropigmentation capillaire chez MPC Clinique."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage:      #8BBFBA;
+      --sage-d:    #6aa29c;
+      --sage-l:    #d4eae8;
+      --sage-bg:   #f0f8f7;
+      --gold:      #C9A96E;
+      --dark:      #1d2b29;
+      --text:      #2d3d3b;
+      --muted:     #6b8280;
+      --border:    #d4e5e3;
+      --white:     #ffffff;
+      --red-soft:  #e8534a;
+      --orange:    #e8944a;
+      --green:     #4caf50;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      color: var(--dark); font-size: 1rem; letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--sage); }
+    .nav-back {
+      color: var(--sage); font-size: 0.85rem; font-weight: 600;
+      text-decoration: none; display: flex; align-items: center; gap: 6px;
+      transition: gap 0.15s;
+    }
+    .nav-back:hover { gap: 10px; }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: linear-gradient(135deg, var(--dark) 0%, #2a4240 100%);
+      padding: 72px 24px 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 60% 0%, rgba(139,191,186,0.18) 0%, transparent 60%);
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(139,191,186,0.2);
+      border: 1px solid rgba(139,191,186,0.4);
+      color: var(--sage); font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 20px; margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      color: #fff;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    .hero h1 em { font-style: normal; color: var(--sage); }
+    .hero p {
+      color: rgba(255,255,255,0.6);
+      font-size: 1rem; max-width: 480px;
+      margin: 0 auto 0;
+    }
+
+    /* ─── TIMELINE TABS ─── */
+    .timeline-section {
+      background: var(--sage-bg);
+      padding: 64px 24px;
+    }
+    .section-label {
+      text-align: center;
+      font-size: 0.73rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--sage); margin-bottom: 10px;
+    }
+    .section-title {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      color: var(--dark); margin-bottom: 36px;
+    }
+
+    .tabs {
+      display: flex; gap: 8px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 32px;
+    }
+    .tab-btn {
+      background: #fff; border: 1.5px solid var(--border);
+      color: var(--muted); border-radius: 30px;
+      padding: 9px 20px; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .tab-btn:hover { border-color: var(--sage); color: var(--sage); }
+    .tab-btn.active {
+      background: var(--sage); border-color: var(--sage);
+      color: #fff; box-shadow: 0 4px 16px rgba(139,191,186,0.35);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeUp 0.3s ease; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px; max-width: 900px; margin: 0 auto;
+    }
+
+    .rule-card {
+      background: #fff; border-radius: 16px;
+      padding: 24px 20px;
+      border: 1.5px solid var(--border);
+      display: flex; flex-direction: column; gap: 12px;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+      cursor: default;
+    }
+    .rule-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(139,191,186,0.18); border-color: var(--sage); }
+
+    .rule-card.danger .rule-icon-wrap { background: rgba(232,83,74,0.1); }
+    .rule-card.warning .rule-icon-wrap { background: rgba(232,148,74,0.1); }
+    .rule-card.ok .rule-icon-wrap { background: rgba(76,175,80,0.1); }
+    .rule-card.info .rule-icon-wrap { background: rgba(139,191,186,0.12); }
+
+    .rule-icon-wrap {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+    }
+    .rule-title { font-weight: 700; color: var(--dark); font-size: 1rem; }
+    .rule-subtitle { font-size: 0.82rem; color: var(--muted); }
+    .rule-detail {
+      font-size: 0.88rem; color: var(--text);
+      background: var(--sage-bg); border-radius: 10px;
+      padding: 10px 13px; line-height: 1.55;
+    }
+
+    .tip-box {
+      max-width: 900px; margin: 24px auto 0;
+      background: linear-gradient(135deg, #fff8f5, #fff);
+      border: 1.5px solid rgba(201,169,110,0.3);
+      border-radius: 16px; padding: 20px 24px;
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .tip-box .tip-icon { font-size: 1.5rem; margin-top: 2px; }
+    .tip-box p { font-size: 0.92rem; color: var(--text); line-height: 1.6; }
+    .tip-box strong { color: var(--dark); }
+
+    /* ─── CHECKLIST ─── */
+    .checklist-section {
+      padding: 64px 24px;
+      background: #fff;
+    }
+    .checklist-wrap {
+      max-width: 640px; margin: 0 auto;
+    }
+    .checklist-intro {
+      text-align: center;
+      color: var(--muted); font-size: 0.92rem;
+      margin-bottom: 28px;
+    }
+
+    .check-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .check-item:last-child { border-bottom: none; }
+
+    .check-box {
+      width: 26px; height: 26px; min-width: 26px;
+      border-radius: 8px; border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .check-box svg { display: none; }
+    .check-item.done .check-box {
+      background: var(--sage); border-color: var(--sage);
+    }
+    .check-item.done .check-box svg { display: block; }
+    .check-item.done .check-label { text-decoration: line-through; opacity: 0.5; }
+
+    .check-label { font-size: 0.95rem; color: var(--text); line-height: 1.4; }
+    .check-day { font-size: 0.75rem; font-weight: 700; color: var(--sage); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .checklist-progress {
+      margin-bottom: 24px;
+      background: var(--sage-l);
+      border-radius: 10px; height: 8px; overflow: hidden;
+    }
+    .checklist-progress-bar {
+      height: 100%; background: var(--sage);
+      border-radius: 10px; width: 0%;
+      transition: width 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .checklist-count {
+      text-align: right; font-size: 0.8rem; color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* ─── FAQ ─── */
+    .faq-section {
+      background: var(--sage-bg);
+      padding: 64px 24px;
+    }
+    .faq-list { max-width: 700px; margin: 0 auto; }
+
+    .faq-item {
+      background: #fff; border-radius: 14px;
+      margin-bottom: 10px;
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .faq-item.open { border-color: var(--sage); }
+
+    .faq-q {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 20px; cursor: pointer;
+      font-weight: 600; font-size: 0.97rem; color: var(--dark);
+      gap: 12px;
+    }
+    .faq-q .arrow {
+      width: 28px; height: 28px; min-width: 28px;
+      border-radius: 50%; background: var(--sage-bg);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, transform 0.25s;
+    }
+    .faq-item.open .faq-q .arrow { background: var(--sage); transform: rotate(45deg); }
+    .faq-item.open .faq-q .arrow svg path { stroke: #fff; }
+
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(.4,0,.2,1), padding 0.2s;
+      padding: 0 20px;
+      font-size: 0.92rem; color: var(--text); line-height: 1.65;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding: 0 20px 20px; }
+
+    /* ─── CTA CONTACT ─── */
+    .contact-section {
+      padding: 64px 24px;
+      background: linear-gradient(135deg, var(--dark), #2a4240);
+      text-align: center;
+    }
+    .contact-section h2 {
+      font-family: 'Playfair Display', serif;
+      color: #fff; font-size: clamp(1.4rem, 3.5vw, 2rem);
+      margin-bottom: 10px;
+    }
+    .contact-section p { color: rgba(255,255,255,0.55); font-size: 0.97rem; margin-bottom: 36px; }
+
+    .contact-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    .btn-phone {
+      background: var(--sage); color: #fff;
+      border: none; border-radius: 50px;
+      padding: 15px 32px; font-size: 1rem; font-weight: 700;
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+      transition: transform 0.14s, box-shadow 0.14s;
+      box-shadow: 0 6px 24px rgba(139,191,186,0.35);
+    }
+    .btn-phone:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(139,191,186,0.45); }
+
+    .btn-wa {
+      background: #25D366; color: #fff;
+      border: none; border-radius: 50px;
+      padding: 15px 32px; font-size: 1rem; font-weight: 700;
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+      transition: transform 0.14s;
+    }
+    .btn-wa:hover { transform: translateY(-2px); }
+
+    footer {
+      text-align: center; padding: 24px;
+      background: #111d1b; color: rgba(255,255,255,0.3);
+      font-size: 0.8rem;
+    }
+    footer a { color: var(--sage); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">MPC <span>Clinique</span></a>
+  <a href="index.html" class="nav-back">← Retour au site</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-tag">Après votre séance</p>
+  <h1>Prenez soin de<br/><em>votre résultat</em></h1>
+  <p>Les consignes post-séance sont aussi importantes que la séance elle-même. Suivez ce guide pour un résultat optimal.</p>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-section">
+  <p class="section-label">Protocole de récupération</p>
+  <h2 class="section-title">Les consignes par période</h2>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('j48')">⏱ 48 premières heures</button>
+    <button class="tab-btn" onclick="switchTab('j10')">📅 Jours 3 à 10</button>
+    <button class="tab-btn" onclick="switchTab('long')">🛡 Long terme</button>
+  </div>
+
+  <!-- 48H -->
+  <div class="tab-panel active" id="tab-j48">
+    <div class="rules-grid">
+      <div class="rule-card danger">
+        <div class="rule-icon-wrap">💧</div>
+        <div>
+          <p class="rule-title">Pas d'eau sur le cuir chevelu</p>
+          <p class="rule-subtitle">Ne vous lavez pas les cheveux</p>
+        </div>
+        <div class="rule-detail">L'eau dilue les pigments encore en train de se fixer dans le derme. Évitez également les douches avec la tête sous le jet.</div>
+      </div>
+      <div class="rule-card danger">
+        <div class="rule-icon-wrap">🏊</div>
+        <div>
+          <p class="rule-title">Pas de piscine ni hammam</p>
+          <p class="rule-subtitle">Ni sauna, ni bain</p>
+        </div>
+        <div class="rule-detail">La chaleur humide et le chlore de la piscine sont particulièrement agressifs pour les pigments frais et la cicatrisation cutanée.</div>
+      </div>
+      <div class="rule-card danger">
+        <div class="rule-icon-wrap">🏃</div>
+        <div>
+          <p class="rule-title">Pas de sport intense</p>
+          <p class="rule-subtitle">Évitez la forte transpiration</p>
+        </div>
+        <div class="rule-detail">La transpiration est salée et acide — elle agit comme un solvant sur les pigments. Préférez une activité douce comme la marche.</div>
+      </div>
+      <div class="rule-card danger">
+        <div class="rule-icon-wrap">☀️</div>
+        <div>
+          <p class="rule-title">Pas d'exposition au soleil</p>
+          <p class="rule-subtitle">Pas d'UV prolongés</p>
+        </div>
+        <div class="rule-detail">Les UV altèrent les pigments et perturbent la cicatrisation. Si vous sortez, portez une casquette ou un chapeau.</div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <span class="tip-icon">💊</span>
+      <p><strong>Si démangeaisons :</strong> il est normal de ressentir des légères démangeaisons pendant la cicatrisation. Appliquez une crème type <strong>Cicaplast de La Roche-Posay</strong>, mais sans eau. Ne vous grattez surtout pas — cela pourrait arracher les pigments.</p>
+    </div>
+  </div>
+
+  <!-- J3-10 -->
+  <div class="tab-panel" id="tab-j10">
+    <div class="rules-grid">
+      <div class="rule-card warning">
+        <div class="rule-icon-wrap">🚿</div>
+        <div>
+          <p class="rule-title">Premier shampoing</p>
+          <p class="rule-subtitle">À partir du 4e jour seulement</p>
+        </div>
+        <div class="rule-detail">Eau tiède uniquement, shampoing doux sans sulfates. Massez en mouvements lents et doux, sans frotter. Au rinçage : même chose. Au séchage : tapotez délicatement avec la serviette — aucune friction.</div>
+      </div>
+      <div class="rule-card warning">
+        <div class="rule-icon-wrap">🧴</div>
+        <div>
+          <p class="rule-title">Hydratation légère</p>
+          <p class="rule-subtitle">Crème apaisante sans parfum</p>
+        </div>
+        <div class="rule-detail">Une fine couche de Cicaplast ou d'aloe vera pur peut être appliquée matin et soir pour soulager les tiraillements et protéger la zone.</div>
+      </div>
+      <div class="rule-card warning">
+        <div class="rule-icon-wrap">🏋️</div>
+        <div>
+          <p class="rule-title">Sport léger toléré</p>
+          <p class="rule-subtitle">Évitez encore la transpiration intense</p>
+        </div>
+        <div class="rule-detail">La marche et le vélo d'appartement sont acceptables. Repoussez la musculation intense, le crossfit ou le jogging à partir du 10e jour.</div>
+      </div>
+      <div class="rule-card info">
+        <div class="rule-icon-wrap">🔍</div>
+        <div>
+          <p class="rule-title">Légère desquamation normale</p>
+          <p class="rule-subtitle">Ne pas arracher les croûtes</p>
+        </div>
+        <div class="rule-detail">De petites pellicules ou microcroûtes peuvent apparaître — c'est tout à fait normal. Laissez-les tomber naturellement sans intervenir.</div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <span class="tip-icon">📸</span>
+      <p><strong>Résultat entre les séances :</strong> il est normal que les pigments paraissent plus clairs ou légèrement inégaux entre les séances. Le résultat final s'évalue après la <strong>3e séance</strong>, une fois la cicatrisation complète.</p>
+    </div>
+  </div>
+
+  <!-- LONG TERME -->
+  <div class="tab-panel" id="tab-long">
+    <div class="rules-grid">
+      <div class="rule-card ok">
+        <div class="rule-icon-wrap">🕶️</div>
+        <div>
+          <p class="rule-title">Protection solaire quotidienne</p>
+          <p class="rule-subtitle">SPF 50 recommandé</p>
+        </div>
+        <div class="rule-detail">Le soleil est le principal facteur de décoloration des pigments sur le long terme. Appliquez un écran solaire SPF 50 dès que vous êtes exposé, été comme hiver.</div>
+      </div>
+      <div class="rule-card ok">
+        <div class="rule-icon-wrap">💧</div>
+        <div>
+          <p class="rule-title">Hydratation du cuir chevelu</p>
+          <p class="rule-subtitle">Baume léger sans alcool</p>
+        </div>
+        <div class="rule-detail">Un cuir chevelu bien hydraté conserve mieux les pigments. Utilisez un baume ou une lotion légère sans alcool 2 à 3 fois par semaine.</div>
+      </div>
+      <div class="rule-card ok">
+        <div class="rule-icon-wrap">✂️</div>
+        <div>
+          <p class="rule-title">Rasage régulier</p>
+          <p class="rule-subtitle">Tondeuse de préférence</p>
+        </div>
+        <div class="rule-detail">Pour maintenir l'effet naturel, rasez-vous régulièrement à la tondeuse (grade 0 à 1). Le rasoir à lame peut avec le temps abraser légèrement la surface pigmentée.</div>
+      </div>
+      <div class="rule-card ok">
+        <div class="rule-icon-wrap">📅</div>
+        <div>
+          <p class="rule-title">Séance de retouche</p>
+          <p class="rule-subtitle">Tous les 2 à 4 ans</p>
+        </div>
+        <div class="rule-detail">Les pigments s'estompent naturellement avec le temps. Une séance de retouche permet de raviver l'éclat et la densité visuelle. Contactez-nous pour évaluer vos besoins.</div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <span class="tip-icon">⚠️</span>
+      <p><strong>À éviter sur le long terme :</strong> peelings chimiques, dermabrasion, épilation laser sur la zone traitée — ces traitements peuvent dégrader ou décolorer les pigments. Signalez toujours votre micropigmentation avant tout soin esthétique du cuir chevelu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<section class="checklist-section">
+  <p class="section-label">Suivi personnalisé</p>
+  <h2 class="section-title" style="text-align:center">Votre checklist post-séance</h2>
+  <div class="checklist-wrap">
+    <p class="checklist-intro">Cochez chaque consigne au fur et à mesure. Votre progression s'affiche en temps réel.</p>
+    <p class="checklist-count" id="checkCount">0 / 8 complété</p>
+    <div class="checklist-progress"><div class="checklist-progress-bar" id="checkBar"></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><p class="check-day">J+0 — Ce soir</p><p class="check-label">Je n'ai pas mouillé mon cuir chevelu après la séance</p></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><p class="check-day">J+1 — Lendemain</p><p class="check-label">Aucun sport intense ni forte transpiration</p></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><p class="check-day">J+1 — Lendemain</p><p class="check-label">Pas de piscine, hammam ou sauna</p></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><p class="check-day">J+2 — 48h</p><p class="check-label">Je n'ai pas exposé mon crâne au soleil direct</p></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><p class="check-day">J+4 — Premier shampoing</p><p class="check-label">Eau tiède, gestes doux sans friction — tapoter la serviette, ne pas frotter</p></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><p class="check-day">J+3 à J+10</p><p class="check-label">J'applique Cicaplast si démangeaisons (sans gratter)</p></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><p class="check-day">J+10</p><p class="check-label">Je n'ai pas arraché de microcroûtes — elles sont tombées seules</p></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><p class="check-day">Après cicatrisation</p><p class="check-label">J'applique SPF 50 dès que je sors au soleil</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <p class="section-label">Questions fréquentes</p>
+  <h2 class="section-title">On répond à tout</h2>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Est-ce que les pigments vont rester bien visibles après les 48h ?
+        <span class="arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#8BBFBA" stroke-width="2" stroke-linecap="round"/></svg></span>
+      </div>
+      <div class="faq-a">Il est normal que les pigments paraissent plus intenses juste après la séance, puis légèrement plus clairs après cicatrisation. La vraie densité s'évalue seulement après la 3e séance, une fois que toutes les couches sont posées et cicatrisées.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Je ressens des tiraillements ou des démangeaisons, c'est grave ?
+        <span class="arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#8BBFBA" stroke-width="2" stroke-linecap="round"/></svg></span>
+      </div>
+      <div class="faq-a">Non, c'est tout à fait normal. La peau cicatrise et les petites démangeaisons font partie du processus. Appliquez délicatement une crème Cicaplast (La Roche-Posay) sans eau. Si la zone devient rouge, gonflée ou douloureuse, contactez-nous.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Puis-je me raser la tête après la séance ?
+        <span class="arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#8BBFBA" stroke-width="2" stroke-linecap="round"/></svg></span>
+      </div>
+      <div class="faq-a">Attendez minimum 10 jours avant de vous raser à nouveau. Privilégiez la tondeuse grade 0 plutôt qu'un rasoir à lame les premières semaines. La peau doit être entièrement cicatrisée avant tout contact mécanique.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Quand peut-on reprendre le sport normalement ?
+        <span class="arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#8BBFBA" stroke-width="2" stroke-linecap="round"/></svg></span>
+      </div>
+      <div class="faq-a">Activité légère (marche, vélo tranquille) : à partir du 3e jour. Sport intense avec transpiration (musculation, crossfit, course) : à partir du 10e jour. La transpiration acide est particulièrement néfaste pour la tenue des pigments frais.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Combien de temps dure le résultat ?
+        <span class="arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#8BBFBA" stroke-width="2" stroke-linecap="round"/></svg></span>
+      </div>
+      <div class="faq-a">En moyenne 2 à 4 ans selon votre phototype, votre exposition au soleil et votre hydratation cutanée. Une séance de retouche permet de rafraîchir les pigments et de maintenir un résultat impeccable dans le temps.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        J'ai un doute sur ma cicatrisation, que faire ?
+        <span class="arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#8BBFBA" stroke-width="2" stroke-linecap="round"/></svg></span>
+      </div>
+      <div class="faq-a">N'hésitez jamais à nous contacter directement par téléphone ou WhatsApp. Vous pouvez nous envoyer une photo de la zone et nous vous répondons rapidement. Votre résultat est notre priorité.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <h2>Une question ? On est là.</h2>
+  <p>Disponibles du mardi au samedi pour répondre à toutes vos questions post-séance.</p>
+  <div class="contact-btns">
+    <a href="tel:0756885257" class="btn-phone">📞 07 56 88 52 57</a>
+    <a href="https://wa.me/33756885257" class="btn-wa">💬 WhatsApp</a>
+  </div>
+</section>
+
+<footer>
+  © 2026 MPC Clinique — <a href="index.html">www.mpc-clinique.com</a>
+</footer>
+
+<script>
+  function switchTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  function toggleFaq(el) {
+    const item = el.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('done');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = document.querySelectorAll('.check-item').length;
+    const done  = document.querySelectorAll('.check-item.done').length;
+    document.getElementById('checkCount').textContent = `${done} / ${total} complété`;
+    document.getElementById('checkBar').style.width = (done / total * 100) + '%';
+  }
+</script>
+</body>
+</html>
