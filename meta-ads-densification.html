@@ -540,6 +540,29 @@
     document.getElementById('iconUnmuted').style.display = video.muted ? 'none' : 'block';
   }
 
+  // Forcer la lecture de la vidéo sur mobile
+  (function() {
+    const video = document.getElementById('lpVideo');
+    if (!video) return;
+    video.muted = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    var tryPlay = function() {
+      var p = video.play();
+      if (p !== undefined) p.catch(function() {});
+    };
+    if (video.readyState >= 2) {
+      tryPlay();
+    } else {
+      video.addEventListener('loadeddata', tryPlay);
+      video.addEventListener('canplay', tryPlay);
+    }
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) tryPlay();
+    });
+    window.addEventListener('scroll', function() { tryPlay(); }, { once: true });
+  })();
+
   document.querySelectorAll('a[href="#formulaire"]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
