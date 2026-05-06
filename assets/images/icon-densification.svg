@@ -1,0 +1,32 @@
+<svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="hairClip">
+      <ellipse cx="110" cy="115" rx="56" ry="66"/>
+    </clipPath>
+    <pattern id="hairDots" x="0" y="0" width="7" height="7" patternUnits="userSpaceOnUse">
+      <circle cx="3.5" cy="3.5" r="1.4" fill="#2d2d2d" opacity="0.75"/>
+    </pattern>
+  </defs>
+
+  <!-- Fond cercle vert sauge -->
+  <circle cx="110" cy="110" r="108" fill="#8BBFBA"/>
+
+  <!-- Cou -->
+  <path d="M93 172 L93 190 Q93 198 110 198 Q127 198 127 190 L127 172 Z" fill="#DDB88A" stroke="#444" stroke-width="1.2"/>
+
+  <!-- Tête silhouette (vue de derrière) -->
+  <ellipse cx="110" cy="115" rx="56" ry="66" fill="#DDB88A" stroke="#444" stroke-width="1.5"/>
+
+  <!-- Cheveux — points de stippling sur toute la zone du crâne -->
+  <rect x="54" y="49" width="112" height="132" fill="url(#hairDots)" clip-path="url(#hairClip)"/>
+
+  <!-- Oreille gauche -->
+  <ellipse cx="54" cy="118" rx="9" ry="13" fill="#DDB88A" stroke="#444" stroke-width="1.2"/>
+  <!-- Détail intérieur oreille gauche -->
+  <path d="M56 112 Q53 118 56 124" stroke="#888" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+
+  <!-- Oreille droite -->
+  <ellipse cx="166" cy="118" rx="9" ry="13" fill="#DDB88A" stroke="#444" stroke-width="1.2"/>
+  <!-- Détail intérieur oreille droite -->
+  <path d="M164 112 Q167 118 164 124" stroke="#888" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+</svg>
