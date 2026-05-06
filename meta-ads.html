@@ -524,7 +524,7 @@
     document.getElementById('successPrenom').textContent = p;
     document.getElementById('waLink').href = waUrl;
     showStep('s');
-    setTimeout(() => window.open(waUrl, '_blank'), 1500);
+    window.location.href = waUrl;
   }
 
   function toggleMute() {
