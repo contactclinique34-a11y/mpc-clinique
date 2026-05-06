@@ -134,12 +134,12 @@
     .opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
     .opt-card {
       border: 2px solid var(--border); border-radius: 12px;
-      padding: 14px 10px; cursor: pointer; text-align: center; user-select: none; transition: all .2s;
+      padding: 16px 10px; cursor: pointer; text-align: center; user-select: none; transition: all .2s;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
     .opt-card:hover, .opt-card.selected { border-color: var(--green); background: #f0fff6; }
     .opt-card input { display: none; }
-    .opt-emoji { font-size: 22px; margin-bottom: 5px; }
-    .opt-label { font-size: 13px; font-weight: 700; color: var(--dark); }
+    .opt-label { font-size: 14px; font-weight: 700; color: var(--dark); }
 
     .opt-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
     .opt-row {
