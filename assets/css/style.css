@@ -149,6 +149,9 @@ button { cursor: pointer; font-family: var(--font); }
   background: var(--dark-bg); position: relative;
   padding-top: 76px; overflow: hidden;
 }
+/* Desktop : wrap = invisible, video en fond absolu */
+.hero-video-wrap { position: absolute; inset: 0; z-index: 0; }
+.hero-video-overlay { display: none; }
 .hero-video {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -680,15 +683,35 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
 
   /* Hero : vidéo 16/9 + texte dessous */
   #hero { flex-direction: column; min-height: unset; align-items: stretch; padding-top: 76px; }
-  .hero-video {
-    position: static !important;
-    top: unset !important; left: unset !important;
-    right: unset !important; bottom: unset !important;
-    width: 100% !important; height: auto !important;
-    aspect-ratio: 16/9; object-fit: cover;
-    z-index: auto !important; flex-shrink: 0;
-  }
   #hero::before, #hero::after { display: none; }
+
+  /* Wrapper vidéo mobile : static, agrandi de 20%, centré */
+  .hero-video-wrap {
+    position: relative !important;
+    inset: unset !important;
+    width: 100%;
+    height: 67.5vw; /* 56.25vw × 1.2 = 20% plus grand que 16:9 */
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .hero-video {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+  /* Fondu en bas de la vidéo vers le fond vert */
+  .hero-video-overlay {
+    display: block;
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 100px;
+    background: linear-gradient(to bottom, transparent, var(--green-primary));
+    pointer-events: none;
+    z-index: 1;
+  }
   #hero .container { background: var(--green-primary); padding-top: var(--sp-4); padding-bottom: var(--sp-5); }
   .hero-inner { padding: 0; max-width: 100%; }
   .hero-inner h1 { font-size: 24px; margin-bottom: var(--sp-2); }
