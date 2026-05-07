@@ -651,7 +651,7 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
   .confiance-grid, .definition-inner, .visagisme-inner, .definition-cols, .temoignage-grid, .patch-layout { grid-template-columns: 1fr; gap: var(--sp-4); }
   .visagisme-img { order: 0; }
   /* Stats — fond blanc, bulles alignées */
-  #stats { background: #fff; box-shadow: 0 1px 0 #eee; }
+  #stats { background: var(--light-bg); box-shadow: none; }
   .stats-grid { grid-template-columns: repeat(3, 1fr); align-items: start; }
   .stat-item {
     padding: 20px 6px; flex-direction: column;
