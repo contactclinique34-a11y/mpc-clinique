@@ -240,15 +240,33 @@
     .wa-float img { width: 30px; }
 
     /* RESPONSIVE */
-    @media (max-width: 600px) {
-      .video-trio { gap: 8px; }
-      .temoignages-grid { grid-template-columns: 1fr; }
-      .opt-grid { grid-template-columns: 1fr; }
-      .form-card { padding: 24px 16px; }
-    }
-    @media (max-width: 400px) {
-      .hero-badges { gap: 14px; }
+    @media (max-width: 640px) {
+      /* Hero */
+      .hero { padding: 36px 16px 32px; }
+      .hero h1 { font-size: 26px; }
+      .hero p { font-size: 15px; }
+      .hero-badges { gap: 16px; }
       .hero-badge strong { font-size: 22px; }
+      .btn-hero { width: 100%; justify-content: center; padding: 15px 20px; font-size: 15px; }
+
+      /* Video trio : empilement vertical */
+      .video-section { padding: 28px 16px; }
+      .video-trio { flex-direction: column; align-items: center; gap: 12px; }
+      .trio-center { width: 100%; max-width: 340px; }
+      .trio-side { flex-direction: row; width: 100%; max-width: 340px; }
+      .trio-side img { aspect-ratio: 1/1; }
+
+      /* Form */
+      .form-section { padding: 36px 12px; }
+      .form-card { padding: 24px 16px; border-radius: 16px; }
+      .form-card h2 { font-size: 20px; }
+
+      /* Témoignages */
+      .temoignages { padding: 36px 16px; }
+      .temoignages-grid { grid-template-columns: 1fr; }
+
+      /* Options */
+      .opt-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
