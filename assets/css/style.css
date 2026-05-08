@@ -753,7 +753,11 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
   .section-pad { padding: var(--sp-7) 0; }
 
   /* Grilles */
-  .avantages-grid { grid-template-columns: repeat(2, 1fr); }
+  .avantages-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .avantage-card { padding: 16px 14px; }
+  .avantage-card h3 { font-size: 13px; }
+  .avantage-card p { font-size: 12px; line-height: 1.5; }
+  .avantage-card::after { font-size: 60px; top: -4px; right: 8px; }
   .traitements-grid { grid-template-columns: 1fr; }
   .blog-grid { grid-template-columns: 1fr; }
   .gallery-grid { grid-template-columns: 1fr; }
@@ -810,7 +814,11 @@ footer { background: #080808; color: rgba(255,255,255,.65); padding: var(--sp-7)
 /* Petit mobile */
 @media (max-width: 480px) {
   :root { --sp-8: 44px; --sp-7: 36px; --size-2xl: 24px; }
-  .avantages-grid { grid-template-columns: 1fr; }
+  .avantages-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .avantage-card { padding: 16px 12px; }
+  .avantage-card h3 { font-size: 13px; }
+  .avantage-card p { font-size: 12px; line-height: 1.5; }
+  .avantage-card::after { font-size: 56px; top: -4px; right: 8px; }
   .blog-grid { grid-template-columns: 1fr; }
   .gallery-grid { grid-template-columns: 1fr; }
   .stat-item { gap: 8px; padding: 16px 4px; }
