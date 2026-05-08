@@ -942,5 +942,37 @@
 </a>
 
 <script src="assets/js/main.js"></script>
+<script>
+  /* Force autoplay vidéo hero sur mobile (iOS + Android) */
+  (function() {
+    const v = document.querySelector('.hero-video');
+    if (!v) return;
+    v.muted = true;
+    v.setAttribute('muted', '');
+    v.setAttribute('playsinline', '');
+
+    function tryPlay() {
+      v.play().catch(function() {});
+    }
+
+    // Déclencheurs multiples pour couvrir tous les navigateurs mobiles
+    document.addEventListener('DOMContentLoaded', tryPlay);
+    v.addEventListener('loadedmetadata', tryPlay);
+    v.addEventListener('loadeddata', tryPlay);
+    v.addEventListener('canplay', tryPlay);
+    document.addEventListener('touchstart', tryPlay, { once: true });
+    document.addEventListener('scroll', tryPlay, { once: true });
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) tryPlay();
+    });
+
+    // Tentatives répétées les 3 premières secondes
+    var attempts = 0;
+    var interval = setInterval(function() {
+      if (attempts++ > 6 || !v.paused) { clearInterval(interval); return; }
+      tryPlay();
+    }, 500);
+  })();
+</script>
 </body>
 </html>

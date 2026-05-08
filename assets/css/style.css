@@ -269,9 +269,9 @@ button { cursor: pointer; font-family: var(--font); }
   draggable: false;
 }
 .ba-after img {
-  object-fit: contain;
-  object-position: center center;
-  background: #1a1a1a;
+  object-fit: cover;
+  object-position: center 20%;
+  transform: scale(1.08);
 }
 .ba-before {
   width: 50%;
