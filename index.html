@@ -973,6 +973,30 @@
       tryPlay();
     }, 500);
   })();
+
+  /* Autoplay vidéo "Aperçu" au scroll (IntersectionObserver) */
+  (function() {
+    var teaser = document.querySelector('.definition-video video');
+    if (!teaser) return;
+    teaser.muted = true;
+    teaser.setAttribute('muted', '');
+    teaser.setAttribute('playsinline', '');
+
+    function playTeaser() { teaser.play().catch(function(){}); }
+
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) { playTeaser(); }
+        });
+      }, { threshold: 0.3 });
+      obs.observe(teaser);
+    }
+
+    document.addEventListener('touchstart', playTeaser, { once: true });
+    teaser.addEventListener('loadeddata', playTeaser);
+    teaser.addEventListener('canplay', playTeaser);
+  })();
 </script>
 </body>
 </html>
