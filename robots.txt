@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mpc-clinique.vercel.app/sitemap.xml
+Sitemap: https://mpc-clinique.com/sitemap.xml
