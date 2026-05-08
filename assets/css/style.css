@@ -270,7 +270,7 @@ button { cursor: pointer; font-family: var(--font); }
 }
 .ba-after img {
   object-fit: cover;
-  object-position: center 20%;
+  object-position: center 5%;
   transform: scale(1.08);
 }
 .ba-before {
