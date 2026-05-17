@@ -192,10 +192,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('touchend', () => dragging = false);
   }
 
-  /* ---- Contact form validation ---- */
+  /* ---- Contact form — Web3Forms ---- */
   const form = document.getElementById('contactForm');
   if (form) {
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', async e => {
       e.preventDefault();
       const fields = form.querySelectorAll('[required]');
       let valid = true;
@@ -203,14 +203,38 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!f.value.trim()) { f.style.borderColor = '#e74c3c'; valid = false; }
         else f.style.borderColor = '';
       });
-      if (valid) {
-        const btn = form.querySelector('.form-submit');
-        btn.textContent = 'Message envoyé ✓';
-        btn.style.background = '#009A3A';
+      if (!valid) return;
+
+      const btn = form.querySelector('.form-submit');
+      btn.textContent = 'Envoi en cours…';
+      btn.disabled = true;
+
+      try {
+        const data = new FormData(form);
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: data
+        });
+        const json = await res.json();
+        if (json.success) {
+          btn.textContent = 'Message envoyé ✓';
+          btn.style.background = '#009A3A';
+          form.reset();
+          setTimeout(() => {
+            btn.textContent = 'Envoyer le message';
+            btn.style.background = '';
+            btn.disabled = false;
+          }, 4000);
+        } else {
+          throw new Error('Échec envoi');
+        }
+      } catch (err) {
+        btn.textContent = 'Erreur — réessayez';
+        btn.style.background = '#e74c3c';
+        btn.disabled = false;
         setTimeout(() => {
           btn.textContent = 'Envoyer le message';
           btn.style.background = '';
-          form.reset();
         }, 3000);
       }
     });
