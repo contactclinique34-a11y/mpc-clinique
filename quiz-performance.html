@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz Performance — Salon de Coiffure</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --or: #C9A96E;
+      --or-l: #f5ead8;
+      --dark: #1a1410;
+      --card: #231e17;
+      --text: rgba(255,255,255,.85);
+      --muted: rgba(255,255,255,.4);
+      --green: #4caf50;
+      --red: #e53935;
+      --border: rgba(255,255,255,.1);
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--dark); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+    /* HEADER */
+    .hdr { width: 100%; background: rgba(0,0,0,.4); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .hdr-title { font-family: 'Playfair Display', serif; color: #fff; font-size: 1rem; }
+    .hdr-title span { color: var(--or); }
+    .hdr-badge { background: var(--or); color: #fff; font-size: 0.68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; }
+
+    /* START */
+    #screen-start { width: 100%; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 24px; text-align: center; background: radial-gradient(ellipse at 50% 0%, #2a1e0e 0%, #1a1410 65%); }
+    .start-icon { width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, var(--or), #a07840); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; margin: 0 auto 28px; box-shadow: 0 0 50px rgba(201,169,110,.3); }
+    #screen-start h1 { font-family: 'Playfair Display', serif; color: #fff; font-size: clamp(1.9rem, 5vw, 2.8rem); line-height: 1.2; margin-bottom: 14px; }
+    #screen-start h1 em { font-style: normal; color: var(--or); }
+    #screen-start p { color: var(--muted); font-size: 1rem; max-width: 440px; margin: 0 auto 36px; line-height: 1.65; }
+    .chips { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 44px; }
+    .chip { background: rgba(201,169,110,.1); border: 1px solid rgba(201,169,110,.3); color: var(--or); border-radius: 30px; padding: 7px 16px; font-size: 0.82rem; font-weight: 600; }
+    .btn-start { background: linear-gradient(135deg, var(--or), #a07840); color: #fff; border: none; border-radius: 50px; padding: 17px 52px; font-size: 1rem; font-weight: 700; cursor: pointer; letter-spacing: .04em; box-shadow: 0 8px 30px rgba(201,169,110,.4); transition: transform .15s; }
+    .btn-start:hover { transform: translateY(-2px); }
+
+    /* QUIZ */
+    #screen-quiz { display: none; width: 100%; min-height: 100vh; padding-bottom: 60px; }
+    .prog-wrap { background: rgba(255,255,255,.07); height: 5px; width: 100%; position: sticky; top: 0; z-index: 90; }
+    .prog-bar { height: 100%; background: linear-gradient(90deg, var(--or), #e8c87a); transition: width .5s cubic-bezier(.4,0,.2,1); }
+    .prog-label { text-align: center; color: var(--muted); font-size: .78rem; padding: 10px 0 0; letter-spacing: .06em; }
+
+    .q-wrap { max-width: 700px; margin: 0 auto; padding: 32px 20px 20px; animation: slideIn .32s ease; }
+    @keyframes slideIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+
+    .q-category { font-size: .72rem; font-weight: 700; letter-spacing: .12em; color: var(--or); text-transform: uppercase; margin-bottom: 8px; }
+    .q-text { font-family: 'Playfair Display', serif; color: #fff; font-size: clamp(1.1rem,3.5vw,1.5rem); line-height: 1.4; margin-bottom: 8px; }
+    .q-hint { color: var(--muted); font-size: .8rem; margin-bottom: 24px; }
+    .q-stat { background: rgba(201,169,110,.1); border: 1px solid rgba(201,169,110,.25); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; color: var(--or); font-size: .88rem; line-height: 1.5; }
+    .q-stat strong { color: #fff; }
+
+    .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .opt { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.04); border: 1.5px solid var(--border); border-radius: 12px; padding: 15px 18px; cursor: pointer; transition: border-color .14s, background .14s; user-select: none; }
+    .opt:hover { border-color: var(--or); background: rgba(201,169,110,.08); }
+    .opt-letter { width: 32px; height: 32px; min-width: 32px; border-radius: 8px; border: 2px solid rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-size: .85rem; font-weight: 700; color: var(--muted); transition: all .14s; }
+    .opt.selected .opt-letter { background: var(--or); border-color: var(--or); color: #fff; }
+    .opt.selected { border-color: var(--or); background: rgba(201,169,110,.1); }
+    .opt-txt { color: rgba(255,255,255,.8); font-size: .95rem; line-height: 1.4; }
+    .opt.selected .opt-txt { color: var(--or); font-weight: 600; }
+
+    .opt.fb-ok { border-color: var(--green) !important; background: rgba(76,175,80,.12) !important; }
+    .opt.fb-bad { border-color: var(--red) !important; background: rgba(229,57,53,.1) !important; }
+    .opt.fb-ok .opt-letter { background: var(--green); border-color: var(--green); color: #fff; }
+    .opt.fb-bad .opt-letter { background: var(--red); border-color: var(--red); color: #fff; }
+
+    .result-msg { display: none; border-radius: 11px; padding: 15px 18px; font-size: .92rem; line-height: 1.6; margin-bottom: 18px; }
+    .result-msg.correct { display: block; background: rgba(76,175,80,.14); border: 1px solid rgba(76,175,80,.35); color: #81c784; }
+    .result-msg.wrong { display: block; background: rgba(229,57,53,.1); border: 1px solid rgba(229,57,53,.28); color: #ef9a9a; }
+    .result-msg .expl { margin-top: 7px; font-size: .85rem; opacity: .85; }
+
+    .btn-validate { width:100%; background: linear-gradient(135deg, var(--or), #a07840); color:#fff; border:none; border-radius:50px; padding:15px; font-size:.97rem; font-weight:700; cursor:pointer; margin-bottom:11px; transition: opacity .14s; }
+    .btn-validate:disabled { opacity:.3; cursor:not-allowed; }
+    .btn-next { width:100%; background:transparent; color:var(--or); border:1.5px solid var(--or); border-radius:50px; padding:13px; font-size:.92rem; font-weight:600; cursor:pointer; display:none; transition: background .14s, color .14s; }
+    .btn-next:hover { background: var(--or); color: #fff; }
+
+    /* RESULT */
+    #screen-result { display:none; width:100%; min-height:100vh; background: radial-gradient(ellipse at 50% 0%, #2a1e0e 0%, #1a1410 65%); padding:60px 24px; text-align:center; flex-direction:column; align-items:center; justify-content:center; }
+    .trophy { font-size: 3.8rem; margin-bottom: 20px; }
+    .score-circle { width:155px; height:155px; border-radius:50%; border:4px solid var(--or); display:flex; flex-direction:column; align-items:center; justify-content:center; margin:0 auto 28px; background: rgba(201,169,110,.08); box-shadow: 0 0 50px rgba(201,169,110,.2); }
+    .score-n { font-family:'Playfair Display',serif; font-size:2.8rem; color:#fff; line-height:1; }
+    .score-t { color:var(--or); font-size:.95rem; margin-top:3px; }
+    #screen-result h2 { font-family:'Playfair Display',serif; color:#fff; font-size:clamp(1.4rem,4vw,2rem); margin-bottom:10px; }
+    .result-sub { color:var(--muted); font-size:.97rem; max-width:400px; margin:0 auto 36px; line-height:1.6; }
+    .score-bar-wrap { max-width:380px; margin:0 auto 34px; }
+    .score-bar-lbs { display:flex; justify-content:space-between; color:var(--muted); font-size:.76rem; margin-bottom:5px; }
+    .score-bar-bg { background:rgba(255,255,255,.08); border-radius:8px; height:9px; overflow:hidden; }
+    .score-bar-v { height:100%; border-radius:8px; background:linear-gradient(90deg,var(--or),#e8c87a); transition:width 1s cubic-bezier(.4,0,.2,1); }
+    .btn-restart { background: linear-gradient(135deg, var(--or), #a07840); color:#fff; border:none; border-radius:50px; padding:15px 42px; font-size:.97rem; font-weight:700; cursor:pointer; box-shadow: 0 8px 28px rgba(201,169,110,.35); transition:transform .14s; }
+    .btn-restart:hover { transform: translateY(-2px); }
+    .summary { max-width:580px; margin:40px auto 0; text-align:left; }
+    .summary h3 { color:var(--muted); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; margin-bottom:12px; }
+    .s-item { background:rgba(255,255,255,.04); border-radius:9px; padding:12px 15px; margin-bottom:7px; display:flex; align-items:flex-start; gap:10px; border-left:3px solid transparent; }
+    .s-item.ok { border-left-color: var(--green); }
+    .s-item.bad { border-left-color: var(--red); }
+    .s-q { color:rgba(255,255,255,.68); font-size:.86rem; line-height:1.4; }
+    .s-ic { font-size:1rem; margin-top:1px; }
+  </style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-title">✂️ Salon — <span>Quiz Performance</span></div>
+  <span class="hdr-badge">Chiffres clés</span>
+</header>
+
+<!-- START -->
+<section id="screen-start">
+  <div class="start-icon">📊</div>
+  <h1>Quiz <em>Performance</em><br/>Salon de coiffure</h1>
+  <p>Testez vos connaissances sur les indicateurs clés d'un salon performant : CA, fidélisation, panier moyen, productivité...</p>
+  <div class="chips">
+    <span class="chip">10 questions</span>
+    <span class="chip">Chiffres du secteur</span>
+    <span class="chip">Une seule bonne réponse</span>
+  </div>
+  <button class="btn-start" onclick="startQuiz()">C'est parti →</button>
+</section>
+
+<!-- QUIZ -->
+<section id="screen-quiz">
+  <div class="prog-wrap"><div class="prog-bar" id="progBar" style="width:0%"></div></div>
+  <p class="prog-label" id="progLabel">Question 1 / 10</p>
+  <div class="q-wrap" id="qWrap"></div>
+</section>
+
+<!-- RESULT -->
+<section id="screen-result">
+  <div class="trophy" id="trophy">🏆</div>
+  <div class="score-circle">
+    <span class="score-n" id="scoreN">0</span>
+    <span class="score-t">/ 10 pts</span>
+  </div>
+  <h2 id="resTitle"></h2>
+  <p class="result-sub" id="resSub"></p>
+  <div class="score-bar-wrap">
+    <div class="score-bar-lbs"><span>0</span><span>10 pts</span></div>
+    <div class="score-bar-bg"><div class="score-bar-v" id="barVal" style="width:0%"></div></div>
+  </div>
+  <button class="btn-restart" onclick="restartQuiz()">Rejouer →</button>
+  <div class="summary" id="summary"></div>
+</section>
+
+<script>
+const Q = [
+  {
+    cat: "Fidélisation",
+    q: "Quel est le taux de fidélisation client considéré comme performant dans un salon de coiffure ?",
+    stat: "En France, <strong>68 %</strong> des clients quittent un salon sans raison apparente — simplement parce qu'ils ne se sentent pas assez valorisés.",
+    opts: ["30 à 45 %", "50 à 60 %", "70 à 80 %", "90 % et plus"],
+    correct: 2,
+    explication: "Un salon performant fidélise entre 70 et 80 % de sa clientèle. En dessous de 60 %, il faut travailler activement la relation client et les rappels de rendez-vous."
+  },
+  {
+    cat: "Chiffre d'affaires",
+    q: "Quel est le chiffre d'affaires annuel moyen d'un salon de coiffure avec 3 collaborateurs en France ?",
+    stat: "Le secteur de la coiffure représente <strong>plus de 13 milliards d'euros</strong> de CA en France, avec environ 85 000 salons actifs.",
+    opts: ["60 000 à 90 000 €", "100 000 à 150 000 €", "170 000 à 250 000 €", "350 000 € et plus"],
+    correct: 2,
+    explication: "Un salon de 3 collaborateurs génère en moyenne entre 170 000 et 250 000 € de CA annuel. Ce chiffre varie selon la localisation, les prestations et le positionnement tarifaire."
+  },
+  {
+    cat: "Panier moyen",
+    q: "Quel panier moyen par visite est considéré comme un bon indicateur pour un salon premium ?",
+    stat: "En France, le panier moyen national est d'environ <strong>38 €</strong> pour les femmes et <strong>18 €</strong> pour les hommes.",
+    opts: ["25 à 35 €", "40 à 55 €", "60 à 85 €", "100 € et plus"],
+    correct: 2,
+    explication: "Un salon premium vise un panier moyen entre 60 et 85 € par client. L'upsell (soins, produits, prestations complémentaires) est le levier principal pour atteindre cet objectif."
+  },
+  {
+    cat: "Taux d'occupation",
+    q: "Quel taux d'occupation du planning est l'objectif cible pour un salon rentable ?",
+    stat: "En dessous de <strong>65 %</strong> d'occupation, un salon a du mal à couvrir ses charges fixes — loyer, salaires, fournitures.",
+    opts: ["50 à 60 %", "65 à 70 %", "75 à 85 %", "95 % et plus"],
+    correct: 2,
+    explication: "L'objectif cible est 75 à 85 % d'occupation. Au-delà de 85 %, le risque de burn-out de l'équipe augmente et la qualité peut en pâtir. En dessous de 75 %, il y a une perte de rentabilité."
+  },
+  {
+    cat: "Nouveaux clients",
+    q: "Quelle part du chiffre d'affaires devrait idéalement venir de nouveaux clients dans un salon établi ?",
+    stat: "Acquérir un nouveau client coûte <strong>5 à 7 fois plus cher</strong> que de fidéliser un client existant.",
+    opts: ["Moins de 10 %", "15 à 25 %", "30 à 45 %", "Plus de 50 %"],
+    correct: 1,
+    explication: "Dans un salon établi, 15 à 25 % du CA provenant de nouveaux clients est sain. Cela assure la croissance sans dépendre excessivement d'une acquisition coûteuse. Une part plus élevée signale un problème de fidélisation."
+  },
+  {
+    cat: "Vente produits",
+    q: "Les ventes de produits capillaires (shampooings, soins, styling) devraient représenter quel pourcentage du CA d'un salon ?",
+    stat: "En moyenne, les salons français ne vendent que <strong>4 à 6 %</strong> de produits — loin en dessous du potentiel réel.",
+    opts: ["2 à 5 %", "8 à 15 %", "20 à 25 %", "30 % et plus"],
+    correct: 1,
+    explication: "L'objectif sectoriel est de 8 à 15 % de ventes produits. C'est un levier de marge important car la revente génère des marges de 40 à 60 %, bien au-dessus des prestations. Un bon conseil produit renforce aussi la fidélisation."
+  },
+  {
+    cat: "No-show",
+    q: "Quel taux de no-show (rendez-vous non honorés sans annulation) est tolérable dans un salon ?",
+    stat: "Un taux de no-show de <strong>10 %</strong> représente environ <strong>25 000 € de CA perdu par an</strong> pour un salon à 3 coiffeurs.",
+    opts: ["Moins de 5 %", "5 à 10 %", "10 à 15 %", "Moins de 20 %"],
+    correct: 0,
+    explication: "Le seuil tolérable est inférieur à 5 %. Au-delà, le manque à gagner devient significatif. Les solutions : confirmation de RDV par SMS 48h avant, politique d'acompte, liste d'attente pour remplir les créneaux libérés."
+  },
+  {
+    cat: "Réservation digitale",
+    q: "En 2025, quelle proportion des rendez-vous devrait être prise en ligne dans un salon moderne ?",
+    stat: "En 2020, seulement <strong>22 %</strong> des salons proposaient la réservation en ligne. Ce chiffre dépasse aujourd'hui <strong>55 %</strong>.",
+    opts: ["10 à 20 %", "25 à 35 %", "40 à 60 %", "Plus de 75 %"],
+    correct: 2,
+    explication: "Un salon moderne vise 40 à 60 % de prises de RDV en ligne. Cela réduit les appels entrants, permet de remplir les créneaux en dehors des heures d'ouverture et attire une clientèle plus jeune."
+  },
+  {
+    cat: "Productivité",
+    q: "Combien de clients par jour un coiffeur productif peut-il servir en moyenne (prestations mixtes) ?",
+    stat: "La durée moyenne d'une prestation en salon est de <strong>45 minutes</strong> pour une coupe femme et <strong>25 minutes</strong> pour un homme.",
+    opts: ["4 à 5 clients", "6 à 8 clients", "9 à 12 clients", "13 clients et plus"],
+    correct: 1,
+    explication: "Un coiffeur productif sert entre 6 et 8 clients par jour sur une journée de 8h, en intégrant des prestations variées (colorations, coupes, soins). En dessous de 6, la rentabilité par collaborateur est insuffisante."
+  },
+  {
+    cat: "Avis clients",
+    q: "Quel score Google minimum devrait viser un salon de coiffure pour maximiser son acquisition client ?",
+    stat: "<strong>93 %</strong> des consommateurs lisent les avis en ligne avant de choisir un salon. Un salon à 4,7 étoiles reçoit <strong>3,5× plus</strong> de clics qu'un salon à 4,0.",
+    opts: ["3,5 étoiles", "4,0 étoiles", "4,5 étoiles", "4,8 étoiles et plus"],
+    correct: 3,
+    explication: "L'objectif est 4,8 étoiles et plus. En dessous de 4,5, les clients potentiels hésitent. Chaque nouveau client devrait être invité à laisser un avis — l'idéal est de systématiser cette demande en fin de prestation."
+  }
+];
+
+let cur = 0, score = 0, results = [], validated = false;
+
+function startQuiz() {
+  document.getElementById('screen-start').style.display = 'none';
+  document.getElementById('screen-quiz').style.display = 'block';
+  load();
+}
+
+function load() {
+  validated = false;
+  const q = Q[cur], total = Q.length;
+  document.getElementById('progBar').style.width = (cur / total * 100) + '%';
+  document.getElementById('progLabel').textContent = `Question ${cur + 1} / ${total}`;
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const opts = q.opts.map((o, i) => `
+    <div class="opt" id="opt-${i}" onclick="selectOpt(${i})">
+      <span class="opt-letter" id="ltr-${i}">${letters[i]}</span>
+      <span class="opt-txt">${o}</span>
+    </div>`).join('');
+
+  const isLast = cur === total - 1;
+  document.getElementById('qWrap').innerHTML = `
+    <p class="q-category">${q.cat}</p>
+    <p class="q-text">${q.q}</p>
+    ${q.stat ? `<div class="q-stat">💡 ${q.stat}</div>` : ''}
+    <p class="q-hint">Une seule bonne réponse</p>
+    <div class="options">${opts}</div>
+    <div class="result-msg" id="rmsg"></div>
+    <button class="btn-validate" id="btnV" onclick="validate()" disabled>Valider ma réponse</button>
+    <button class="btn-next" id="btnN" onclick="next()">${isLast ? 'Voir mon score →' : 'Question suivante →'}</button>`;
+}
+
+let selected = null;
+
+function selectOpt(i) {
+  if (validated) return;
+  selected = i;
+  document.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+  document.querySelector(`#opt-${i}`).classList.add('selected');
+  document.getElementById('btnV').disabled = false;
+}
+
+function validate() {
+  if (validated || selected === null) return;
+  validated = true;
+  const q = Q[cur];
+  const correct = q.correct;
+  const isRight = selected === correct;
+
+  if (isRight) score++;
+  results.push({ q: q.q, ok: isRight });
+
+  Q[cur].opts.forEach((_, i) => {
+    const el = document.getElementById(`opt-${i}`);
+    const ltr = document.getElementById(`ltr-${i}`);
+    if (i === correct) { el.classList.add('fb-ok'); ltr.textContent = '✓'; }
+    else if (i === selected && !isRight) { el.classList.add('fb-bad'); ltr.textContent = '✗'; }
+  });
+
+  const msg = document.getElementById('rmsg');
+  if (isRight) {
+    msg.className = 'result-msg correct';
+    msg.innerHTML = `✅ Bonne réponse !<div class="expl">${q.explication}</div>`;
+  } else {
+    msg.className = 'result-msg wrong';
+    msg.innerHTML = `❌ Raté — la bonne réponse est <strong>${['A','B','C','D'][correct]}. ${q.opts[correct]}</strong><div class="expl">${q.explication}</div>`;
+  }
+
+  document.getElementById('btnV').style.display = 'none';
+  document.getElementById('btnN').style.display = 'block';
+}
+
+function next() {
+  selected = null;
+  cur++;
+  if (cur >= Q.length) showResult();
+  else { load(); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+
+function showResult() {
+  document.getElementById('screen-quiz').style.display = 'none';
+  const rs = document.getElementById('screen-result');
+  rs.style.display = 'flex';
+  const pct = (score / Q.length) * 100;
+
+  document.getElementById('scoreN').textContent = score;
+  setTimeout(() => document.getElementById('barVal').style.width = pct + '%', 200);
+
+  let title, sub, trophy;
+  if (pct >= 90) { title = 'Expert du secteur 🔥'; sub = 'Vous maîtrisez les KPI du salon de coiffure comme un gestionnaire aguerri.'; trophy = '🏆'; }
+  else if (pct >= 70) { title = 'Très bon niveau !'; sub = 'De solides bases en gestion. Quelques points à approfondir pour optimiser votre salon.'; trophy = '🥈'; }
+  else if (pct >= 50) { title = 'Bon début !'; sub = 'Vous avez les bases. Des marges de progression importantes pour booster votre performance.'; trophy = '💪'; }
+  else { title = 'À approfondir !'; sub = 'Les chiffres du secteur méritent attention — ils sont la clé d\'un salon rentable et serein.'; trophy = '📚'; }
+
+  document.getElementById('trophy').textContent = trophy;
+  document.getElementById('resTitle').textContent = title;
+  document.getElementById('resSub').textContent = sub;
+
+  document.getElementById('summary').innerHTML = '<h3>Récapitulatif</h3>' +
+    results.map((r, i) => `
+      <div class="s-item ${r.ok ? 'ok' : 'bad'}">
+        <span class="s-ic">${r.ok ? '✅' : '❌'}</span>
+        <span class="s-q">Q${i+1}. ${r.q}</span>
+      </div>`).join('');
+}
+
+function restartQuiz() {
+  cur = 0; score = 0; results = []; selected = null;
+  document.getElementById('screen-result').style.display = 'none';
+  document.getElementById('screen-quiz').style.display = 'block';
+  document.getElementById('progBar').style.width = '0%';
+  document.getElementById('barVal').style.width = '0%';
+  load();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
