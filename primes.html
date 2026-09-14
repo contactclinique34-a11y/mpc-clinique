@@ -79,6 +79,8 @@
     .force-cat-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:10px}
     .force-cat-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.05em;color:var(--blanc)}
     .force-repere{font-size:11px;color:var(--grege);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .force-pacat-lbl{font-size:11px;color:var(--grege);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:8px}
+    .force-pacat-lbl .ca-f{width:90px}
     .fp-r{color:var(--rouge);font-weight:700}.fp-o{color:var(--or);font-weight:700}.fp-g{color:var(--vert);font-weight:700}
     .icon-x{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--grege);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:12px;margin-left:auto}
     .icon-x:hover{border-color:var(--rouge);color:var(--rouge)}
@@ -899,8 +901,8 @@ function saveForceCatsList(cats){
 }
 function lFF(cat,n){var s=_db['ff_'+cat+'_'+n];return(s!=null&&s!=='')?parseFloat(s):null}
 function wFF(cat,n,v){_db['ff_'+cat+'_'+n]=String(v);_apiSet('ff_'+cat+'_'+n,String(v))}
-function lPA(cat,n){var s=_db['pa_'+cat+'_'+n];return(s!=null&&s!=='')?parseFloat(s):null}
-function wPA(cat,n,v){_db['pa_'+cat+'_'+n]=String(v);_apiSet('pa_'+cat+'_'+n,String(v))}
+function lPACat(cat){var s=_db['pacat_'+cat];return(s!=null&&s!=='')?parseFloat(s):null}
+function wPACat(cat,v){_db['pacat_'+cat]=String(v);_apiSet('pacat_'+cat,String(v))}
 function forcePct(ff,pa){return(ff!=null&&pa>0)?((ff-pa)/pa*100):null}
 function forceColorClass(cat,pct){
   if(pct==null)return'';
@@ -916,18 +918,32 @@ function buildForceCatBlock(cat){
   var t=FORCE_THRESH[cat];
   var repereHtml=t?('<span class="force-repere"><span class="fp-r">●</span> 0–'+t[0]+'% &nbsp; <span class="fp-o">●</span> '+t[0]+'–'+t[1]+'% &nbsp; <span class="fp-g">●</span> '+t[1]+'%+</span>'):'';
   var removable=FORCE_DEFAULT_CATS.indexOf(cat)===-1;
+  var paCat=lPACat(cat);
   var rowsHtml=EQUIPE_MASSE.map(function(n){
-    var ff=lFF(cat,n),pa=lPA(cat,n),pct=forcePct(ff,pa);
+    var ff=lFF(cat,n),pct=forcePct(ff,paCat);
     return '<tr><td>'+n+'</td>'+
       '<td><div class="ca-f"><input type="number" class="fp-ff" data-cat="'+cat+'" data-n="'+n+'" value="'+(ff!=null?ff:'')+'" placeholder="0" min="0" step="0.5"/><span>€</span></div></td>'+
-      '<td><div class="ca-f"><input type="number" class="fp-pa" data-cat="'+cat+'" data-n="'+n+'" value="'+(pa!=null?pa:'')+'" placeholder="0" min="0" step="0.5"/><span>€</span></div></td>'+
       '<td style="text-align:right" class="fp-out '+forceColorClass(cat,pct)+'" data-cat="'+cat+'" data-n="'+n+'">'+(pct!=null?pct.toFixed(0)+'%':'—')+'</td></tr>';
   }).join('');
   var div=document.createElement('div');div.className='force-cat';
-  div.innerHTML='<div class="force-cat-head"><span class="force-cat-title">'+forceCatEmoji(cat)+' '+cat+'</span>'+repereHtml+
+  div.innerHTML='<div class="force-cat-head"><span class="force-cat-title">'+forceCatEmoji(cat)+' '+cat+'</span>'+
+    '<span class="force-pacat-lbl">Prix d\'appel TTC <div class="ca-f"><input type="number" class="fp-pacat" data-cat="'+cat+'" value="'+(paCat!=null?paCat:'')+'" placeholder="0" min="0" step="0.5"/><span>€</span></div></span>'+
+    repereHtml+
     (removable?'<button type="button" class="icon-x" data-removecat="'+cat+'">✕ retirer</button>':'')+'</div>'+
-    '<div class="tbl-wrap"><table><thead><tr><th>Collaborateur</th><th>Fiche moyenne TTC</th><th>Prix d\'appel TTC</th><th style="text-align:right">Force de proposition</th></tr></thead><tbody>'+rowsHtml+'</tbody></table></div>';
+    '<div class="tbl-wrap"><table><thead><tr><th>Collaborateur</th><th>Fiche moyenne TTC</th><th style="text-align:right">Force de proposition</th></tr></thead><tbody>'+rowsHtml+'</tbody></table></div>';
   return div;
+}
+
+function recalcForceCat(cat){
+  var pa=parseFloat(document.querySelector('.fp-pacat[data-cat="'+cat+'"]').value)||null;
+  EQUIPE_MASSE.forEach(function(n){
+    var ff=parseFloat(document.querySelector('.fp-ff[data-cat="'+cat+'"][data-n="'+n+'"]').value)||null;
+    var pct=forcePct(ff,pa);
+    var outEl=document.querySelector('.fp-out[data-cat="'+cat+'"][data-n="'+n+'"]');
+    outEl.className='fp-out '+forceColorClass(cat,pct);
+    outEl.textContent=pct!=null?pct.toFixed(0)+'%':'—';
+  });
+  renderForceTeamTable(getForceCats());
 }
 
 function renderForceSection(){
@@ -935,17 +951,11 @@ function renderForceSection(){
   var wrap=document.getElementById('forceBlocks');wrap.innerHTML='';
   cats.forEach(function(cat){wrap.appendChild(buildForceCatBlock(cat))});
 
-  document.querySelectorAll('.fp-ff,.fp-pa').forEach(function(el){
-    el.addEventListener('input',function(){
-      var cat=el.dataset.cat,n=el.dataset.n;
-      var ff=parseFloat(document.querySelector('.fp-ff[data-cat="'+cat+'"][data-n="'+n+'"]').value)||null;
-      var pa=parseFloat(document.querySelector('.fp-pa[data-cat="'+cat+'"][data-n="'+n+'"]').value)||null;
-      var pct=forcePct(ff,pa);
-      var outEl=document.querySelector('.fp-out[data-cat="'+cat+'"][data-n="'+n+'"]');
-      outEl.className='fp-out '+forceColorClass(cat,pct);
-      outEl.textContent=pct!=null?pct.toFixed(0)+'%':'—';
-      renderForceTeamTable(getForceCats());
-    });
+  document.querySelectorAll('.fp-ff').forEach(function(el){
+    el.addEventListener('input',function(){recalcForceCat(el.dataset.cat)});
+  });
+  document.querySelectorAll('.fp-pacat').forEach(function(el){
+    el.addEventListener('input',function(){recalcForceCat(el.dataset.cat)});
   });
   document.querySelectorAll('[data-removecat]').forEach(function(b){
     b.addEventListener('click',function(){
@@ -963,7 +973,7 @@ function renderForceTeamTable(cats){
   document.getElementById('forceTeamBody').innerHTML=EQUIPE_MASSE.map(function(n){
     var cells=cats.map(function(cat){
       var liveEl=document.querySelector('.fp-out[data-cat="'+cat+'"][data-n="'+n+'"]');
-      var pct=forcePct(lFF(cat,n),lPA(cat,n));
+      var pct=forcePct(lFF(cat,n),lPACat(cat));
       var cls=liveEl?liveEl.className.replace('fp-out','').trim():forceColorClass(cat,pct);
       var txt=liveEl?liveEl.textContent:(pct!=null?pct.toFixed(0)+'%':'—');
       return '<td style="text-align:right" class="'+cls+'">'+txt+'</td>';
@@ -974,11 +984,11 @@ function renderForceTeamTable(cats){
 
 function persistForceInputs(){
   getForceCats().forEach(function(cat){
+    var paEl=document.querySelector('.fp-pacat[data-cat="'+cat+'"]');
+    if(paEl&&paEl.value!=='')wPACat(cat,parseFloat(paEl.value));
     EQUIPE_MASSE.forEach(function(n){
       var ffEl=document.querySelector('.fp-ff[data-cat="'+cat+'"][data-n="'+n+'"]');
-      var paEl=document.querySelector('.fp-pa[data-cat="'+cat+'"][data-n="'+n+'"]');
       if(ffEl&&ffEl.value!=='')wFF(cat,n,parseFloat(ffEl.value));
-      if(paEl&&paEl.value!=='')wPA(cat,n,parseFloat(paEl.value));
     });
   });
 }
