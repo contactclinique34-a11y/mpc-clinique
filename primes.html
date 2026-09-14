@@ -210,26 +210,26 @@
       /* fiche employé */
       .sal-bloc{flex-direction:column;gap:10px}
       .seuil-info{margin-left:0;text-align:left}
-      /* tableau CA → cartes empilées sur mobile */
+      /* tableau CA mensuel → cartes empilées sur mobile (uniquement ce tableau) */
       .tbl-wrap{margin:0}
-      table{min-width:0;width:100%}
-      thead{display:none}
-      tbody tr{display:block;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:10px;padding:10px 12px}
-      tbody tr.cur{background:rgba(53,141,124,.06);border-color:rgba(53,141,124,.25)}
-      tbody td{display:none}
+      .months-tbl{min-width:0;width:100%}
+      .months-tbl thead{display:none}
+      .months-tbl tbody tr{display:block;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:10px;padding:10px 12px}
+      .months-tbl tbody tr.cur{background:rgba(53,141,124,.06);border-color:rgba(53,141,124,.25)}
+      .months-tbl tbody td{display:none}
       /* nom du mois */
-      tbody td:nth-child(1){display:block;font-size:13px;font-weight:700;padding:0 0 8px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:8px}
+      .months-tbl tbody td:nth-child(1){display:block;font-size:13px;font-weight:700;padding:0 0 8px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:8px}
       /* CA prest + prime prest côte à côte */
-      tbody td:nth-child(2){display:inline-block;width:55%;vertical-align:middle}
-      tbody td:nth-child(5){display:inline-block;width:44%;vertical-align:middle;text-align:right}
+      .months-tbl tbody td:nth-child(2){display:inline-block;width:55%;vertical-align:middle}
+      .months-tbl tbody td:nth-child(5){display:inline-block;width:44%;vertical-align:middle;text-align:right}
       /* séparateur visuel */
-      tbody td:nth-child(6){display:inline-block;width:55%;vertical-align:middle;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
-      tbody td:nth-child(7){display:inline-block;width:44%;vertical-align:middle;text-align:right;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
+      .months-tbl tbody td:nth-child(6){display:inline-block;width:55%;vertical-align:middle;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
+      .months-tbl tbody td:nth-child(7){display:inline-block;width:44%;vertical-align:middle;text-align:right;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
       /* mini-labels auto */
-      tbody td:nth-child(2)::before{content:"Prest. TTC";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
-      tbody td:nth-child(5)::before{content:"Prime prest.";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
-      tbody td:nth-child(6)::before{content:"CA Vente TTC";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
-      tbody td:nth-child(7)::before{content:"Prime vente";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
+      .months-tbl tbody td:nth-child(2)::before{content:"Prest. TTC";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
+      .months-tbl tbody td:nth-child(5)::before{content:"Prime prest.";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
+      .months-tbl tbody td:nth-child(6)::before{content:"CA Vente TTC";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
+      .months-tbl tbody td:nth-child(7)::before{content:"Prime vente";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
       .ca-f{width:100%}
       input,select,textarea{font-size:16px !important}
       /* bilan */
@@ -306,7 +306,7 @@
       <div class="seuil-info" id="seuilInfo">—</div>
     </div>
     <div class="tbl-label">Chiffre d'affaires mensuel · saisie en TTC</div>
-    <div class="tbl-wrap"><table>
+    <div class="tbl-wrap"><table class="months-tbl">
       <thead><tr><th>Mois</th><th>CA Prest. TTC</th><th class="hd-ht">CA HT</th><th class="hd-ht">Seuil HT</th><th>Prime Prest.</th><th>CA Vente TTC</th><th style="text-align:right">Prime Vente</th></tr></thead>
       <tbody id="monthsBody"></tbody>
     </table></div>
