@@ -312,6 +312,10 @@
     </table></div>
     <div class="divider"></div>
     <div class="bilan-g" id="bilanGrid"></div>
+    <div id="pexEmpWrap" hidden>
+      <div class="hs-title">Primes exceptionnelles · <span id="pexEmpYear"></span></div>
+      <div class="hs-list" id="pexEmpList"></div>
+    </div>
     <div class="total-bar tb-mois">
       <div><div class="tl tb-mois-lbl">Prime du mois ·<span id="totalMoisNom"></span></div></div>
       <div class="tm tb-mois-val" id="totalMoisMontant">—</div>
@@ -613,7 +617,7 @@ function openDetail(n){
   document.getElementById('detSub').textContent='Année '+annee;
   document.getElementById('dispSal').textContent=eu(sal);
   document.getElementById('saveMsg').textContent='';
-  majSeuil(sal);renderMois(sal,ca,cv);renderBilan(sal,ca,cv);renderHsEmp(n,c.hs);
+  majSeuil(sal);renderMois(sal,ca,cv);renderBilan(sal,ca,cv);renderHsEmp(n,c.hs);renderPexEmp(c[String(annee)+'pex']);
   showScreen('screen-detail');
 }
 function majSeuil(sal){
@@ -688,6 +692,19 @@ function renderBilan(sal,ca,cv){
     (texc>0?'<div class="bi hl" style="grid-column:1/-1"><div class="bi-l">Primes exceptionnelles</div><div class="bi-n">'+pex.length+' prime'+(pex.length>1?'s':'')+'</div><div class="bi-v">'+eu(texc)+'</div></div>':'');
   document.getElementById('totalMontant').textContent=total?eu(total):'—';
   document.getElementById('totalSub').textContent='';
+}
+
+function renderPexEmp(pex){
+  var wrap=document.getElementById('pexEmpWrap');
+  if(!pex||!pex.length){wrap.hidden=true;return}
+  wrap.hidden=false;
+  document.getElementById('pexEmpYear').textContent=annee;
+  var el=document.getElementById('pexEmpList');el.innerHTML='';
+  pex.slice().sort(function(a,b){return(a.date||'').localeCompare(b.date||'')}).forEach(function(p){
+    var div=document.createElement('div');div.className='hs-item';
+    div.innerHTML='<div class="hs-head"><span class="hs-date">'+fd(p.date)+'</span><span class="hs-h">'+eu(p.montant)+'</span><span class="pex-motif">'+(p.motif?'Prime : '+p.motif:'Prime exceptionnelle')+'</span></div>';
+    el.appendChild(div);
+  });
 }
 
 /* ── HS employee view ── */
