@@ -112,6 +112,9 @@
     .hs-date{font-weight:600;font-size:13px}
     .hs-h{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--vert);background:var(--vert-cl);padding:2px 8px;border-radius:5px}
     .hs-badge{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;padding:3px 8px;border-radius:12px;margin-left:auto}
+    .pex-motif{font-size:12px;color:var(--grege);margin-left:4px}
+    .pex-del{background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--grege);border-radius:6px;padding:4px 9px;cursor:pointer;font-size:12px;margin-left:auto}
+    .pex-del:hover{border-color:var(--rouge);color:var(--rouge)}
     .hb-a{background:rgba(159,159,159,.1);color:var(--grege);border:1px solid rgba(255,255,255,.12)}
     .hb-r{background:var(--vert-cl);color:var(--vert);border:1px solid var(--vert)}
     .hb-p{background:rgba(255,215,0,.1);color:#ffd700;border:1px solid rgba(255,215,0,.3)}
@@ -380,6 +383,17 @@
       </div>
       <div class="edit-msg" id="addHsMsg"></div>
     </div>
+    <div class="edit-s">
+      <div class="edit-t">🎁 Prime exceptionnelle · <span id="pexYearLabel"></span></div>
+      <div class="hs-list" id="pexAdminList"></div>
+      <div class="add-hs">
+        <div><label>Date</label><input type="date" class="add-hs-in" id="addPexDate"/></div>
+        <div><label>Montant</label><input type="number" class="add-hs-in" id="addPexMontant" min="0" step="1" placeholder="€" style="width:80px"/></div>
+        <div style="flex:1;min-width:150px"><label>Motif (optionnel)</label><input type="text" class="add-hs-in" id="addPexMotif" placeholder="ex : prime vacances" style="width:100%"/></div>
+        <button class="btn-esave" id="addPexBtn">Ajouter</button>
+      </div>
+      <div class="edit-msg" id="addPexMsg"></div>
+    </div>
   </div>
 </div>
 
@@ -470,6 +484,7 @@ function emp(d,n){
   if(!d[n])d[n]={};
   if(!d[n][String(annee)])d[n][String(annee)]=Array(12).fill(0);
   if(!d[n][String(annee)+'v'])d[n][String(annee)+'v']=Array(12).fill(0);
+  if(!d[n][String(annee)+'pex'])d[n][String(annee)+'pex']=[];
   if(!d[n].hs)d[n].hs=[];
   return d[n];
 }
@@ -592,6 +607,7 @@ function renderSecondaryAdmin(){
   });
 }
 function openDetail(n){
+  coiffeurActif=n;
   var d=load(),c=emp(d,n),ca=c[String(annee)],cv=c[String(annee)+'v'],sal=lSal(n);
   document.getElementById('detNom').textContent=n.toUpperCase();
   document.getElementById('detSub').textContent='Année '+annee;
@@ -652,7 +668,9 @@ function renderBilan(sal,ca,cv){
   var mp=ca.filter(function(v){var r=calc(sal,v);return r&&r.prime>0}).length;
   var tvente=(cv||[]).reduce(function(a,v){return a+v*TAUX},0);
   var vtot=(cv||[]).reduce(function(a,b){return a+b},0);
-  var total=tp+tvente;
+  var pex=coiffeurActif?(emp(load(),coiffeurActif)[String(annee)+'pex']||[]):[];
+  var texc=pex.reduce(function(a,p){return a+(parseFloat(p.montant)||0)},0);
+  var total=tp+tvente+texc;
   /* prime du mois en cours */
   var rm=ca[moisActuel]&&sal?calc(sal,ca[moisActuel]):null;
   var pmPrest=rm?rm.prime:0;
@@ -666,7 +684,8 @@ function renderBilan(sal,ca,cv){
   document.getElementById('totalMoisMontant').textContent=pmTotal?eu(pmTotal):'—';
   document.getElementById('bilanGrid').innerHTML=
     '<div class="bi hl"><div class="bi-l">Primes prestations mensuelles</div><div class="bi-n">'+mp+' / 12 mois</div><div class="bi-v">'+(tp?eu(tp):'—')+'</div></div>'+
-    '<div class="bi '+(tvente>0?'hl':'')+'"><div class="bi-l">Prime vente (10 %)</div><div class="bi-n">10 %</div><div class="bi-v">'+(tvente?eu(tvente):'—')+'</div></div>';
+    '<div class="bi '+(tvente>0?'hl':'')+'"><div class="bi-l">Prime vente (10 %)</div><div class="bi-n">10 %</div><div class="bi-v">'+(tvente?eu(tvente):'—')+'</div></div>'+
+    (texc>0?'<div class="bi hl" style="grid-column:1/-1"><div class="bi-l">Primes exceptionnelles</div><div class="bi-n">'+pex.length+' prime'+(pex.length>1?'s':'')+'</div><div class="bi-v">'+eu(texc)+'</div></div>':'');
   document.getElementById('totalMontant').textContent=total?eu(total):'—';
   document.getElementById('totalSub').textContent='';
 }
@@ -1020,8 +1039,43 @@ function openAdminEmp(n){
   document.getElementById('adminPinIn').value='';
   document.getElementById('adminPinInMsg').textContent='';
   document.getElementById('addHsMsg').textContent='';
+  document.getElementById('addPexMsg').textContent='';
+  document.getElementById('pexYearLabel').textContent=annee;
   renderHsAdmin(n,c.hs);
+  renderPexAdmin(n,c[String(annee)+'pex']);
   showScreen('screen-admin-emp');
+}
+function renderPexAdmin(n,pex){
+  var el=document.getElementById('pexAdminList');
+  if(!pex||!pex.length){el.innerHTML='<p style="color:var(--grege);font-size:13px;font-style:italic;margin-bottom:12px">Aucune prime exceptionnelle '+annee+'.</p>';return}
+  el.innerHTML='';
+  pex.slice().sort(function(a,b){return(a.date||'').localeCompare(b.date||'')}).forEach(function(p){
+    var div=document.createElement('div');div.className='hs-item';
+    div.innerHTML='<div class="hs-head"><span class="hs-date">'+fd(p.date)+'</span><span class="hs-h">'+eu(p.montant)+'</span>'+(p.motif?'<span class="pex-motif">'+p.motif+'</span>':'')+'<button class="pex-del" onclick="removePex(\''+n+'\','+p.id+')">✕</button></div>';
+    el.appendChild(div);
+  });
+}
+function addPex(n){
+  var dv=document.getElementById('addPexDate').value;
+  var mv=parseFloat(document.getElementById('addPexMontant').value)||0;
+  var motif=document.getElementById('addPexMotif').value.trim();
+  var msg=document.getElementById('addPexMsg');
+  if(!dv||!mv){msg.style.color='var(--rouge)';msg.textContent='Date et montant obligatoires.';return}
+  var d=load(),c=emp(d,n);
+  c[String(annee)+'pex'].push({id:Date.now(),date:dv,montant:mv,motif:motif||null});
+  save(d);
+  document.getElementById('addPexDate').value='';
+  document.getElementById('addPexMontant').value='';
+  document.getElementById('addPexMotif').value='';
+  msg.style.color='var(--vert)';msg.textContent='✓ Prime ajoutée';setTimeout(function(){msg.textContent=''},3000);
+  renderPexAdmin(n,c[String(annee)+'pex']);
+}
+function removePex(n,id){
+  if(!confirm('Supprimer cette prime exceptionnelle ?'))return;
+  var d=load(),c=emp(d,n);
+  c[String(annee)+'pex']=c[String(annee)+'pex'].filter(function(p){return p.id!=id});
+  save(d);
+  renderPexAdmin(n,c[String(annee)+'pex']);
 }
 function renderHsAdmin(n,hs){
   var el=document.getElementById('hsAdminList');
@@ -1163,6 +1217,7 @@ document.getElementById('adminPinInBtn').addEventListener('click',function(){
   wPin(coiffeurActif,v);m.style.color='var(--vert)';m.textContent='✓ Code mis à jour';document.getElementById('adminPinIn').value='';setTimeout(function(){m.textContent=''},3000);
 });
 document.getElementById('addHsBtn').addEventListener('click',function(){addHs(coiffeurActif)});
+document.getElementById('addPexBtn').addEventListener('click',function(){addPex(coiffeurActif)});
 document.getElementById('declHsBtn').addEventListener('click',empDeclareHs);
 
 /* ── sélecteurs ── */
