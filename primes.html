@@ -17,14 +17,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cabin:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@1,400&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--charbon:#17191e;--blanc:#f9f9f9;--vert:#358d7c;--vert-f:#2a7166;--vert-cl:rgba(53,141,124,.12);--grege:#9f9f9f;--rouge:#e05555;--rouge-cl:rgba(224,85,85,.10);--or:#f5a623;--or-cl:rgba(245,166,35,.10)}
+    :root{--charbon:#17191e;--blanc:#f9f9f9;--vert:#2c8c54;--vert-f:#237345;--vert-cl:rgba(44,140,84,.12);--grege:#9f9f9f;--rouge:#e05555;--rouge-cl:rgba(224,85,85,.10);--or:#f5a623;--or-cl:rgba(245,166,35,.10)}
     body{font-family:'Cabin',sans-serif;background:var(--charbon);color:var(--blanc);min-height:100vh;overflow-x:hidden}
     header{padding:26px 40px;display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(255,255,255,.08)}
     .badge{margin-left:auto;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grege);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:20px}
     .screen{display:none}.screen.active{display:block}
     .page{max-width:640px;margin:0 auto;padding:48px 24px 80px}
     .eyebrow{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:.08em;color:var(--vert);margin-bottom:12px;animation:pulse 2s ease-in-out infinite;white-space:nowrap;text-align:center}
-    @keyframes pulse{0%,100%{color:var(--vert);text-shadow:0 0 12px rgba(53,141,124,.6)}50%{color:#f9f9f9;text-shadow:0 0 20px rgba(255,255,255,.8)}}
+    @keyframes pulse{0%,100%{color:var(--vert);text-shadow:0 0 12px rgba(44,140,84,.6)}50%{color:#f9f9f9;text-shadow:0 0 20px rgba(255,255,255,.8)}}
     h1{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:.06em;line-height:1.1;margin-bottom:10px;text-align:center}
     h1 span{color:var(--vert)}
     .intro{font-family:'Libre Caslon Text',serif;font-style:italic;font-size:14px;color:#bbb;line-height:1.7;margin-bottom:32px;text-align:center}
@@ -60,7 +60,7 @@
     thead th:last-child{text-align:right}
     tbody td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;vertical-align:middle}
     tbody tr:last-child td{border-bottom:none}
-    tbody tr.cur td{background:rgba(53,141,124,.06)}
+    tbody tr.cur td{background:rgba(44,140,84,.06)}
     .mois-n{font-weight:600}.mois-c{font-size:10px;color:var(--vert);text-transform:uppercase;letter-spacing:.06em;margin-left:5px}
     .ca-f{display:flex;align-items:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:7px;overflow:hidden;width:120px}
     .ca-f input{background:none;border:none;color:var(--blanc);font-family:'Cabin',sans-serif;font-size:16px;font-weight:600;width:100%;padding:6px 8px;outline:none}
@@ -93,7 +93,7 @@
     .bi-v{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--blanc);margin-top:auto;padding-top:10px;border-top:1px solid rgba(255,255,255,.08)}
     .total-bar{border-radius:12px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
     .tl{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.1em;color:rgba(255,255,255,.85)}.ts{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}.tm{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--blanc)}
-    .tb-mois{background:linear-gradient(90deg,#2a7166,#358d7c);box-shadow:0 4px 24px rgba(53,141,124,.35)}
+    .tb-mois{background:linear-gradient(90deg,#237345,#2c8c54);box-shadow:0 4px 24px rgba(44,140,84,.35)}
     .tb-mois-lbl{color:rgba(255,255,255,.8)}.tb-mois-sub{color:rgba(255,255,255,.5)}
     .tb-mois-val{font-size:40px;text-shadow:0 2px 12px rgba(0,0,0,.2);color:#fff}
     .tb-annee{background:linear-gradient(90deg,#1e2530,#2a3445);border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.3);margin-bottom:28px}
@@ -130,7 +130,7 @@
     .sug-ri{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--blanc);font-family:'Cabin',sans-serif;font-size:13px;padding:7px 10px;border-radius:7px;outline:none}
     .sug-ri:focus{border-color:var(--vert)}
     /* validated box */
-    .val-box{margin-top:10px;background:rgba(53,141,124,.07);border:1px solid rgba(53,141,124,.3);border-radius:8px;padding:12px 14px}
+    .val-box{margin-top:10px;background:rgba(44,140,84,.07);border:1px solid rgba(44,140,84,.3);border-radius:8px;padding:12px 14px}
     .val-box-title{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--vert);margin-bottom:6px;font-weight:600}
     .val-box-info{font-size:13px;color:var(--blanc);margin-bottom:2px}
     .val-box-lock{font-size:11px;color:var(--grege);margin-top:6px}
@@ -191,7 +191,7 @@
     .btn-del:hover{color:var(--rouge)}
     .btn-adj{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:var(--blanc);font-family:'Bebas Neue',sans-serif;font-size:16px;width:26px;height:26px;border-radius:5px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:1;transition:background .15s,border-color .15s;flex-shrink:0}
     .btn-adj:hover{background:var(--vert-cl);border-color:var(--vert)}
-    .btn-regle{background:transparent;border:1px solid rgba(53,141,124,.4);color:var(--vert);font-family:'Cabin',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;border-radius:6px;cursor:pointer;width:100%;transition:background .15s,border-color .15s}
+    .btn-regle{background:transparent;border:1px solid rgba(44,140,84,.4);color:var(--vert);font-family:'Cabin',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;border-radius:6px;cursor:pointer;width:100%;transition:background .15s,border-color .15s}
     .btn-regle:hover{background:var(--vert-cl);border-color:var(--vert)}
     .btn-fiche{width:100%;background:var(--vert-cl);border:1px solid var(--vert);color:var(--vert);font-family:'Cabin',sans-serif;font-size:14px;font-weight:700;padding:14px;border-radius:10px;cursor:pointer;margin-bottom:28px;transition:background .15s}
     .btn-fiche:hover{background:var(--vert);color:var(--blanc)}
@@ -215,7 +215,7 @@
       .months-tbl{min-width:0;width:100%}
       .months-tbl thead{display:none}
       .months-tbl tbody tr{display:block;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:10px;padding:10px 12px}
-      .months-tbl tbody tr.cur{background:rgba(53,141,124,.06);border-color:rgba(53,141,124,.25)}
+      .months-tbl tbody tr.cur{background:rgba(44,140,84,.06);border-color:rgba(44,140,84,.25)}
       .months-tbl tbody td{display:none}
       /* nom du mois */
       .months-tbl tbody td:nth-child(1){display:block;font-size:13px;font-weight:700;padding:0 0 8px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:8px}
@@ -271,7 +271,7 @@
 <canvas id="moneyCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;display:none"></canvas>
 
 <div id="loadOv" style="position:fixed;inset:0;background:#17191e;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px">
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.18em;color:#358d7c;animation:pulse 2s ease-in-out infinite">Chargement…</div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.18em;color:#2c8c54;animation:pulse 2s ease-in-out infinite">Chargement…</div>
 </div>
 
 <header>
@@ -1253,7 +1253,7 @@ document.getElementById('declHsBtn').addEventListener('click',empDeclareHs);
   var canvas=null,ctx=null,animId=null;
   var bills=[],fw=[],billsTTL=0,fwTTL=0,fwTimer=0;
   var BEMO=['💶','💵','💰','💶'];
-  var FWC=['#358d7c','#f5a623','#f9f9f9','#e05555','#b3ecff','#ffe066','#7ecbd4'];
+  var FWC=['#2c8c54','#f5a623','#f9f9f9','#e05555','#b3ecff','#ffe066','#7ecbd4'];
   function init(){
     if(!canvas){canvas=document.getElementById('moneyCanvas');ctx=canvas.getContext('2d')}
     canvas.width=window.innerWidth;canvas.height=window.innerHeight;
