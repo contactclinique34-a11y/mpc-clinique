@@ -950,6 +950,7 @@ function renderForceSection(){
   document.querySelectorAll('[data-removecat]').forEach(function(b){
     b.addEventListener('click',function(){
       if(!confirm('Retirer l\'espace "'+b.dataset.removecat+'" ? (les valeurs saisies resteront enregistrées)'))return;
+      persistForceInputs();
       saveForceCatsList(getForceCats().filter(function(c){return c!==b.dataset.removecat}));
       renderForceSection();
     });
@@ -971,18 +972,7 @@ function renderForceTeamTable(cats){
   }).join('');
 }
 
-document.getElementById('addForceCatBtn').addEventListener('click',function(){
-  var name=prompt('Nom du nouvel espace / service (ex: Coloration, Barbe...)');
-  if(!name)return;
-  name=name.trim();
-  if(!name)return;
-  var cats=getForceCats();
-  if(cats.indexOf(name)!==-1){alert('Cet espace existe déjà.');return}
-  cats.push(name);
-  saveForceCatsList(cats);
-  renderForceSection();
-});
-document.getElementById('forceSaveBtn').addEventListener('click',function(){
+function persistForceInputs(){
   getForceCats().forEach(function(cat){
     EQUIPE_MASSE.forEach(function(n){
       var ffEl=document.querySelector('.fp-ff[data-cat="'+cat+'"][data-n="'+n+'"]');
@@ -991,6 +981,21 @@ document.getElementById('forceSaveBtn').addEventListener('click',function(){
       if(paEl&&paEl.value!=='')wPA(cat,n,parseFloat(paEl.value));
     });
   });
+}
+document.getElementById('addForceCatBtn').addEventListener('click',function(){
+  var name=prompt('Nom du nouvel espace / service (ex: Coloration, Barbe...)');
+  if(!name)return;
+  name=name.trim();
+  if(!name)return;
+  var cats=getForceCats();
+  if(cats.indexOf(name)!==-1){alert('Cet espace existe déjà.');return}
+  persistForceInputs();
+  cats.push(name);
+  saveForceCatsList(cats);
+  renderForceSection();
+});
+document.getElementById('forceSaveBtn').addEventListener('click',function(){
+  persistForceInputs();
   var m=document.getElementById('forceSaveMsg');
   m.style.color='var(--vert)';m.textContent='✓ Force de proposition enregistrée';setTimeout(function(){m.textContent=''},3000);
 });
