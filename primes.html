@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bespoke by M2 — Performance Collaborateur</title>
+  <link rel="icon" type="image/png" href="/assets/images/cropped-favicon-32x32-1-32x32.png"/>
+  <meta property="og:title" content="Bespoke by M2"/>
+  <meta property="og:description" content="Suivi des primes équipe"/>
+  <meta property="og:image" content="https://mpc-clinique.com/assets/images/og-primes.png"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:image" content="https://mpc-clinique.com/assets/images/og-primes.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cabin:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--charbon:#17191e;--blanc:#f9f9f9;--vert:#358d7c;--vert-f:#2a7166;--vert-cl:rgba(53,141,124,.12);--grege:#9f9f9f;--rouge:#e05555;--rouge-cl:rgba(224,85,85,.10);--or:#f5a623;--or-cl:rgba(245,166,35,.10)}
+    body{font-family:'Cabin',sans-serif;background:var(--charbon);color:var(--blanc);min-height:100vh;overflow-x:hidden}
+    header{padding:26px 40px;display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .badge{margin-left:auto;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grege);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:20px}
+    .screen{display:none}.screen.active{display:block}
+    .page{max-width:640px;margin:0 auto;padding:48px 24px 80px}
+    .eyebrow{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:.08em;color:var(--vert);margin-bottom:12px;animation:pulse 2s ease-in-out infinite;white-space:nowrap;text-align:center}
+    @keyframes pulse{0%,100%{color:var(--vert);text-shadow:0 0 12px rgba(53,141,124,.6)}50%{color:#f9f9f9;text-shadow:0 0 20px rgba(255,255,255,.8)}}
+    h1{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:.06em;line-height:1.1;margin-bottom:10px;text-align:center}
+    h1 span{color:var(--vert)}
+    .intro{font-family:'Libre Caslon Text',serif;font-style:italic;font-size:14px;color:#bbb;line-height:1.7;margin-bottom:32px;text-align:center}
+    .year-bar{display:flex;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+    .year-bar label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grege)}
+    .sel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:var(--blanc);font-family:'Cabin',sans-serif;font-size:14px;font-weight:600;padding:8px 12px;border-radius:8px;cursor:pointer;outline:none}
+    .sel:focus{border-color:var(--vert)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:26px 20px 20px;cursor:pointer;transition:border-color .2s,transform .15s,background .2s}
+    .card:hover{border-color:var(--vert);background:var(--vert-cl);transform:translateY(-2px)}
+    .card-init{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--vert);line-height:1;margin-bottom:4px}
+    .card-nom{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.1em;margin-bottom:14px}
+    .card-lbl{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--grege);margin-bottom:3px}
+    .card-val{font-size:20px;font-weight:700;margin-bottom:10px}
+    .card-lock{font-size:12px;color:var(--grege)}
+    /* admin link + notif badge */
+    .admin-link{text-align:center;margin-top:40px}
+    .admin-link button{position:relative;background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--grege);font-family:'Cabin',sans-serif;font-size:15px;letter-spacing:.06em;padding:14px 32px;border-radius:10px;cursor:pointer;transition:border-color .2s,color .2s}
+    .admin-link button:hover{border-color:var(--vert);color:var(--blanc)}
+    .notif-n{display:inline-flex;align-items:center;justify-content:center;background:var(--rouge);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:12px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;margin-left:7px;vertical-align:middle}
+    .back-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--grege);font-family:'Cabin',sans-serif;font-size:13px;padding:8px 16px;border-radius:8px;cursor:pointer;margin-bottom:28px;transition:border-color .2s,color .2s}
+    .back-btn:hover{border-color:var(--vert);color:var(--blanc)}
+    .det-nom{font-family:'Bebas Neue',sans-serif;font-size:46px;letter-spacing:.1em;color:var(--vert);margin-bottom:4px;animation:pulse 2s ease-in-out infinite}
+    .det-sub{font-size:13px;color:var(--grege);margin-bottom:32px}
+    .sal-bloc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 22px;margin-bottom:28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+    .sal-bloc label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grege);display:block;margin-bottom:6px}
+    .seuil-info{margin-left:auto;text-align:right;font-size:13px;color:var(--grege);line-height:1.7}
+    .seuil-info strong{color:var(--blanc);font-size:14px}
+    .tbl-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--grege);margin-bottom:12px}
+    .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px}
+    table{width:100%;border-collapse:collapse;min-width:520px}
+    thead th{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--grege);padding:7px 8px;text-align:left;border-bottom:1px solid rgba(255,255,255,.08)}
+    thead th:last-child{text-align:right}
+    tbody td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;vertical-align:middle}
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr.cur td{background:rgba(53,141,124,.06)}
+    .mois-n{font-weight:600}.mois-c{font-size:10px;color:var(--vert);text-transform:uppercase;letter-spacing:.06em;margin-left:5px}
+    .ca-f{display:flex;align-items:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:7px;overflow:hidden;width:120px}
+    .ca-f input{background:none;border:none;color:var(--blanc);font-family:'Cabin',sans-serif;font-size:16px;font-weight:600;width:100%;padding:6px 8px;outline:none}
+    .ca-f span{color:var(--grege);padding-right:7px;font-size:12px;flex-shrink:0}
+    .ca-f:focus-within{border-color:var(--vert)}
+    .ht{font-size:12px;color:var(--grege)}.pp{font-weight:700;color:var(--vert);text-align:right}.pn{font-size:12px;color:var(--rouge);text-align:right}.pd{font-size:12px;color:var(--grege);text-align:right}
+    .divider{height:1px;background:rgba(255,255,255,.08);margin:28px 0}
+    .masse-tbl-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.06em;margin:28px 0 4px;color:var(--vert)}
+    .masse-tbl-sub{font-size:12px;color:var(--grege);line-height:1.6;margin-bottom:14px}
+    .masse-in{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:var(--blanc);font-family:'Cabin',sans-serif;font-size:14px;font-weight:600;padding:6px 8px;width:64px;outline:none}
+    .masse-in:focus{border-color:var(--vert)}
+    .masse-sel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:var(--blanc);font-family:'Cabin',sans-serif;font-size:13px;padding:7px 6px;outline:none}
+    .masse-auto{font-size:10px;color:var(--grege);margin-top:3px}
+    .masse-note{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--blanc);margin-top:22px;line-height:1.5}
+    .bilan-g{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+    .bi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;justify-content:space-between;min-height:110px}
+    .bi.hl{background:var(--vert-cl);border-color:var(--vert)}
+    .bi-l{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--grege);margin-bottom:10px;line-height:1.4}
+    .bi-n{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--vert);line-height:1;margin-bottom:8px}
+    .bi:not(.hl) .bi-n{color:rgba(255,255,255,.25)}
+    .bi-v{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--blanc);margin-top:auto;padding-top:10px;border-top:1px solid rgba(255,255,255,.08)}
+    .total-bar{border-radius:12px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .tl{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.1em;color:rgba(255,255,255,.85)}.ts{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}.tm{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--blanc)}
+    .tb-mois{background:linear-gradient(90deg,#2a7166,#358d7c);box-shadow:0 4px 24px rgba(53,141,124,.35)}
+    .tb-mois-lbl{color:rgba(255,255,255,.8)}.tb-mois-sub{color:rgba(255,255,255,.5)}
+    .tb-mois-val{font-size:40px;text-shadow:0 2px 12px rgba(0,0,0,.2);color:#fff}
+    .tb-annee{background:linear-gradient(90deg,#1e2530,#2a3445);border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.3);margin-bottom:28px}
+    .tb-annee-lbl{color:rgba(255,255,255,.75)}.tb-annee-sub{color:rgba(255,255,255,.4)}.tb-annee-val{color:var(--blanc)}
+    .btn-save{width:100%;background:var(--vert);color:var(--blanc);font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:.14em;border:none;border-radius:10px;padding:16px;cursor:pointer;transition:background .2s,transform .15s;margin-bottom:10px}
+    .btn-save:hover{background:var(--vert-f);transform:translateY(-1px)}
+    .save-msg{font-size:13px;color:var(--vert);text-align:center;min-height:18px}
+    /* HS styles */
+    .hs-title{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.55);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .hb-e{background:rgba(130,100,255,.12);color:#a78bfa;border:1px solid rgba(130,100,255,.3)}
+    .declare-hs{margin-top:22px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.14);border-radius:12px;padding:16px 18px}
+    .declare-hs-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--grege);margin-bottom:12px}
+    .hs-list{display:flex;flex-direction:column;gap:10px}
+    .hs-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 16px}
+    .hs-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .hs-date{font-weight:600;font-size:13px}
+    .hs-h{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--vert);background:var(--vert-cl);padding:2px 8px;border-radius:5px}
+    .hs-badge{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;padding:3px 8px;border-radius:12px;margin-left:auto}
+    .hb-a{background:rgba(159,159,159,.1);color:var(--grege);border:1px solid rgba(255,255,255,.12)}
+    .hb-r{background:var(--vert-cl);color:var(--vert);border:1px solid var(--vert)}
+    .hb-p{background:rgba(255,215,0,.1);color:#ffd700;border:1px solid rgba(255,215,0,.3)}
+    .hb-s{background:var(--or-cl);color:var(--or);border:1px solid rgba(245,166,35,.35)}
+    /* suggestion box */
+    .sug-box{margin-top:10px;background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.25);border-radius:8px;padding:12px 14px}
+    .sug-box-title{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--or);margin-bottom:6px;font-weight:600}
+    .sug-box-info{font-size:13px;color:var(--blanc);margin-bottom:10px}
+    .sug-box-acts{display:flex;gap:8px;flex-wrap:wrap}
+    /* suggestion form */
+    .sug-form{margin-top:10px;display:none;gap:8px;flex-wrap:wrap;align-items:flex-end}
+    .sug-form.open{display:flex}
+    .sug-ri{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--blanc);font-family:'Cabin',sans-serif;font-size:13px;padding:7px 10px;border-radius:7px;outline:none}
+    .sug-ri:focus{border-color:var(--vert)}
+    /* validated box */
+    .val-box{margin-top:10px;background:rgba(53,141,124,.07);border:1px solid rgba(53,141,124,.3);border-radius:8px;padding:12px 14px}
+    .val-box-title{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--vert);margin-bottom:6px;font-weight:600}
+    .val-box-info{font-size:13px;color:var(--blanc);margin-bottom:2px}
+    .val-box-lock{font-size:11px;color:var(--grege);margin-top:6px}
+    /* admin notification alert */
+    .notif-alert{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);border-radius:10px;padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:12px}
+    .notif-alert-icon{font-size:20px}
+    .notif-alert-text{font-size:13px;color:var(--or);line-height:1.5}
+    .notif-alert-text strong{font-size:15px;display:block;margin-bottom:2px}
+    /* buttons */
+    .hs-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .btn-hs{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--grege);font-family:'Cabin',sans-serif;font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .15s}
+    .btn-hs:hover{border-color:var(--vert);color:var(--blanc)}
+    .btn-hs.or{border-color:rgba(245,166,35,.4);color:var(--or)}
+    .btn-hs.or:hover{border-color:var(--or);background:var(--or-cl)}
+    .btn-val{background:var(--vert);border:none;color:#fff;font-family:'Cabin',sans-serif;font-size:12px;font-weight:700;padding:7px 14px;border-radius:6px;cursor:pointer;transition:background .15s}
+    .btn-val:hover{background:var(--vert-f)}
+    .btn-ref{background:transparent;border:1px solid rgba(224,85,85,.4);color:var(--rouge);font-family:'Cabin',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;border-radius:6px;cursor:pointer;transition:all .15s}
+    .btn-ref:hover{background:var(--rouge-cl)}
+    /* PIN */
+    .pin-ov{display:none;position:fixed;inset:0;background:rgba(10,12,16,.92);z-index:200;backdrop-filter:blur(6px);align-items:center;justify-content:center}
+    .pin-ov.open{display:flex}
+    .pin-box{background:#1f2228;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:36px 30px;width:100%;max-width:320px;text-align:center;animation:popIn .25s cubic-bezier(.175,.885,.32,1.275) both}
+    @keyframes popIn{from{opacity:0}to{opacity:1}}
+    .pin-nom{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.12em;color:var(--vert);margin-bottom:4px}
+    .pin-lbl{font-size:12px;color:var(--grege);text-transform:uppercase;letter-spacing:.1em;margin-bottom:20px}
+    .pin-dots{display:flex;justify-content:center;gap:10px;margin-bottom:18px}
+    .pin-dot{width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.2);background:transparent;transition:background .15s,border-color .15s}
+    .pin-dot.filled{background:var(--vert);border-color:var(--vert)}
+    .pin-kp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+    .pin-k{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--blanc);font-family:'Bebas Neue',sans-serif;font-size:22px;border-radius:9px;padding:14px;cursor:pointer;transition:background .15s,border-color .15s;user-select:none}
+    .pin-k:hover{background:var(--vert-cl);border-color:var(--vert)}
+    .pin-k:active{transform:scale(.95)}
+    .pin-err{font-size:13px;color:var(--rouge);min-height:18px;margin-bottom:8px}
+    @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+    .pin-box.shake{animation:shake .35s ease}
+    .pin-cancel{background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--grege);font-family:'Cabin',sans-serif;font-size:13px;padding:10px 24px;border-radius:8px;cursor:pointer;width:100%;transition:border-color .2s,color .2s}
+    .pin-cancel:hover{border-color:var(--blanc);color:var(--blanc)}
+    /* admin */
+    .admin-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 20px;margin-bottom:12px;display:flex;align-items:center;gap:14px}
+    .ac-init{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--vert);width:40px;flex-shrink:0}
+    .ac-info{flex:1}.ac-nom{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:.1em;margin-bottom:3px}
+    .ac-sal{font-size:12px;color:var(--grege)}.ac-hs{font-size:11px;color:var(--or);margin-top:2px}
+    .btn-ger{background:transparent;border:1px solid var(--vert);color:var(--vert);font-family:'Cabin',sans-serif;font-size:13px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}
+    .btn-ger:hover{background:var(--vert);color:var(--blanc)}
+    .edit-s{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px 22px;margin-bottom:18px}
+    .edit-t{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--grege);margin-bottom:12px}
+    .edit-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .edit-in{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--blanc);font-family:'Cabin',sans-serif;font-size:15px;font-weight:600;padding:10px 13px;border-radius:8px;outline:none;flex:1;min-width:100px}
+    .edit-in:focus{border-color:var(--vert)}
+    .btn-esave{background:var(--vert);border:none;color:var(--blanc);font-family:'Cabin',sans-serif;font-size:13px;font-weight:700;padding:10px 18px;border-radius:8px;cursor:pointer;transition:background .15s;white-space:nowrap}
+    .btn-esave:hover{background:var(--vert-f)}
+    .edit-msg{font-size:12px;margin-top:8px;min-height:16px}
+    .add-hs{background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);border-radius:10px;padding:14px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-top:14px}
+    .add-hs label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);display:block;margin-bottom:5px}
+    .add-hs-in{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--blanc);font-family:'Cabin',sans-serif;font-size:13px;padding:8px 10px;border-radius:7px;outline:none}
+    .add-hs-in:focus{border-color:var(--vert)}
+    .btn-del{background:transparent;border:none;color:rgba(224,85,85,.4);font-size:15px;cursor:pointer;padding:2px 4px;transition:color .15s;margin-left:auto}
+    .btn-del:hover{color:var(--rouge)}
+    .btn-adj{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:var(--blanc);font-family:'Bebas Neue',sans-serif;font-size:16px;width:26px;height:26px;border-radius:5px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:1;transition:background .15s,border-color .15s;flex-shrink:0}
+    .btn-adj:hover{background:var(--vert-cl);border-color:var(--vert)}
+    .btn-regle{background:transparent;border:1px solid rgba(53,141,124,.4);color:var(--vert);font-family:'Cabin',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;border-radius:6px;cursor:pointer;width:100%;transition:background .15s,border-color .15s}
+    .btn-regle:hover{background:var(--vert-cl);border-color:var(--vert)}
+    .btn-fiche{width:100%;background:var(--vert-cl);border:1px solid var(--vert);color:var(--vert);font-family:'Cabin',sans-serif;font-size:14px;font-weight:700;padding:14px;border-radius:10px;cursor:pointer;margin-bottom:28px;transition:background .15s}
+    .btn-fiche:hover{background:var(--vert);color:var(--blanc)}
+    @media(max-width:560px){
+      /* header */
+      header{padding:14px 16px;gap:10px}
+      .badge{font-size:10px;padding:3px 8px}
+      /* page */
+      .page{padding:28px 16px 60px}
+      h1{font-size:28px;text-align:center}
+      .eyebrow{font-size:clamp(13px,4vw,24px)}
+      .det-nom{font-size:34px}
+      /* grille accueil */
+      .grid{grid-template-columns:1fr}
+      .year-bar{gap:8px}
+      /* fiche employé */
+      .sal-bloc{flex-direction:column;gap:10px}
+      .seuil-info{margin-left:0;text-align:left}
+      /* tableau CA → cartes empilées sur mobile */
+      .tbl-wrap{margin:0}
+      table{min-width:0;width:100%}
+      thead{display:none}
+      tbody tr{display:block;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:10px;padding:10px 12px}
+      tbody tr.cur{background:rgba(53,141,124,.06);border-color:rgba(53,141,124,.25)}
+      tbody td{display:none}
+      /* nom du mois */
+      tbody td:nth-child(1){display:block;font-size:13px;font-weight:700;padding:0 0 8px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:8px}
+      /* CA prest + prime prest côte à côte */
+      tbody td:nth-child(2){display:inline-block;width:55%;vertical-align:middle}
+      tbody td:nth-child(5){display:inline-block;width:44%;vertical-align:middle;text-align:right}
+      /* séparateur visuel */
+      tbody td:nth-child(6){display:inline-block;width:55%;vertical-align:middle;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
+      tbody td:nth-child(7){display:inline-block;width:44%;vertical-align:middle;text-align:right;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
+      /* mini-labels auto */
+      tbody td:nth-child(2)::before{content:"Prest. TTC";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
+      tbody td:nth-child(5)::before{content:"Prime prest.";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
+      tbody td:nth-child(6)::before{content:"CA Vente TTC";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
+      tbody td:nth-child(7)::before{content:"Prime vente";display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--grege);margin-bottom:4px}
+      .ca-f{width:100%}
+      input,select,textarea{font-size:16px !important}
+      /* bilan */
+      .bilan-g{grid-template-columns:1fr}
+      /* barres totaux */
+      .total-bar{flex-direction:column;align-items:flex-start;gap:4px;padding:16px 18px}
+      .tb-mois-val{font-size:30px}
+      .tm{font-size:26px}
+      /* bouton save */
+      .btn-save{font-size:16px;padding:14px}
+      /* HS */
+      .hs-head{gap:6px}
+      .hs-acts{flex-direction:column}.hs-acts .btn-hs{width:100%;text-align:center}
+      .sug-form{flex-direction:column}.sug-form .btn-esave{width:100%}
+      .sug-box-acts{flex-direction:column}.btn-val,.btn-ref{width:100%}
+      .btn-regle{font-size:12px}
+      /* admin */
+      .admin-card{flex-wrap:wrap;gap:10px}.btn-ger{width:100%}
+      .edit-row{flex-direction:column;align-items:stretch}.btn-esave{width:100%}
+      .add-hs{flex-direction:column}.add-hs .btn-esave{width:100%}
+      .add-hs-in{width:100%}
+      /* suggestion form inputs pleine largeur */
+      .sug-ri{width:100%}
+      .sug-form>div{width:100%}
+      /* déclaration HS */
+      .declare-hs{padding:14px 14px}
+      /* hs-head wrapping */
+      .hs-head{flex-wrap:wrap}
+      .hs-badge{margin-left:0}
+      /* admin link */
+      .admin-link button{font-size:14px;padding:12px 24px}
+      /* PIN */
+      .pin-box{padding:24px 16px}
+      .pin-k{font-size:19px;padding:12px}
+    }
+  </style>
+</head>
+<body>
+<canvas id="moneyCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;display:none"></canvas>
+
+<div id="loadOv" style="position:fixed;inset:0;background:#17191e;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.18em;color:#358d7c;animation:pulse 2s ease-in-out infinite">Chargement…</div>
+</div>
+
+<header>
+  <img src="assets/images/logo-bespoke-black.png" alt="Bespoke by M2"
+       style="height:60px;width:min(280px,55vw);object-fit:contain;object-position:left center;filter:invert(1) brightness(2)"/>
+  <div class="badge">Gestion Primes</div>
+</header>
+
+<!-- ══ GRILLE ══ -->
+<div class="screen active" id="screen-grille">
+  <div class="page">
+    <div class="eyebrow">💰 PERFORMANCE COLLABORATEUR 💪</div>
+    <h1>✨ LA TEAM <span>BESPOKE</span> ✨</h1>
+    <p class="intro">Sélectionne un coiffeur pour accéder à son suivi et à ses primes.</p>
+    <div class="year-bar">
+      <label>Année</label><select class="sel" id="yearSelect"></select>
+      <label>Mois</label><select class="sel" id="monthSelect"></select>
+    </div>
+    <div class="grid" id="gridCoiffeurs"></div>
+    <div class="admin-link"><button id="adminBtn">⚙ Administrateur <span id="adminNotif" style="display:none" class="notif-n"></span></button></div>
+  </div>
+</div>
+
+<!-- ══ DÉTAIL EMPLOYÉ ══ -->
+<div class="screen" id="screen-detail">
+  <div class="page">
+    <button class="back-btn" id="backBtn">← Retour à l'équipe</button>
+    <div class="det-nom" id="detNom"></div>
+    <div class="det-sub" id="detSub"></div>
+    <div class="sal-bloc">
+      <div><label>Salaire brut mensuel</label><div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em" id="dispSal">—</div></div>
+      <div class="seuil-info" id="seuilInfo">—</div>
+    </div>
+    <div class="tbl-label">Chiffre d'affaires mensuel · saisie en TTC</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Mois</th><th>CA Prest. TTC</th><th class="hd-ht">CA HT</th><th class="hd-ht">Seuil HT</th><th>Prime Prest.</th><th>CA Vente TTC</th><th style="text-align:right">Prime Vente</th></tr></thead>
+      <tbody id="monthsBody"></tbody>
+    </table></div>
+    <div class="divider"></div>
+    <div class="bilan-g" id="bilanGrid"></div>
+    <div class="total-bar tb-mois">
+      <div><div class="tl tb-mois-lbl">Prime du mois ·<span id="totalMoisNom"></span></div></div>
+      <div class="tm tb-mois-val" id="totalMoisMontant">—</div>
+    </div>
+    <div class="total-bar tb-annee">
+      <div><div class="tl tb-annee-lbl">Total primes annuelles</div><div class="ts tb-annee-sub" id="totalSub"></div></div>
+      <div class="tm tb-annee-val" id="totalMontant">—</div>
+    </div>
+    <button class="btn-save" id="saveBtn">Enregistrer 💾</button>
+    <div class="save-msg" id="saveMsg"></div>
+    <div class="divider"></div>
+    <div class="hs-title">Heures supplémentaires</div>
+    <div class="hs-list" id="hsEmpList"></div>
+    <div class="declare-hs">
+      <div class="declare-hs-lbl">Déclarer des heures supplémentaires</div>
+      <div class="add-hs">
+        <div><label>Date</label><input type="date" class="add-hs-in" id="declHsDate"/></div>
+        <div><label>Heures</label><input type="number" class="add-hs-in" id="declHsH" min="0.5" max="24" step="0.5" placeholder="h" style="width:70px"/></div>
+        <button class="btn-esave" id="declHsBtn">Envoyer</button>
+      </div>
+      <div class="edit-msg" id="declHsMsg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN PANEL ══ -->
+<div class="screen" id="screen-admin">
+  <div class="page">
+    <button class="back-btn" id="backAdminBtn">← Retour à l'équipe</button>
+    <div class="eyebrow">⚙ Admin</div>
+    <h1>ADMINISTRATION</h1>
+    <button class="btn-fiche" id="openMasseBtn">📊 Masse salariale & Objectifs</button>
+    <div id="adminNotifAlert"></div>
+    <div id="adminList"></div>
+  </div>
+</div>
+
+<!-- ══ ADMIN EMPLOYÉ ══ -->
+<div class="screen" id="screen-admin-emp">
+  <div class="page">
+    <button class="back-btn" id="backAdminEmpBtn">← Retour administration</button>
+    <div class="det-nom" id="adminEmpNom"></div>
+    <div class="det-sub">Gestion employé</div>
+    <button class="btn-fiche" id="voirFicheBtn">📊 Voir la fiche complète</button>
+    <div class="edit-s">
+      <div class="edit-t">💶 Salaire brut mensuel</div>
+      <div class="edit-row">
+        <input type="number" class="edit-in" id="adminSalIn" min="0" step="0.01"/>
+        <span style="color:var(--grege);font-size:14px;margin-left:-8px">€</span>
+        <button class="btn-esave" id="adminSalBtn">Enregistrer</button>
+      </div>
+      <div class="edit-msg" id="adminSalMsg"></div>
+    </div>
+    <div class="edit-s">
+      <div class="edit-t">🔒 Code d'accès employé</div>
+      <div class="edit-row">
+        <input type="text" class="edit-in" id="adminPinIn" placeholder="Nouveau code" maxlength="6" inputmode="numeric" style="max-width:150px;letter-spacing:.15em;text-align:center"/>
+        <button class="btn-esave" id="adminPinInBtn">Enregistrer</button>
+      </div>
+      <div class="edit-msg" id="adminPinInMsg"></div>
+    </div>
+    <div class="edit-s">
+      <div class="edit-t">⏱ Heures supplémentaires</div>
+      <div class="hs-list" id="hsAdminList"></div>
+      <div class="add-hs">
+        <div><label>Date</label><input type="date" class="add-hs-in" id="addHsDate"/></div>
+        <div><label>Heures</label><input type="number" class="add-hs-in" id="addHsH" min="0.5" max="24" step="0.5" placeholder="h" style="width:70px"/></div>
+        <button class="btn-esave" id="addHsBtn">Ajouter</button>
+      </div>
+      <div class="edit-msg" id="addHsMsg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN MASSE SALARIALE ══ -->
+<div class="screen" id="screen-admin-masse">
+  <div class="page">
+    <button class="back-btn" id="backMasseBtn">← Retour administration</button>
+    <div class="eyebrow">📊 Pilotage</div>
+    <h1>MASSE <span>SALARIALE</span></h1>
+    <p class="intro">Coût global ÷ C.A. H.T. annuel = masse salariale actuelle. Coût global ÷ objectif de masse salariale = C.A. à réaliser.</p>
+
+    <div class="masse-tbl-title">1 · Masse salariale actuelle</div>
+    <div class="masse-tbl-sub">Le C.A. H.T. annuel est pré-rempli automatiquement à partir des chiffres d'affaires mensuels déjà saisis pour <span id="masseYearLabel"></span> (case "auto" indicative) — modifiable si besoin.</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Prénom</th><th>Coût global annuel</th><th>C.A. H.T. annuel</th><th style="text-align:right">Masse salariale</th></tr></thead>
+      <tbody id="masse1Body"></tbody>
+    </table></div>
+
+    <div class="masse-tbl-title">2 · Objectif annuel</div>
+    <div class="masse-tbl-sub">À partir du coût global (tableau 1) et de l'objectif de masse salariale souhaité, calcule le C.A. à réaliser.</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Prénom</th><th>Objectif</th><th>Jours/sem.</th><th>Mois travaillés</th><th>C.A HT annuel</th><th>C.A HT mensuel</th><th>C.A HT / jour</th><th style="text-align:right">C.A TTC / jour</th></tr></thead>
+      <tbody id="masse2Body"></tbody>
+    </table></div>
+
+    <div class="masse-note">💡 Repère interne : le passage d'un contrat en alternance à un CDI doit correspondre à une masse salariale d'environ 40%.</div>
+
+    <button class="btn-save" id="masseSaveBtn" style="margin-top:24px">Enregistrer 💾</button>
+    <div class="save-msg" id="masseSaveMsg"></div>
+  </div>
+</div>
+
+<!-- ══ ADMIN SECONDAIRE ══ -->
+<div class="screen" id="screen-admin-sec">
+  <div class="page">
+    <button class="back-btn" id="backSecBtn">← Retour à l'équipe</button>
+    <div class="eyebrow">👁 Accès fiches</div>
+    <h1>FICHES <span>ÉQUIPE</span></h1>
+    <p class="intro">Accès lecture aux fiches de chaque coiffeur.</p>
+    <div id="secAdminList"></div>
+  </div>
+</div>
+
+<!-- ══ MODAL PIN ══ -->
+<div class="pin-ov" id="pinOv">
+  <div class="pin-box" id="pinBox">
+    <div class="pin-nom" id="pinNom"></div>
+    <div class="pin-lbl">Code d'accès</div>
+    <div class="pin-dots" id="pinDots"></div>
+    <div class="pin-kp" id="pinKp"></div>
+    <div class="pin-err" id="pinErr"></div>
+    <button class="pin-cancel" id="pinCancel">Annuler</button>
+  </div>
+</div>
+
+<script>
+var MOIS=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+var COIFFEURS=['Amandine','Jessica','Maxance','Mélody'];
+var SAL_DEF={'Amandine':2063.15,'Jessica':2175.32,'Maxance':1437.63,'Mélody':1493.62};
+var PIN_DEF={'Amandine':'9188','Jessica':'2318','Maxance':'3422','Mélody':'0000'};
+var ADMIN_PIN_DEF='1539',ADMIN_PIN2_DEF='9935';
+var TVA=1.20,MULT=3,TAUX=0.10;
+var PALIERS=[{m:3,t:.10},{m:3.4,t:.15},{m:3.8,t:.20}];
+var _now=new Date(),annee=_now.getFullYear(),moisActuel=_now.getMonth(),coiffeurActif=null,pinTarget='employee',pinSaisi='',detailFromAdmin=false;
+
+/* ── base de données (Neon via /api/store) ── */
+var _db={};
+function _apiSet(k,v){fetch('/api/store',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:k,value:v})}).catch(function(e){console.error('[db write]',e)})}
+function load(){try{return JSON.parse(_db['bp']||'{}')}catch(e){return{}}}
+function save(d){_db['bp']=JSON.stringify(d);_apiSet('bp',_db['bp'])}
+function emp(d,n){
+  if(!d[n])d[n]={};
+  if(!d[n][String(annee)])d[n][String(annee)]=Array(12).fill(0);
+  if(!d[n][String(annee)+'v'])d[n][String(annee)+'v']=Array(12).fill(0);
+  if(!d[n].hs)d[n].hs=[];
+  return d[n];
+}
+function lSal(n){var s=_db['sal_'+n];return s?parseFloat(s):SAL_DEF[n]}
+function wSal(n,v){_db['sal_'+n]=String(v);_apiSet('sal_'+n,String(v))}
+function lPin(n){return _db['pin_'+n]||PIN_DEF[n]}
+function wPin(n,v){_db['pin_'+n]=v;_apiSet('pin_'+n,v)}
+function lAPin(){return _db['pin_admin']||ADMIN_PIN_DEF}
+function wAPin(v){_db['pin_admin']=v;_apiSet('pin_admin',v)}
+function lAPin2(){return _db['pin_admin2']||ADMIN_PIN2_DEF}
+
+/* ── calc ── */
+function getTaux(sal,ht){
+  for(var i=PALIERS.length-1;i>=0;i--){if(ht>=sal*PALIERS[i].m)return PALIERS[i].t}
+  return 0;
+}
+function calc(sal,ttc){
+  if(!sal||!ttc)return null;
+  var s=sal*MULT,h=ttc/TVA,e=h-s;
+  var tx=e>0?getTaux(sal,h):0;
+  return{seuil:s,ht:h,exc:e,prime:e>0?e*tx:0,taux:tx};
+}
+function eu(n){return n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'}
+function fd(s){if(!s)return'—';var d=new Date(s+'T00:00:00');return d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})}
+function showScreen(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+
+/* ── compter suggestions en attente (toutes) ── */
+function countSuggestions(){
+  var d=load(),n=0;
+  COIFFEURS.forEach(function(nom){var c=emp(d,nom);c.hs.forEach(function(h){if(h.suggestion||h.statut==='suggestion_emp')n++})});
+  return n;
+}
+/* ── liste suggestions avec noms ── */
+function getSuggestions(){
+  var d=load(),list=[];
+  COIFFEURS.forEach(function(nom){
+    var c=emp(d,nom);
+    c.hs.forEach(function(h){
+      if(h.suggestion||h.statut==='suggestion_emp')list.push({nom:nom,hs:h});
+    });
+  });
+  return list;
+}
+
+/* ── grille ── */
+function renderGrid(){
+  var d=load(),el=document.getElementById('gridCoiffeurs');el.innerHTML='';
+  COIFFEURS.forEach(function(n){
+    var c=emp(d,n),ttc=c[String(annee)][moisActuel],ht=ttc?ttc/TVA:0;
+    var div=document.createElement('div');div.className='card';
+    div.innerHTML='<div class="card-nom" style="color:var(--vert)">'+n+'</div><div class="card-lbl">CA HT · '+MOIS[moisActuel]+'</div><div class="card-val">'+(ht?eu(ht):'—')+'</div><div class="card-lock">🔒 Accès protégé</div>';
+    div.addEventListener('click',function(){openPin(n,'employee')});
+    el.appendChild(div);
+  });
+  // badge notif admin
+  var nb=countSuggestions(),el2=document.getElementById('adminNotif');
+  if(nb>0){el2.textContent=nb;el2.style.display='inline-flex'}else{el2.style.display='none'}
+}
+
+/* ── PIN ── */
+function openPin(who,target){
+  pinTarget=target;pinSaisi='';
+  if(target==='employee')coiffeurActif=who;
+  var pin=target==='admin'?lAPin():lPin(who);
+  document.getElementById('pinNom').textContent=target==='admin'?'ADMINISTRATION':who.toUpperCase();
+  document.getElementById('pinErr').textContent='';
+  var dd=document.getElementById('pinDots');dd.innerHTML='';
+  for(var i=0;i<pin.length;i++){var dot=document.createElement('div');dot.className='pin-dot';dd.appendChild(dot)}
+  var kp=document.getElementById('pinKp');kp.innerHTML='';
+  [1,2,3,4,5,6,7,8,9,'','0','⌫'].forEach(function(k){
+    var b=document.createElement('button');b.className='pin-k'+(k==='⌫'?' del':'');
+    b.textContent=k;
+    b.addEventListener('click',function(){pressPin(String(k),pin)});
+    kp.appendChild(b);
+  });
+  document.getElementById('pinOv').classList.add('open');
+}
+function pressPin(k,pin){
+  if(k==='⌫')pinSaisi=pinSaisi.slice(0,-1);
+  else if(k&&pinSaisi.length<pin.length)pinSaisi+=k;
+  document.querySelectorAll('#pinDots .pin-dot').forEach(function(d,i){d.classList.toggle('filled',i<pinSaisi.length)});
+  if(pinSaisi.length===pin.length)checkPin(pin);
+}
+function checkPin(pin){
+  var ok=pinSaisi===pin;
+  var isAdmin2=false;
+  if(!ok&&pinTarget==='admin'&&pinSaisi===lAPin2()){ok=true;isAdmin2=true}
+  if(ok){
+    document.getElementById('pinOv').classList.remove('open');
+    if(pinTarget==='admin'){if(isAdmin2)openSecondaryAdmin();else openAdmin();}
+    else openDetail(coiffeurActif);
+  }else{
+    document.getElementById('pinErr').textContent='Code incorrect, réessaie.';
+    var b=document.getElementById('pinBox');b.classList.add('shake');
+    setTimeout(function(){b.classList.remove('shake')},400);
+    pinSaisi='';
+    document.querySelectorAll('#pinDots .pin-dot').forEach(function(d){d.classList.remove('filled')});
+  }
+}
+function closePin(){document.getElementById('pinOv').classList.remove('open');pinSaisi=''}
+
+/* ── employee detail ── */
+function openDetailFromAdmin(n){
+  detailFromAdmin='emp';
+  document.getElementById('backBtn').textContent='← Retour gestion '+n;
+  openDetail(n);
+}
+function openDetailFromSec(n){
+  detailFromAdmin='sec';
+  document.getElementById('backBtn').textContent='← Retour aux fiches';
+  openDetail(n);
+}
+function openSecondaryAdmin(){renderSecondaryAdmin();showScreen('screen-admin-sec')}
+function renderSecondaryAdmin(){
+  var d=load(),el=document.getElementById('secAdminList');el.innerHTML='';
+  COIFFEURS.forEach(function(n){
+    var div=document.createElement('div');div.className='admin-card';
+    div.innerHTML='<div class="ac-init">'+n[0]+'</div><div class="ac-info"><div class="ac-nom">'+n+'</div><div class="ac-sal">'+eu(lSal(n))+'</div></div><button class="btn-ger" onclick="openDetailFromSec(\''+n+'\')">📊 Voir la fiche</button>';
+    el.appendChild(div);
+  });
+}
+function openDetail(n){
+  var d=load(),c=emp(d,n),ca=c[String(annee)],cv=c[String(annee)+'v'],sal=lSal(n);
+  document.getElementById('detNom').textContent=n.toUpperCase();
+  document.getElementById('detSub').textContent='Année '+annee;
+  document.getElementById('dispSal').textContent=eu(sal);
+  document.getElementById('saveMsg').textContent='';
+  majSeuil(sal);renderMois(sal,ca,cv);renderBilan(sal,ca,cv);renderHsEmp(n,c.hs);
+  showScreen('screen-detail');
+}
+function majSeuil(sal){
+  var el=document.getElementById('seuilInfo');if(!sal){el.innerHTML='—';return}
+  el.innerHTML=PALIERS.map(function(p){
+    return '<div style="margin-bottom:5px"><span style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--grege)">× '+p.m+' → </span><strong style="color:var(--blanc)">'+eu(sal*p.m)+'</strong> <span style="color:var(--grege);font-size:11px">HT</span> <span style="background:var(--vert-cl);color:var(--vert);font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px">'+Math.round(p.t*100)+'%</span></div>';
+  }).join('');
+}
+function renderMois(sal,ca,cv){
+  var tb=document.getElementById('monthsBody');tb.innerHTML='';
+  ca.forEach(function(v,i){
+    var r=v&&sal?calc(sal,v):null,cur=i===moisActuel,ven=cv[i]||0;
+    var ph=!v||!sal?'<td class="pd">—</td>':r.prime>0?'<td class="pp">+ '+eu(r.prime)+' <span style="font-size:10px;opacity:.7">'+Math.round(r.taux*100)+'%</span></td>':'<td class="pn">−'+eu((r.seuil-r.ht)*TVA)+' TTC</td>';
+    var pv=ven>0?'<td class="pp" data-pv="'+i+'">+ '+eu(ven*TAUX)+'</td>':'<td class="pd" data-pv="'+i+'">—</td>';
+    var tr=document.createElement('tr');if(cur)tr.classList.add('cur');
+    tr.innerHTML='<td><span class="mois-n">'+MOIS[i]+'</span>'+(cur?'<span class="mois-c">● en cours</span>':'')+'</td>'+
+      '<td><div class="ca-f"><input type="number" value="'+(v||'')+'" placeholder="0" min="0" step="1" data-idx="'+i+'"/><span>€</span></div></td>'+
+      '<td class="ht hd-ht">'+(v?eu(v/TVA):'—')+'</td><td class="ht hd-ht">'+eu(sal*MULT)+'</td>'+ph+
+      '<td><div class="ca-f"><input type="number" value="'+(ven||'')+'" placeholder="0" min="0" step="1" data-vidx="'+i+'"/><span>€</span></div></td>'+pv;
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll('input[data-idx]').forEach(function(inp){
+    inp.addEventListener('input',function(){
+      var v=parseFloat(inp.value)||0,s=lSal(coiffeurActif)||0,r=v&&s?calc(s,v):null,tr=inp.closest('tr');
+      tr.querySelectorAll('.ht')[0].textContent=v?eu(v/TVA):'—';
+      var td=tr.querySelector('td.pp,td.pn,td.pd');
+      if(!v||!s){td.className='pd';td.textContent='—'}
+      else if(r.prime>0){td.className='pp';td.innerHTML='+ '+eu(r.prime)+' <span style="font-size:10px;opacity:.7">'+Math.round(r.taux*100)+'%</span>'}
+      else{td.className='pn';td.textContent='−'+eu((r.seuil-r.ht)*TVA)+' TTC'}
+      var allCa=Array.from(tb.querySelectorAll('input[data-idx]')).map(function(x){return parseFloat(x.value)||0});
+      var allCv=Array.from(tb.querySelectorAll('input[data-vidx]')).map(function(x){return parseFloat(x.value)||0});
+      renderBilan(s,allCa,allCv);
+      /* feux uniquement si CETTE cellule dépasse le seuil */
+      if(r&&r.prime>0)startFireworks();
+    });
+  });
+  tb.querySelectorAll('input[data-vidx]').forEach(function(inp){
+    inp.addEventListener('input',function(){
+      var ven=parseFloat(inp.value)||0,idx=inp.getAttribute('data-vidx'),td=document.querySelector('[data-pv="'+idx+'"]');
+      if(td){if(ven>0){td.className='pp';td.textContent='+ '+eu(ven*TAUX)}else{td.className='pd';td.textContent='—'}}
+      var allCa=Array.from(tb.querySelectorAll('input[data-idx]')).map(function(x){return parseFloat(x.value)||0});
+      var allCv=Array.from(tb.querySelectorAll('input[data-vidx]')).map(function(x){return parseFloat(x.value)||0});
+      var s=lSal(coiffeurActif)||0;
+      renderBilan(s,allCa,allCv);
+      if(ven>0)startBills(); /* billets seulement depuis le champ vente */
+    });
+  });
+}
+function renderBilan(sal,ca,cv){
+  var ttc=ca.reduce(function(a,b){return a+b},0);
+  var tp=ca.reduce(function(a,v){var r=calc(sal,v);return a+(r?r.prime:0)},0);
+  var mp=ca.filter(function(v){var r=calc(sal,v);return r&&r.prime>0}).length;
+  var tvente=(cv||[]).reduce(function(a,v){return a+v*TAUX},0);
+  var vtot=(cv||[]).reduce(function(a,b){return a+b},0);
+  var total=tp+tvente;
+  /* prime du mois en cours */
+  var rm=ca[moisActuel]&&sal?calc(sal,ca[moisActuel]):null;
+  var pmPrest=rm?rm.prime:0;
+  var pmVente=(cv&&cv[moisActuel])?cv[moisActuel]*TAUX:0;
+  var pmTotal=pmPrest+pmVente;
+  /* CA global du mois */
+  var caMois=(ca[moisActuel]||0)+(cv&&cv[moisActuel]?cv[moisActuel]:0);
+  /* CA global annuel */
+  var caAnnuel=ttc+vtot;
+  document.getElementById('totalMoisNom').textContent=MOIS[moisActuel];
+  document.getElementById('totalMoisMontant').textContent=pmTotal?eu(pmTotal):'—';
+  document.getElementById('bilanGrid').innerHTML=
+    '<div class="bi hl"><div class="bi-l">Primes prestations mensuelles</div><div class="bi-n">'+mp+' / 12 mois</div><div class="bi-v">'+(tp?eu(tp):'—')+'</div></div>'+
+    '<div class="bi '+(tvente>0?'hl':'')+'"><div class="bi-l">Prime vente (10 %)</div><div class="bi-n">10 %</div><div class="bi-v">'+(tvente?eu(tvente):'—')+'</div></div>';
+  document.getElementById('totalMontant').textContent=total?eu(total):'—';
+  document.getElementById('totalSub').textContent='';
+}
+
+/* ── HS employee view ── */
+function renderHsEmp(nom,hs){
+  var el=document.getElementById('hsEmpList');
+  if(!hs||!hs.length){el.innerHTML='<p style="color:var(--grege);font-size:13px;font-style:italic">Aucune heure supplémentaire enregistrée.</p>';return}
+  el.innerHTML='';
+  hs.forEach(function(h){
+    var div=document.createElement('div');div.className='hs-item';
+    var statut=h.statut||'en_attente';
+    var hasSug=!!h.suggestion;
+
+    /* badge principal */
+    var bc,bl;
+    if(statut==='suggestion_emp'){bc='hb-e';bl='En attente de validation'}
+    else if(statut==='recup_validee'){bc='hb-r';bl='✓ Validée'}
+    else if(statut==='paye'){bc='hb-p';bl='À payer'}
+    else if(hasSug){bc='hb-s';bl='Suggestion envoyée'}
+    else{bc='hb-a';bl='En attente'}
+
+    var inner='<div class="hs-head"><span class="hs-date">'+fd(h.date_sup)+'</span><span class="hs-h">+'+h.heures+'h</span><span class="hs-badge '+bc+'">'+bl+'</span></div>';
+
+    if(statut==='suggestion_emp'){
+      inner+='<div style="margin-top:8px;font-size:12px;color:#a78bfa">⏳ Ta demande a été envoyée et attend la validation de l\'administrateur.</div>';
+    } else if(statut==='paye'){
+      inner+='<div style="margin-top:8px;font-size:12px;color:var(--or)">💶 Sera inclus dans la prochaine paie.</div>';
+    } else if(statut==='recup_validee'){
+      /* récupération validée + lockée */
+      var ep=h.heures_paye>0?'<br><span style="color:var(--or)">💶 '+h.heures_paye+'h à payer dans la prochaine paie</span>':'';
+      inner+='<div class="val-box"><div class="val-box-title">✓ Récupération validée</div><div class="val-box-info">📅 '+fd(h.recup_date)+' · '+h.recup_heures+'h récup'+ep+'</div><div class="val-box-lock">🔒 Validé par l\'administrateur</div></div>';
+      /* s'il y a aussi une nouvelle suggestion en attente */
+      if(hasSug){
+        var pi2=h.suggestion.heures_paye>0?' + '+h.suggestion.heures_paye+'h à payer':'';
+        inner+='<div class="sug-box"><div class="sug-box-title">⏳ Nouvelle suggestion envoyée</div><div class="sug-box-info">📅 '+fd(h.suggestion.date)+' · '+h.suggestion.heures+'h récup'+pi2+' — En attente de validation</div><div class="sug-box-acts"><button class="btn-hs or" onclick="empEditSug(\''+h.id+'\',\''+nom+'\')">✏ Modifier</button></div></div>';
+      } else {
+        inner+='<div class="hs-acts"><button class="btn-hs or" onclick="empShowSugForm(\''+h.id+'\')">📅 Proposer un autre créneau</button></div>';
+      }
+      inner+=buildSugForm(h.id,nom,'','',h.heures);
+    } else {
+      /* en_attente ou suggestion envoyée */
+      if(hasSug){
+        var payeInfo=h.suggestion.heures_paye>0?' + '+h.suggestion.heures_paye+'h à payer':'';
+        inner+='<div class="sug-box"><div class="sug-box-title">⏳ Suggestion envoyée — en attente de validation</div><div class="sug-box-info">📅 '+fd(h.suggestion.date)+' · '+h.suggestion.heures+'h récup'+payeInfo+'</div><div class="sug-box-acts"><button class="btn-hs or" onclick="empEditSug(\''+h.id+'\',\''+nom+'\')">✏ Modifier ma suggestion</button></div></div>';
+        inner+=buildSugForm(h.id,nom,h.suggestion.date,h.suggestion.heures,h.heures);
+      } else {
+        inner+='<div class="hs-acts"><button class="btn-hs" onclick="empShowSugForm(\''+h.id+'\')">📅 Suggérer une récupération</button><button class="btn-hs" onclick="empPay(\''+h.id+'\',\''+nom+'\')">💶 Tout payer</button></div>';
+        inner+=buildSugForm(h.id,nom,'','',h.heures);
+      }
+    }
+    div.innerHTML=inner;
+    el.appendChild(div);
+  });
+}
+function buildSugForm(id,nom,dateVal,heuresVal,hsTotal){
+  var dv=dateVal||'',hv=heuresVal||'',tot=hsTotal||0;
+  var paye=hv&&tot?Math.max(0,tot-hv):0;
+  return '<div class="sug-form" id="sf-'+id+'">'+
+    '<div><label style="font-size:10px;color:var(--grege);display:block;margin-bottom:4px">Date de récupération</label><input type="date" class="sug-ri" id="sd-'+id+'" value="'+dv+'"/></div>'+
+    '<div><label style="font-size:10px;color:var(--grege);display:block;margin-bottom:4px">Heures à récupérer (max '+tot+'h)</label>'+
+      '<input type="number" class="sug-ri" id="sh-'+id+'" min="0.5" max="'+tot+'" step="0.5" placeholder="h" style="width:70px" value="'+(hv||'')+'" oninput="updatePayeDisplay(this,\''+id+'\','+tot+')"/>'+
+      '<div id="pd-'+id+'" style="font-size:11px;color:var(--or);margin-top:5px;min-height:14px">'+(paye>0?'→ '+paye+'h à payer':paye===0&&hv?'→ Récupération totale':'')+' </div>'+
+    '</div>'+
+    '<button class="btn-esave" style="margin-top:14px" onclick="empSubmitSug(\''+id+'\',\''+nom+'\','+tot+')">Envoyer</button>'+
+    '</div>';
+}
+function updatePayeDisplay(inp,id,tot){
+  var recup=parseFloat(inp.value)||0,paye=Math.max(0,tot-recup);
+  var el=document.getElementById('pd-'+id);if(!el)return;
+  if(!recup){el.textContent='';return}
+  el.textContent=paye>0?'→ '+paye+'h à payer':'→ Récupération totale';
+}
+function empShowSugForm(id){var f=document.getElementById('sf-'+id);if(f)f.classList.add('open')}
+function empEditSug(id,nom){empShowSugForm(id)}
+function empSubmitSug(id,nom,hsTotal){
+  var dv=document.getElementById('sd-'+id).value,hv=parseFloat(document.getElementById('sh-'+id).value)||0;
+  if(!dv||!hv){alert('Merci d\'indiquer la date et les heures à récupérer.');return}
+  var tot=hsTotal||hv,paye=Math.max(0,tot-hv);
+  var d=load(),c=emp(d,nom),h=c.hs.find(function(x){return x.id==id});
+  if(!h)return;
+  h.suggestion={date:dv,heures:hv,heures_paye:paye,ts:Date.now()};
+  if(h.statut==='en_attente')h.statut='suggestion_recup';
+  save(d);renderGrid();renderHsEmp(nom,c.hs);
+}
+function empPay(id,nom){
+  var d=load(),c=emp(d,nom),h=c.hs.find(function(x){return x.id==id});
+  if(h){h.statut='paye';h.suggestion=null;save(d);renderGrid();renderHsEmp(nom,c.hs)}
+}
+
+/* ── admin panel ── */
+function openAdmin(){renderAdminPanel();showScreen('screen-admin')}
+function renderAdminPanel(){
+  var sugs=getSuggestions(),alertEl=document.getElementById('adminNotifAlert');
+  if(sugs.length>0){
+    var names=sugs.map(function(s){return s.nom}).filter(function(v,i,a){return a.indexOf(v)===i}).join(', ');
+    alertEl.innerHTML='<div class="notif-alert"><div class="notif-alert-icon">🔔</div><div class="notif-alert-text"><strong>'+sugs.length+' suggestion'+(sugs.length>1?'s':'')+' en attente</strong>'+names+'</div></div>';
+  }else{alertEl.innerHTML=''}
+  var d=load(),el=document.getElementById('adminList');el.innerHTML='';
+  COIFFEURS.forEach(function(n){
+    var c=emp(d,n),ns=c.hs.filter(function(h){return h.suggestion}).length;
+    var div=document.createElement('div');div.className='admin-card';
+    div.innerHTML='<div class="ac-init">'+n[0]+'</div><div class="ac-info"><div class="ac-nom">'+n+'</div><div class="ac-sal">Salaire : '+eu(lSal(n))+'</div>'+(ns>0?'<div class="ac-hs">🔔 '+ns+' suggestion'+(ns>1?'s':'')+'</div>':'')+'</div><button class="btn-ger" onclick="openAdminEmp(\''+n+'\')">Gérer</button>';
+    el.appendChild(div);
+  });
+}
+
+/* ── masse salariale & objectifs (admin) ── */
+var EQUIPE_MASSE=['Amandine','Jessica','Maxance','Michael','Mélody'];
+var JOURS_SEM={5:21,4:17,3:13};
+
+function lCout(n){var s=_db['cout_'+n];return(s!=null&&s!=='')?parseFloat(s):null}
+function wCout(n,v){_db['cout_'+n]=String(v);_apiSet('cout_'+n,String(v))}
+function lPct(n){var s=_db['pct_'+n];return(s!=null&&s!=='')?parseFloat(s):null}
+function wPct(n,v){_db['pct_'+n]=String(v);_apiSet('pct_'+n,String(v))}
+function lMoisObj(n){var s=_db['moisobj_'+n];return(s!=null&&s!=='')?parseFloat(s):11}
+function wMoisObj(n,v){_db['moisobj_'+n]=String(v);_apiSet('moisobj_'+n,String(v))}
+function lJsem(n){var s=_db['jsem_'+n];return(s!=null&&s!=='')?parseInt(s):5}
+function wJsem(n,v){_db['jsem_'+n]=String(v);_apiSet('jsem_'+n,String(v))}
+function lCahtOverride(n){var s=_db['cahtman_'+n];return(s!=null&&s!=='')?parseFloat(s):null}
+function wCahtOverride(n,v){_db['cahtman_'+n]=String(v);_apiSet('cahtman_'+n,String(v))}
+
+function caAnnuelAutoHT(n){
+  var d=load(),c=emp(d,n);
+  var arr=c[String(annee)]||Array(12).fill(0);
+  var totalTTC=arr.reduce(function(a,b){return a+(parseFloat(b)||0)},0);
+  return totalTTC>0?totalTTC/TVA:null;
+}
+function caAnnuelHT(n){var over=lCahtOverride(n);return over!=null?over:caAnnuelAutoHT(n)}
+
+function openMasse(){renderMasseTables();showScreen('screen-admin-masse')}
+
+function masseRecalcRow(n){
+  var cout=parseFloat(document.querySelector('.m-cout[data-n="'+n+'"]').value)||null;
+  var caht=parseFloat(document.querySelector('.m-caht[data-n="'+n+'"]').value)||null;
+  var masse=(cout&&caht)?(cout/caht*100):null;
+  document.querySelector('.m-out-masse[data-n="'+n+'"]').textContent=masse!=null?masse.toFixed(1)+'%':'—';
+
+  var pct=parseFloat(document.querySelector('.m-pct[data-n="'+n+'"]').value)||null;
+  var jsem=parseInt(document.querySelector('.m-jsem[data-n="'+n+'"]').value)||5;
+  var mois=parseFloat(document.querySelector('.m-mois[data-n="'+n+'"]').value)||11;
+  var objAnnuel=(cout&&pct>0)?(cout/(pct/100)):null;
+  var objMensuel=(objAnnuel&&mois>0)?(objAnnuel/mois):null;
+  var jours=JOURS_SEM[jsem]||21;
+  var objJour=objMensuel?(objMensuel/jours):null;
+  var objJourTTC=objJour?(objJour*1.2):null;
+  document.querySelector('.m-out-annuel[data-n="'+n+'"]').textContent=objAnnuel!=null?eu(objAnnuel):'—';
+  document.querySelector('.m-out-mensuel[data-n="'+n+'"]').textContent=objMensuel!=null?eu(objMensuel):'—';
+  document.querySelector('.m-out-jour[data-n="'+n+'"]').textContent=objJour!=null?eu(objJour):'—';
+  document.querySelector('.m-out-jourttc[data-n="'+n+'"]').textContent=objJourTTC!=null?eu(objJourTTC):'—';
+}
+
+function renderMasseTables(){
+  var yl=document.getElementById('masseYearLabel');if(yl)yl.textContent=annee;
+  var b1=document.getElementById('masse1Body'),b2=document.getElementById('masse2Body');
+  b1.innerHTML='';b2.innerHTML='';
+  EQUIPE_MASSE.forEach(function(n){
+    var cout=lCout(n),caht=caAnnuelHT(n),autoHt=caAnnuelAutoHT(n);
+    var masse=(cout!=null&&caht>0)?(cout/caht*100):null;
+
+    var tr1=document.createElement('tr');
+    tr1.innerHTML='<td>'+n+'</td>'+
+      '<td><div class="ca-f"><input type="number" class="m-cout" data-n="'+n+'" value="'+(cout!=null?cout:'')+'" placeholder="0" min="0" step="1"/><span>€</span></div></td>'+
+      '<td><div class="ca-f"><input type="number" class="m-caht" data-n="'+n+'" value="'+(caht!=null?Math.round(caht):'')+'" placeholder="0" min="0" step="1"/><span>€</span></div>'+(autoHt!=null?'<div class="masse-auto">auto : '+eu(autoHt)+'</div>':'')+'</td>'+
+      '<td style="text-align:right" class="pp m-out-masse" data-n="'+n+'">'+(masse!=null?masse.toFixed(1)+'%':'—')+'</td>';
+    b1.appendChild(tr1);
+
+    var pct=lPct(n),mois=lMoisObj(n),jsem=lJsem(n);
+    var objAnnuel=(cout!=null&&pct>0)?(cout/(pct/100)):null;
+    var objMensuel=(objAnnuel!=null&&mois>0)?(objAnnuel/mois):null;
+    var jours=JOURS_SEM[jsem]||21;
+    var objJour=(objMensuel!=null)?(objMensuel/jours):null;
+    var objJourTTC=(objJour!=null)?(objJour*1.2):null;
+
+    var tr2=document.createElement('tr');
+    tr2.innerHTML='<td>'+n+'</td>'+
+      '<td><div class="ca-f" style="width:76px"><input type="number" class="m-pct" data-n="'+n+'" value="'+(pct!=null?pct:'')+'" placeholder="%" min="0" max="100" step="0.1"/><span>%</span></div></td>'+
+      '<td><select class="masse-sel m-jsem" data-n="'+n+'">'+
+        [5,4,3].map(function(j){return '<option value="'+j+'"'+(j===jsem?' selected':'')+'>'+j+' j</option>'}).join('')+
+      '</select></td>'+
+      '<td><input type="number" class="masse-in m-mois" data-n="'+n+'" value="'+mois+'" min="1" max="12" step="1"/></td>'+
+      '<td class="masse-out m-out-annuel" data-n="'+n+'">'+(objAnnuel!=null?eu(objAnnuel):'—')+'</td>'+
+      '<td class="m-out-mensuel" data-n="'+n+'">'+(objMensuel!=null?eu(objMensuel):'—')+'</td>'+
+      '<td class="m-out-jour" data-n="'+n+'">'+(objJour!=null?eu(objJour):'—')+'</td>'+
+      '<td style="text-align:right" class="pp m-out-jourttc" data-n="'+n+'">'+(objJourTTC!=null?eu(objJourTTC):'—')+'</td>';
+    b2.appendChild(tr2);
+  });
+
+  EQUIPE_MASSE.forEach(function(n){
+    ['m-cout','m-caht','m-pct','m-jsem','m-mois'].forEach(function(cls){
+      var el=document.querySelector('.'+cls+'[data-n="'+n+'"]');
+      if(el)el.addEventListener('input',function(){masseRecalcRow(n)});
+    });
+  });
+}
+
+document.getElementById('openMasseBtn').addEventListener('click',openMasse);
+document.getElementById('backMasseBtn').addEventListener('click',function(){showScreen('screen-admin')});
+document.getElementById('masseSaveBtn').addEventListener('click',function(){
+  EQUIPE_MASSE.forEach(function(n){
+    var cout=document.querySelector('.m-cout[data-n="'+n+'"]').value;
+    var caht=document.querySelector('.m-caht[data-n="'+n+'"]').value;
+    var pct=document.querySelector('.m-pct[data-n="'+n+'"]').value;
+    var jsem=document.querySelector('.m-jsem[data-n="'+n+'"]').value;
+    var mois=document.querySelector('.m-mois[data-n="'+n+'"]').value;
+    if(cout!=='')wCout(n,parseFloat(cout));
+    var autoHt=caAnnuelAutoHT(n);
+    if(caht!==''&&(autoHt==null||Math.round(autoHt)!==parseFloat(caht)))wCahtOverride(n,parseFloat(caht));
+    if(pct!=='')wPct(n,parseFloat(pct));
+    wJsem(n,jsem);
+    wMoisObj(n,mois);
+  });
+  var m=document.getElementById('masseSaveMsg');
+  m.style.color='var(--vert)';m.textContent='✓ Objectifs enregistrés';setTimeout(function(){m.textContent=''},3000);
+});
+
+/* ── admin employee ── */
+function openAdminEmp(n){
+  coiffeurActif=n;
+  var d=load(),c=emp(d,n);
+  document.getElementById('adminEmpNom').textContent=n.toUpperCase();
+  document.getElementById('adminSalIn').value=lSal(n);
+  document.getElementById('adminSalMsg').textContent='';
+  document.getElementById('adminPinIn').value='';
+  document.getElementById('adminPinInMsg').textContent='';
+  document.getElementById('addHsMsg').textContent='';
+  renderHsAdmin(n,c.hs);
+  showScreen('screen-admin-emp');
+}
+function renderHsAdmin(n,hs){
+  var el=document.getElementById('hsAdminList');
+  if(!hs||!hs.length){el.innerHTML='<p style="color:var(--grege);font-size:13px;font-style:italic;margin-bottom:12px">Aucune heure supplémentaire.</p>';return}
+  el.innerHTML='';
+  hs.forEach(function(h){
+    var statut=h.statut||'en_attente';
+    var bc=statut==='suggestion_emp'?'hb-e':statut==='recup_validee'?'hb-r':statut==='paye'?'hb-p':h.suggestion?'hb-s':'hb-a';
+    var bl=statut==='suggestion_emp'?'Déclaré par l\'employé':statut==='recup_validee'?'✓ Validée':statut==='paye'?'À payer':h.suggestion?'Suggestion reçue':'En attente';
+    var div=document.createElement('div');div.className='hs-item';
+    /* header avec +/- heures */
+    var inner='<div class="hs-head"><span class="hs-date">'+fd(h.date_sup)+'</span>'+
+      '<div style="display:flex;align-items:center;gap:4px">'+
+        '<button class="btn-adj" onclick="adminAdjustH(\''+h.id+'\',\''+n+'\',-0.5)" title="−0.5h">−</button>'+
+        '<span class="hs-h" id="hh-'+h.id+'">'+h.heures+'h</span>'+
+        '<button class="btn-adj" onclick="adminAdjustH(\''+h.id+'\',\''+n+'\',0.5)" title="+0.5h">+</button>'+
+      '</div>'+
+      '<span class="hs-badge '+bc+'">'+bl+'</span>'+
+      '<button class="btn-del" onclick="delHs(\''+h.id+'\',\''+n+'\')" title="Supprimer">✕</button></div>';
+    /* demande employé à valider */
+    if(statut==='suggestion_emp'){
+      inner+='<div class="sug-box" style="margin-top:8px"><div class="sug-box-title">💬 Déclaré par '+n+'</div><div class="sug-box-info">📅 '+fd(h.date_sup)+' · '+h.heures+'h — En attente de ta validation</div><div class="sug-box-acts"><button class="btn-val" onclick="adminValiderSugEmp(\''+h.id+'\',\''+n+'\')">✓ Valider</button><button class="btn-ref" onclick="adminRefuserSugEmp(\''+h.id+'\',\''+n+'\')">✕ Refuser</button></div></div>';
+    }
+    /* récup validée existante */
+    if(statut==='recup_validee'&&h.recup_date){
+      var vp=h.heures_paye>0?'<br><span style="color:var(--or)">💶 '+h.heures_paye+'h à payer</span>':'';
+      inner+='<div class="val-box" style="margin-top:8px"><div class="val-box-title">✓ Récupération validée</div><div class="val-box-info">📅 '+fd(h.recup_date)+' · '+h.recup_heures+'h récup'+vp+'</div></div>';
+    }
+    /* suggestion en attente de validation */
+    if(h.suggestion){
+      var sp=h.suggestion.heures_paye>0?' + '+h.suggestion.heures_paye+'h à payer':'';
+      inner+='<div class="sug-box" style="margin-top:8px"><div class="sug-box-title">🔔 Suggestion de '+n+'</div><div class="sug-box-info">📅 '+fd(h.suggestion.date)+' · '+h.suggestion.heures+'h récup'+sp+'</div><div class="sug-box-acts"><button class="btn-val" onclick="adminValider(\''+h.id+'\',\''+n+'\')">✓ Valider</button><button class="btn-ref" onclick="adminRefuser(\''+h.id+'\',\''+n+'\')">✕ Refuser</button></div></div>';
+    }
+    /* bouton réglé pour statuts finaux sans suggestion en attente */
+    var settled=(statut==='paye'||(statut==='recup_validee'&&!h.suggestion));
+    if(settled){
+      inner+='<div style="margin-top:10px"><button class="btn-regle" onclick="adminRegle(\''+h.id+'\',\''+n+'\')">✓ Réglé — Archiver</button></div>';
+    }
+    div.innerHTML=inner;
+    el.appendChild(div);
+  });
+}
+function adminAdjustH(id,n,delta){
+  var d=load(),c=emp(d,n),h=c.hs.find(function(x){return x.id==id});
+  if(!h)return;
+  var nv=Math.max(0.5,Math.round((h.heures+delta)*2)/2);
+  h.heures=nv;save(d);
+  var el=document.getElementById('hh-'+id);if(el)el.textContent=nv+'h';
+}
+function adminRegle(id,n){
+  if(!confirm('Confirmer que ces heures ont été réglées ? L\'entrée sera supprimée.'))return;
+  var d=load(),c=emp(d,n);c.hs=c.hs.filter(function(h){return h.id!=id});
+  save(d);renderGrid();renderHsAdmin(n,c.hs);
+}
+function adminValider(id,n){
+  var d=load(),c=emp(d,n),h=c.hs.find(function(x){return x.id==id});
+  if(!h||!h.suggestion)return;
+  h.recup_date=h.suggestion.date;h.recup_heures=h.suggestion.heures;
+  h.heures_paye=h.suggestion.heures_paye||0;
+  h.suggestion=null;h.statut='recup_validee';
+  save(d);renderGrid();renderHsAdmin(n,c.hs);renderAdminPanel();
+}
+function adminRefuser(id,n){
+  var d=load(),c=emp(d,n),h=c.hs.find(function(x){return x.id==id});
+  if(!h)return;
+  h.suggestion=null;
+  if(h.statut==='suggestion_recup')h.statut='en_attente';
+  save(d);renderGrid();renderHsAdmin(n,c.hs);renderAdminPanel();
+}
+function adminValiderSugEmp(id,n){
+  var d=load(),c=emp(d,n),h=c.hs.find(function(x){return x.id==id});
+  if(!h)return;
+  h.statut='en_attente';
+  save(d);renderGrid();renderHsAdmin(n,c.hs);renderAdminPanel();
+}
+function adminRefuserSugEmp(id,n){
+  if(!confirm('Refuser cette déclaration d\'heures supplémentaires ?'))return;
+  var d=load(),c=emp(d,n);c.hs=c.hs.filter(function(x){return x.id!=id});
+  save(d);renderGrid();renderHsAdmin(n,c.hs);renderAdminPanel();
+}
+function empDeclareHs(){
+  var nom=coiffeurActif,msg=document.getElementById('declHsMsg');
+  if(!nom){msg.style.color='var(--rouge)';msg.textContent='Erreur : session expirée.';return}
+  var dv=document.getElementById('declHsDate').value,hv=parseFloat(document.getElementById('declHsH').value)||0;
+  if(!dv||!hv){msg.style.color='var(--rouge)';msg.textContent='Date et heures obligatoires.';return}
+  var d=load(),c=emp(d,nom);
+  c.hs.push({id:Date.now(),date_sup:dv,heures:hv,statut:'suggestion_emp',suggestion:null,recup_date:null,recup_heures:null});
+  save(d);
+  document.getElementById('declHsDate').value='';document.getElementById('declHsH').value='';
+  msg.style.color='var(--vert)';msg.textContent='✓ Demande envoyée, en attente de validation.';
+  setTimeout(function(){msg.textContent=''},4000);
+  renderGrid();renderHsEmp(nom,c.hs);
+}
+function delHs(id,n){
+  if(!confirm('Supprimer cette entrée ?'))return;
+  var d=load(),c=emp(d,n);c.hs=c.hs.filter(function(h){return h.id!=id});save(d);renderGrid();renderHsAdmin(n,c.hs);
+}
+function addHs(n){
+  var dv=document.getElementById('addHsDate').value,hv=parseFloat(document.getElementById('addHsH').value)||0;
+  var msg=document.getElementById('addHsMsg');
+  if(!dv||!hv){msg.style.color='var(--rouge)';msg.textContent='Date et heures obligatoires.';return}
+  var d=load(),c=emp(d,n);
+  c.hs.push({id:Date.now(),date_sup:dv,heures:hv,statut:'en_attente',suggestion:null,recup_date:null,recup_heures:null});
+  save(d);document.getElementById('addHsDate').value='';document.getElementById('addHsH').value='';
+  msg.style.color='var(--vert)';msg.textContent='✓ Heures ajoutées';setTimeout(function(){msg.textContent=''},3000);
+  renderGrid();renderHsAdmin(n,c.hs);
+}
+
+/* ── event listeners ── */
+document.getElementById('saveBtn').addEventListener('click',function(){
+  if(!coiffeurActif)return;var d=load(),c=emp(d,coiffeurActif);
+  document.querySelectorAll('#monthsBody input[data-idx]').forEach(function(i){c[String(annee)][parseInt(i.getAttribute('data-idx'))]=parseFloat(i.value)||0});
+  document.querySelectorAll('#monthsBody input[data-vidx]').forEach(function(i){c[String(annee)+'v'][parseInt(i.getAttribute('data-vidx'))]=parseFloat(i.value)||0});
+  save(d);var m=document.getElementById('saveMsg');m.textContent='✓ Données enregistrées';setTimeout(function(){m.textContent=''},3000);
+});
+document.getElementById('backBtn').addEventListener('click',function(){
+  stopMoney();
+  var from=detailFromAdmin;detailFromAdmin=false;
+  document.getElementById('backBtn').textContent='← Retour à l\'équipe';
+  if(from==='emp'){showScreen('screen-admin-emp')}
+  else if(from==='sec'){renderSecondaryAdmin();showScreen('screen-admin-sec')}
+  else{renderGrid();showScreen('screen-grille')}
+});
+document.getElementById('adminBtn').addEventListener('click',function(){openPin('admin','admin')});
+document.getElementById('backAdminBtn').addEventListener('click',function(){renderGrid();showScreen('screen-grille')});
+document.getElementById('backAdminEmpBtn').addEventListener('click',function(){detailFromAdmin=false;renderAdminPanel();showScreen('screen-admin')});
+document.getElementById('backSecBtn').addEventListener('click',function(){renderGrid();showScreen('screen-grille')});
+document.getElementById('voirFicheBtn').addEventListener('click',function(){openDetailFromAdmin(coiffeurActif)});
+document.getElementById('pinCancel').addEventListener('click',closePin);
+document.getElementById('pinOv').addEventListener('click',function(e){if(e.target===this)closePin()});
+document.getElementById('adminSalBtn').addEventListener('click',function(){
+  var v=parseFloat(document.getElementById('adminSalIn').value)||0,m=document.getElementById('adminSalMsg');
+  if(!v){m.style.color='var(--rouge)';m.textContent='Montant invalide.';return}
+  wSal(coiffeurActif,v);m.style.color='var(--vert)';m.textContent='✓ Salaire mis à jour';setTimeout(function(){m.textContent=''},3000);
+});
+document.getElementById('adminPinInBtn').addEventListener('click',function(){
+  var v=document.getElementById('adminPinIn').value.replace(/\D/g,''),m=document.getElementById('adminPinInMsg');
+  if(v.length<4){m.style.color='var(--rouge)';m.textContent='Minimum 4 chiffres.';return}
+  wPin(coiffeurActif,v);m.style.color='var(--vert)';m.textContent='✓ Code mis à jour';document.getElementById('adminPinIn').value='';setTimeout(function(){m.textContent=''},3000);
+});
+document.getElementById('addHsBtn').addEventListener('click',function(){addHs(coiffeurActif)});
+document.getElementById('declHsBtn').addEventListener('click',empDeclareHs);
+
+/* ── sélecteurs ── */
+(function(){
+  var sa=document.getElementById('yearSelect');
+  var yStart=Math.min(2026,annee),yEnd=Math.max(2028,annee+1);
+  for(var y=yStart;y<=yEnd;y++){var o=document.createElement('option');o.value=y;o.textContent=y;if(y===annee)o.selected=true;sa.appendChild(o)}
+  sa.addEventListener('change',function(){annee=parseInt(this.value);renderGrid()});
+  var sm=document.getElementById('monthSelect');
+  MOIS.forEach(function(n,i){var o=document.createElement('option');o.value=i;o.textContent=n;if(i===moisActuel)o.selected=true;sm.appendChild(o)});
+  sm.addEventListener('change',function(){moisActuel=parseInt(this.value);renderGrid()});
+})();
+
+/* ── animations ── */
+(function(){
+  var canvas=null,ctx=null,animId=null;
+  var bills=[],fw=[],billsTTL=0,fwTTL=0,fwTimer=0;
+  var BEMO=['💶','💵','💰','💶'];
+  var FWC=['#358d7c','#f5a623','#f9f9f9','#e05555','#b3ecff','#ffe066','#7ecbd4'];
+  function init(){
+    if(!canvas){canvas=document.getElementById('moneyCanvas');ctx=canvas.getContext('2d')}
+    canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  }
+  function spawnBurst(){
+    var x=80+Math.random()*(canvas.width-160),y=50+Math.random()*(canvas.height*.42);
+    for(var i=0;i<55;i++){
+      var a=(Math.PI*2*i/55)+(Math.random()-.5)*.35,sp=1.5+Math.random()*6.5;
+      fw.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:55+Math.floor(Math.random()*75),maxLife:130,c:FWC[Math.floor(Math.random()*FWC.length)],s:1.5+Math.random()*3.5,trail:Math.random()<.25});
+    }
+  }
+  function spawnBills(){
+    bills=[];
+    for(var i=0;i<26;i++) bills.push({x:Math.random()*canvas.width,y:-50-Math.random()*canvas.height,vy:1.3+Math.random()*2.3,vx:(Math.random()-.5)*.5,rot:0,rv:(Math.random()-.5)*.055,s:20+Math.floor(Math.random()*18),e:BEMO[Math.floor(Math.random()*BEMO.length)]});
+  }
+  function loop(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(bills.length){
+      billsTTL--;
+      var ba=billsTTL<70?Math.max(0,billsTTL/70):1;
+      bills.forEach(function(p){
+        p.y+=p.vy;p.x+=p.vx;p.rot+=p.rv;
+        if(p.y>canvas.height+50){p.y=-50;p.x=Math.random()*canvas.width}
+        ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.globalAlpha=ba;ctx.font=p.s+'px serif';ctx.fillText(p.e,0,0);ctx.restore();
+      });
+      if(billsTTL<=0)bills=[];
+    }
+    if(fwTTL>0){fwTTL--;fwTimer++;if(fwTimer%60===0)spawnBurst()}
+    fw.forEach(function(p){
+      p.vy+=0.09;p.vx*=.97;p.vy*=.97;p.x+=p.vx;p.y+=p.vy;p.life--;
+      var al=Math.max(0,p.life/p.maxLife);
+      ctx.save();ctx.globalAlpha=al;
+      if(p.trail){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-p.vx*3,p.y-p.vy*3);ctx.strokeStyle=p.c;ctx.lineWidth=p.s*.7;ctx.stroke()}
+      else{ctx.beginPath();ctx.arc(p.x,p.y,p.s,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill()}
+      ctx.restore();
+    });
+    fw=fw.filter(function(p){return p.life>0});
+    if(bills.length||fw.length||fwTTL>0)animId=requestAnimationFrame(loop);
+    else{animId=null;canvas.style.display='none';ctx.clearRect(0,0,canvas.width,canvas.height)}
+  }
+  function go(){if(!animId){canvas.style.display='block';animId=requestAnimationFrame(loop)}}
+  window.startFireworks=function(){init();fwTTL=320;fwTimer=0;spawnBurst();go()};
+  window.stopFireworks=function(){fw=[];fwTTL=0};
+  window.startBills=function(){init();billsTTL=230;if(!bills.length)spawnBills();go()};
+  window.stopMoney=function(){
+    bills=[];fw=[];billsTTL=0;fwTTL=0;
+    if(animId){cancelAnimationFrame(animId);animId=null}
+    if(canvas){canvas.style.display='none';ctx&&ctx.clearRect(0,0,canvas.width,canvas.height)}
+  };
+})();
+
+/* appelé depuis le champ prestation — feux d'artifice uniquement si seuil dépassé */
+function checkFireworks(sal,allCa){
+  var hasPrest=allCa.some(function(v){var r=calc(sal,v);return r&&r.prime>0});
+  if(hasPrest)startFireworks();else stopFireworks();
+}
+/* appelé à l'ouverture de la fiche — feux d'artifice seulement, pas de billets */
+function checkAndAnimate(sal,ca){
+  var hasPrest=ca.some(function(v){var r=calc(sal,v);return r&&r.prime>0});
+  if(hasPrest)startFireworks();else stopFireworks();
+}
+
+(function(){
+  var ov=document.getElementById('loadOv');
+  fetch('/api/store').then(function(r){return r.json()}).then(function(data){
+    _db=data||{};
+    ov.style.display='none';
+    renderGrid();
+  }).catch(function(){
+    ov.style.display='none';
+    renderGrid();
+  });
+})();
+</script>
+</body>
+</html>
