@@ -75,6 +75,13 @@
     .masse-sel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:var(--blanc);font-family:'Cabin',sans-serif;font-size:13px;padding:7px 6px;outline:none}
     .masse-auto{font-size:10px;color:var(--grege);margin-top:3px}
     .masse-note{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--blanc);margin-top:22px;line-height:1.5}
+    .force-cat{margin-bottom:26px}
+    .force-cat-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+    .force-cat-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.05em;color:var(--blanc)}
+    .force-repere{font-size:11px;color:var(--grege);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .fp-r{color:var(--rouge);font-weight:700}.fp-o{color:var(--or);font-weight:700}.fp-g{color:var(--vert);font-weight:700}
+    .icon-x{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--grege);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:12px;margin-left:auto}
+    .icon-x:hover{border-color:var(--rouge);color:var(--rouge)}
     .bilan-g{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
     .bi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;justify-content:space-between;min-height:110px}
     .bi.hl{background:var(--vert-cl);border-color:var(--vert)}
@@ -400,6 +407,22 @@
 
     <button class="btn-save" id="masseSaveBtn" style="margin-top:24px">Enregistrer 💾</button>
     <div class="save-msg" id="masseSaveMsg"></div>
+
+    <div class="divider"></div>
+    <div class="masse-tbl-title">3 · Force de proposition</div>
+    <div class="masse-tbl-sub">(Fiche moyenne TTC − Prix d'appel TTC) ÷ Prix d'appel TTC × 100. Un espace par prestation — Femme et Homme par défaut, et tu peux en ajouter d'autres (coloration, barbe, etc.).</div>
+
+    <div id="forceBlocks"></div>
+    <button class="btn-fiche" id="addForceCatBtn">+ Ajouter un espace / service</button>
+
+    <div class="masse-tbl-title" style="margin-top:10px">Récapitulatif équipe</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr id="forceTeamHead"><th>Collaborateur</th></tr></thead>
+      <tbody id="forceTeamBody"></tbody>
+    </table></div>
+
+    <button class="btn-save" id="forceSaveBtn" style="margin-top:24px">Enregistrer 💾</button>
+    <div class="save-msg" id="forceSaveMsg"></div>
   </div>
 </div>
 
@@ -772,7 +795,7 @@ function caAnnuelAutoHT(n){
 }
 function caAnnuelHT(n){var over=lCahtOverride(n);return over!=null?over:caAnnuelAutoHT(n)}
 
-function openMasse(){renderMasseTables();showScreen('screen-admin-masse')}
+function openMasse(){renderMasseTables();renderForceSection();showScreen('screen-admin-masse')}
 
 function masseRecalcRow(n){
   var cout=parseFloat(document.querySelector('.m-cout[data-n="'+n+'"]').value)||null;
@@ -856,6 +879,120 @@ document.getElementById('masseSaveBtn').addEventListener('click',function(){
   });
   var m=document.getElementById('masseSaveMsg');
   m.style.color='var(--vert)';m.textContent='✓ Objectifs enregistrés';setTimeout(function(){m.textContent=''},3000);
+});
+
+/* ── force de proposition (admin) ── */
+var FORCE_DEFAULT_CATS=['Femme','Homme'];
+var FORCE_THRESH={'Femme':[50,75],'Homme':[10,30]};
+
+function getForceCats(){
+  var extra=[];
+  try{extra=JSON.parse(_db['force_cats']||'[]')}catch(e){extra=[]}
+  var all=FORCE_DEFAULT_CATS.slice();
+  extra.forEach(function(c){if(all.indexOf(c)===-1)all.push(c)});
+  return all;
+}
+function saveForceCatsList(cats){
+  var extra=cats.filter(function(c){return FORCE_DEFAULT_CATS.indexOf(c)===-1});
+  _db['force_cats']=JSON.stringify(extra);
+  _apiSet('force_cats',_db['force_cats']);
+}
+function lFF(cat,n){var s=_db['ff_'+cat+'_'+n];return(s!=null&&s!=='')?parseFloat(s):null}
+function wFF(cat,n,v){_db['ff_'+cat+'_'+n]=String(v);_apiSet('ff_'+cat+'_'+n,String(v))}
+function lPA(cat,n){var s=_db['pa_'+cat+'_'+n];return(s!=null&&s!=='')?parseFloat(s):null}
+function wPA(cat,n,v){_db['pa_'+cat+'_'+n]=String(v);_apiSet('pa_'+cat+'_'+n,String(v))}
+function forcePct(ff,pa){return(ff!=null&&pa>0)?((ff-pa)/pa*100):null}
+function forceColorClass(cat,pct){
+  if(pct==null)return'';
+  var t=FORCE_THRESH[cat];
+  if(!t)return'pp';
+  if(pct>=t[1])return'fp-g';
+  if(pct>=t[0])return'fp-o';
+  return'fp-r';
+}
+function forceCatEmoji(cat){if(cat==='Femme')return'👩';if(cat==='Homme')return'👨';return'🛎️'}
+
+function buildForceCatBlock(cat){
+  var t=FORCE_THRESH[cat];
+  var repereHtml=t?('<span class="force-repere"><span class="fp-r">●</span> 0–'+t[0]+'% &nbsp; <span class="fp-o">●</span> '+t[0]+'–'+t[1]+'% &nbsp; <span class="fp-g">●</span> '+t[1]+'%+</span>'):'';
+  var removable=FORCE_DEFAULT_CATS.indexOf(cat)===-1;
+  var rowsHtml=EQUIPE_MASSE.map(function(n){
+    var ff=lFF(cat,n),pa=lPA(cat,n),pct=forcePct(ff,pa);
+    return '<tr><td>'+n+'</td>'+
+      '<td><div class="ca-f"><input type="number" class="fp-ff" data-cat="'+cat+'" data-n="'+n+'" value="'+(ff!=null?ff:'')+'" placeholder="0" min="0" step="0.5"/><span>€</span></div></td>'+
+      '<td><div class="ca-f"><input type="number" class="fp-pa" data-cat="'+cat+'" data-n="'+n+'" value="'+(pa!=null?pa:'')+'" placeholder="0" min="0" step="0.5"/><span>€</span></div></td>'+
+      '<td style="text-align:right" class="fp-out '+forceColorClass(cat,pct)+'" data-cat="'+cat+'" data-n="'+n+'">'+(pct!=null?pct.toFixed(0)+'%':'—')+'</td></tr>';
+  }).join('');
+  var div=document.createElement('div');div.className='force-cat';
+  div.innerHTML='<div class="force-cat-head"><span class="force-cat-title">'+forceCatEmoji(cat)+' '+cat+'</span>'+repereHtml+
+    (removable?'<button type="button" class="icon-x" data-removecat="'+cat+'">✕ retirer</button>':'')+'</div>'+
+    '<div class="tbl-wrap"><table><thead><tr><th>Collaborateur</th><th>Fiche moyenne TTC</th><th>Prix d\'appel TTC</th><th style="text-align:right">Force de proposition</th></tr></thead><tbody>'+rowsHtml+'</tbody></table></div>';
+  return div;
+}
+
+function renderForceSection(){
+  var cats=getForceCats();
+  var wrap=document.getElementById('forceBlocks');wrap.innerHTML='';
+  cats.forEach(function(cat){wrap.appendChild(buildForceCatBlock(cat))});
+
+  document.querySelectorAll('.fp-ff,.fp-pa').forEach(function(el){
+    el.addEventListener('input',function(){
+      var cat=el.dataset.cat,n=el.dataset.n;
+      var ff=parseFloat(document.querySelector('.fp-ff[data-cat="'+cat+'"][data-n="'+n+'"]').value)||null;
+      var pa=parseFloat(document.querySelector('.fp-pa[data-cat="'+cat+'"][data-n="'+n+'"]').value)||null;
+      var pct=forcePct(ff,pa);
+      var outEl=document.querySelector('.fp-out[data-cat="'+cat+'"][data-n="'+n+'"]');
+      outEl.className='fp-out '+forceColorClass(cat,pct);
+      outEl.textContent=pct!=null?pct.toFixed(0)+'%':'—';
+      renderForceTeamTable(getForceCats());
+    });
+  });
+  document.querySelectorAll('[data-removecat]').forEach(function(b){
+    b.addEventListener('click',function(){
+      if(!confirm('Retirer l\'espace "'+b.dataset.removecat+'" ? (les valeurs saisies resteront enregistrées)'))return;
+      saveForceCatsList(getForceCats().filter(function(c){return c!==b.dataset.removecat}));
+      renderForceSection();
+    });
+  });
+  renderForceTeamTable(cats);
+}
+
+function renderForceTeamTable(cats){
+  document.getElementById('forceTeamHead').innerHTML='<th>Collaborateur</th>'+cats.map(function(c){return '<th style="text-align:right">'+c+'</th>'}).join('');
+  document.getElementById('forceTeamBody').innerHTML=EQUIPE_MASSE.map(function(n){
+    var cells=cats.map(function(cat){
+      var liveEl=document.querySelector('.fp-out[data-cat="'+cat+'"][data-n="'+n+'"]');
+      var pct=forcePct(lFF(cat,n),lPA(cat,n));
+      var cls=liveEl?liveEl.className.replace('fp-out','').trim():forceColorClass(cat,pct);
+      var txt=liveEl?liveEl.textContent:(pct!=null?pct.toFixed(0)+'%':'—');
+      return '<td style="text-align:right" class="'+cls+'">'+txt+'</td>';
+    }).join('');
+    return '<tr><td>'+n+'</td>'+cells+'</tr>';
+  }).join('');
+}
+
+document.getElementById('addForceCatBtn').addEventListener('click',function(){
+  var name=prompt('Nom du nouvel espace / service (ex: Coloration, Barbe...)');
+  if(!name)return;
+  name=name.trim();
+  if(!name)return;
+  var cats=getForceCats();
+  if(cats.indexOf(name)!==-1){alert('Cet espace existe déjà.');return}
+  cats.push(name);
+  saveForceCatsList(cats);
+  renderForceSection();
+});
+document.getElementById('forceSaveBtn').addEventListener('click',function(){
+  getForceCats().forEach(function(cat){
+    EQUIPE_MASSE.forEach(function(n){
+      var ffEl=document.querySelector('.fp-ff[data-cat="'+cat+'"][data-n="'+n+'"]');
+      var paEl=document.querySelector('.fp-pa[data-cat="'+cat+'"][data-n="'+n+'"]');
+      if(ffEl&&ffEl.value!=='')wFF(cat,n,parseFloat(ffEl.value));
+      if(paEl&&paEl.value!=='')wPA(cat,n,parseFloat(paEl.value));
+    });
+  });
+  var m=document.getElementById('forceSaveMsg');
+  m.style.color='var(--vert)';m.textContent='✓ Force de proposition enregistrée';setTimeout(function(){m.textContent=''},3000);
 });
 
 /* ── admin employee ── */
