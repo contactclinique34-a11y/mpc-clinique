@@ -818,7 +818,7 @@ function renderMasseTables(){
 
     var tr2=document.createElement('tr');
     tr2.innerHTML='<td>'+n+'</td>'+
-      '<td><div class="ca-f" style="width:76px"><input type="number" class="m-pct" data-n="'+n+'" value="'+(pct!=null?pct:'')+'" placeholder="%" min="0" max="100" step="0.1"/><span>%</span></div></td>'+
+      '<td><div class="ca-f" style="width:76px"><input type="number" class="m-pct" data-n="'+n+'" value="'+(pct!=null?pct:'')+'" placeholder="0" min="0" max="100" step="0.1"/><span>%</span></div></td>'+
       '<td><select class="masse-sel m-jsem" data-n="'+n+'">'+
         [5,4,3].map(function(j){return '<option value="'+j+'"'+(j===jsem?' selected':'')+'>'+j+' j</option>'}).join('')+
       '</select></td>'+
